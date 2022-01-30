@@ -1,8 +1,5 @@
-import {
-  InformationCircleIcon,
-  ChartBarIcon,
-  SunIcon,
-} from '@heroicons/react/outline'
+import { InformationCircleIcon } from '@heroicons/react/outline'
+import { ChartBarIcon } from '@heroicons/react/outline'
 import { useState, useEffect } from 'react'
 import { Alert } from './components/alerts/Alert'
 import { Grid } from './components/grid/Grid'
@@ -10,15 +7,7 @@ import { Keyboard } from './components/keyboard/Keyboard'
 import { AboutModal } from './components/modals/AboutModal'
 import { InfoModal } from './components/modals/InfoModal'
 import { StatsModal } from './components/modals/StatsModal'
-import {
-  WORDLE_TITLE,
-  WIN_MESSAGES,
-  GAME_COPIED_MESSAGE,
-  ABOUT_GAME_MESSAGE,
-  NOT_ENOUGH_LETTERS_MESSAGE,
-  WORD_NOT_FOUND_MESSAGE,
-  CORRECT_WORD_MESSAGE,
-} from './constants/strings'
+import { WIN_MESSAGES } from './constants/strings'
 import { isWordInWordList, isWinningWord, solution } from './lib/words'
 import { addStatsForCompletedGame, loadStats } from './lib/stats'
 import {
@@ -26,15 +15,9 @@ import {
   saveGameStateToLocalStorage,
 } from './lib/localStorage'
 
-import './App.css'
-
 const ALERT_TIME_MS = 2000
 
 function App() {
-  const prefersDarkMode = window.matchMedia(
-    '(prefers-color-scheme: dark)'
-  ).matches
-
   const [currentGuess, setCurrentGuess] = useState('')
   const [isGameWon, setIsGameWon] = useState(false)
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
@@ -43,13 +26,6 @@ function App() {
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
   const [isWordNotFoundAlertOpen, setIsWordNotFoundAlertOpen] = useState(false)
   const [isGameLost, setIsGameLost] = useState(false)
-  const [isDarkMode, setIsDarkMode] = useState(
-    localStorage.getItem('theme')
-      ? localStorage.getItem('theme') === 'dark'
-      : prefersDarkMode
-      ? true
-      : false
-  )
   const [successAlert, setSuccessAlert] = useState('')
   const [guesses, setGuesses] = useState<string[]>(() => {
     const loaded = loadGameStateFromLocalStorage()
@@ -67,19 +43,6 @@ function App() {
   })
 
   const [stats, setStats] = useState(() => loadStats())
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-  }, [isDarkMode])
-
-  const handleDarkMode = (isDark: boolean) => {
-    setIsDarkMode(isDark)
-    localStorage.setItem('theme', isDark ? 'dark' : 'light')
-  }
 
   useEffect(() => {
     saveGameStateToLocalStorage({ guesses, solution })
@@ -150,20 +113,14 @@ function App() {
 
   return (
     <div className="py-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <div className="flex w-80 mx-auto items-center mb-8 mt-12">
-        <h1 className="text-xl grow font-bold dark:text-white">
-          {WORDLE_TITLE}
-        </h1>
-        <SunIcon
-          className="h-6 w-6 cursor-pointer dark:stroke-white"
-          onClick={() => handleDarkMode(!isDarkMode)}
-        />
+      <div className="flex w-80 mx-auto items-center mb-8">
+        <h1 className="text-xl grow font-bold">Turdle🐢</h1>
         <InformationCircleIcon
-          className="h-6 w-6 cursor-pointer dark:stroke-white"
+          className="h-6 w-6 cursor-pointer"
           onClick={() => setIsInfoModalOpen(true)}
         />
         <ChartBarIcon
-          className="h-6 w-6 cursor-pointer dark:stroke-white"
+          className="h-6 w-6 cursor-pointer"
           onClick={() => setIsStatsModalOpen(true)}
         />
       </div>
@@ -186,7 +143,7 @@ function App() {
         isGameLost={isGameLost}
         isGameWon={isGameWon}
         handleShare={() => {
-          setSuccessAlert(GAME_COPIED_MESSAGE)
+          setSuccessAlert('Game copied to clipboard')
           return setTimeout(() => setSuccessAlert(''), ALERT_TIME_MS)
         }}
       />
@@ -200,15 +157,12 @@ function App() {
         className="mx-auto mt-8 flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 select-none"
         onClick={() => setIsAboutModalOpen(true)}
       >
-        {ABOUT_GAME_MESSAGE}
+        About this game
       </button>
 
-      <Alert message={NOT_ENOUGH_LETTERS_MESSAGE} isOpen={isNotEnoughLetters} />
-      <Alert
-        message={WORD_NOT_FOUND_MESSAGE}
-        isOpen={isWordNotFoundAlertOpen}
-      />
-      <Alert message={CORRECT_WORD_MESSAGE(solution)} isOpen={isGameLost} />
+      <Alert message="Not enough turtles" isOpen={isNotEnoughLetters} />
+      <Alert message="Turdle not found" isOpen={isWordNotFoundAlertOpen} />
+      <Alert message={`The turdle was ${solution}`} isOpen={isGameLost} />
       <Alert
         message={successAlert}
         isOpen={successAlert !== ''}
