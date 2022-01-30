@@ -2,7 +2,8 @@ import { ReactNode } from 'react'
 import classnames from 'classnames'
 import { KeyValue } from '../../lib/keyboard'
 import { CharStatus } from '../../lib/statuses'
-import { letterToTurtleIdx, turtleFilter, turtleTransform } from '../../constants/filter'
+import { turtleFilter, turtleTransform } from '../../constants/filter'
+import { letterToFrameIdx } from '../../constants/validGuesses'
 
 type Props = {
   children?: ReactNode
@@ -55,7 +56,7 @@ export const Key = ({
       onClick={handleClick}
     >
       {children}
-      <img src={'res/img/turtle_' + letterToTurtleIdx(value) + '.png'} className={imgClasses}
+      <img src={'res/img/turtle_' + letterToFrameIdx(value) + '.png'} className={imgClasses}
         style={imgStyles} alt={value} />
 
     </button>

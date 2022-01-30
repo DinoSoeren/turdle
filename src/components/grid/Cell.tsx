@@ -1,6 +1,7 @@
 import { CharStatus } from '../../lib/statuses'
-import { letterToTurtleIdx, turtleFilter, turtleTransform } from '../../constants/filter'
+import { turtleFilter, turtleTransform } from '../../constants/filter'
 import classnames from 'classnames'
+import { letterToFrameIdx } from '../../constants/validGuesses'
 
 type Props = {
   value?: string
@@ -35,7 +36,7 @@ export const Cell = ({ value, status }: Props) => {
   } as React.CSSProperties;
 
   return <div className={divClasses}>
-    <img src={'res/img/turtle_' + letterToTurtleIdx(value) + '.png'} className={imgClasses}
+    <img src={'res/img/turtle_' + letterToFrameIdx(value) + '.png'} className={imgClasses}
       style={imgStyles} alt={value} />
   </div>
 }
