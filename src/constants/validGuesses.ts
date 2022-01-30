@@ -64,7 +64,7 @@ function generateAllValidGuesses(): string[] {
   for (let i = 0; i < NUM_COLORS; i++) {
     colors[i] = i
   }
-  const allColors = permutator(colors)
+  const allColors = variationsRep(colors)
   for (let i = 0; i < NUM_COLORS; i++) {
     allColors.push(new Array(NUM_COLORS).fill(i))
   }
@@ -88,28 +88,28 @@ function generateAllValidGuesses(): string[] {
       }
     }
   }
-  console.log(guesses)
+  // console.log(guesses)
   return guesses
 }
 
-function permutator(inputArr: any[]): any[][] {
-  let result: any[][] = []
-
-  const permute = (arr: any[], m: any[] = []) => {
-    if (arr.length === 0) {
-      result.push(m)
-    } else {
-      for (let i = 0; i < arr.length; i++) {
-        let curr = arr.slice()
-        let next = curr.splice(i, 1)
-        permute(curr.slice(), m.concat(next))
-      }
+/** Generates all variations with repetition (order matters). */
+function variationsRep(arr: any[], l?: number): any[][] {
+  if (l === void 0) l = arr.length // Length of the combinations
+  var data = Array(l), // Used to store state
+    results = [] // Array of results
+  ;(function f(pos) {
+    // Recursive function
+    if (pos === l) {
+      // End reached
+      results.push(data.slice()) // Add a copy of data to results
+      return
     }
-  }
-
-  permute(inputArr)
-
-  return result
+    for (var i = 0; i < arr.length; ++i) {
+      data[pos] = arr[i] // Update data
+      f(pos + 1) // Call f recursively
+    }
+  })(0) // Start at index 0
+  return results // Return results
 }
 
 function isValidGuess(guess: string[]): boolean {
@@ -118,7 +118,7 @@ function isValidGuess(guess: string[]): boolean {
   const start = frames.indexOf(0)
   for (let i = 0; i < NUM_FRAMES; i++) {
     if (frames[(start + i) % NUM_FRAMES] !== i) {
-      console.log(frames[(start + i) % NUM_FRAMES] + '!==' + i)
+      // console.log(frames[(start + i) % NUM_FRAMES] + '!==' + i)
       return false
     }
   }
