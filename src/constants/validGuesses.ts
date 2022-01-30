@@ -111,16 +111,3 @@ function variationsRep(arr: any[], l?: number): any[][] {
   })(0) // Start at index 0
   return results // Return results
 }
-
-function isValidGuess(guess: string[]): boolean {
-  if (guess.length !== NUM_FRAMES) return false
-  const frames = guess.map((t) => parseInt(t.split('_')[0]))
-  const start = frames.indexOf(0)
-  for (let i = 0; i < NUM_FRAMES; i++) {
-    if (frames[(start + i) % NUM_FRAMES] !== i) {
-      // console.log(frames[(start + i) % NUM_FRAMES] + '!==' + i)
-      return false
-    }
-  }
-  return true
-}
