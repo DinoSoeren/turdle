@@ -40,12 +40,7 @@ export function turtleFilter(value?: string): string {
   const letterIdx = KeyboardLetters.indexOf(value || 'Q')
   const nearestM = roundMultiple(letterIdx + 1, 5)
   const hue = (nearestM / KeyboardLetters.length) * 360
-  const effect =
-    nearestM % 3 === 0
-      ? 'saturate(3)'
-      : letterIdx % 3 === 1
-      ? 'contrast(160%)'
-      : 'brightness(1.35)'
+  const effect = 'saturate(3) contrast(160%)'
   return 'hue-rotate(' + hue + 'deg) ' + effect
 }
 
