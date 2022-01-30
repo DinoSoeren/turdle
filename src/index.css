@@ -20,3 +20,7 @@
     transform: scale(1);
   }
 }
+
+iframe {
+  margin: 0 auto 30px auto;
+}
