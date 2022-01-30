@@ -40,7 +40,7 @@ export const AboutModal = ({ isOpen, handleClose }: Props) => {
       <p className="mt-4 text-sm text-gray-500 dark:text-gray-300">
         Developed for{' '}
         <a
-          href="https://globalgamejam.org"
+          href="https://globalgamejam.org/2022/games/turdlexyz-4"
           className="underline font-bold"
         >
           Global Game Jam

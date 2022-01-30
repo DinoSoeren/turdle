@@ -26,25 +26,25 @@ export const InfoModal = ({ isOpen, handleClose }: Props) => {
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
-        <Cell value="H" />
-        <Cell value="S" />
-        <Cell value="K" status="present" />
         <Cell value="O" />
         <Cell value="T" />
+        <Cell value="H" status="present" />
+        <Cell value="S" />
+        <Cell value="K" />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
         The <strong>Red Turtle</strong> is in the sequence but in the wrong spot.
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
+        <Cell value="N" />
         <Cell value="X" />
         <Cell value="J" />
-        <Cell value="I" />
-        <Cell value="F" status="absent" />
-        <Cell value="N" />
+        <Cell value="I" status="absent" />
+        <Cell value="F" />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        The <strong>Purple Turtle</strong> is not in the sequence in any spot.
+        The <strong>Blue Turtle</strong> is not in the sequence in any spot.
       </p>
     </BaseModal>
   )

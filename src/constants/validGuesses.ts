@@ -60,6 +60,25 @@ export function letterToColorIdx(value?: string): number {
 
 function generateAllValidGuesses(): string[] {
   const guesses: string[] = []
+  const sequences = generateStartingSequences()
+  for (let i = 0; i < sequences.length; i++) {
+    let sequence = sequences[i]
+    for (let j = 0; j < NUM_FRAMES; j++) {
+      const wordGuess = sequence
+        .map((t) => turdleToLetter(t))
+        .reduce((prefix, l) => prefix + l)
+      if (!guesses.includes(wordGuess)) {
+        guesses.push(wordGuess)
+      }
+      sequence = shiftArrayRight(sequence)
+    }
+  }
+  return guesses
+}
+
+function generateStartingSequences(): string[][] {
+  const sequences: string[][] = []
+  const guesses: string[] = []
   const colors: number[] = new Array(NUM_COLORS)
   for (let i = 0; i < NUM_COLORS; i++) {
     colors[i] = i
@@ -68,7 +87,7 @@ function generateAllValidGuesses(): string[] {
   for (let i = 0; i < NUM_COLORS; i++) {
     allColors.push(new Array(NUM_COLORS).fill(i))
   }
-  let guess: string[] = []
+  let sequence: string[] = []
   for (let j = 0; j < allColors.length; j++) {
     for (let k = 0; k < NUM_COLORS; k++) {
       for (let h = 0; h < NUM_FRAMES; h++) {
@@ -76,20 +95,22 @@ function generateAllValidGuesses(): string[] {
           const f = (h + i) % NUM_FRAMES
           const c = allColors[j][k++]
           if (isNaN(f) || isNaN(c)) continue
-          guess.push(f + '_' + c)
-          if (guess.length === NUM_FRAMES) {
-            const wordGuess = guess
+          sequence.push(f + '_' + c)
+          if (sequence.length === NUM_FRAMES) {
+            const wordGuess = sequence
               .map((t) => turdleToLetter(t))
               .reduce((prefix, l) => prefix + l)
-            if (!guesses.includes(wordGuess)) guesses.push(wordGuess)
-            guess = []
+            if (!guesses.includes(wordGuess)) {
+              guesses.push(wordGuess)
+              sequences.push(sequence)
+            }
+            sequence = []
           }
         }
       }
     }
   }
-  // console.log(guesses)
-  return guesses
+  return sequences
 }
 
 /** Generates all variations with repetition (order matters). */
@@ -110,4 +131,13 @@ function variationsRep(arr: any[], l?: number): any[][] {
     }
   })(0) // Start at index 0
   return results // Return results
+}
+
+function shiftArrayRight(arr: any[]): any[] {
+  const temp = arr[arr.length - 1]
+  for (let i = arr.length - 1; i > 0; i--) {
+    arr[i] = arr[i - 1]
+  }
+  arr[0] = temp
+  return arr
 }
