@@ -59,10 +59,10 @@ export function letterToColorIdx(value?: string): number {
 }
 
 function generateAllValidGuesses(): string[] {
-  const guesses: string[] = []
+  let guesses: string[] = []
   const sequences = generateStartingSequences()
-  for (let i = 0; i < sequences.length; i++) {
-    let sequence = sequences[i]
+  for (let i = sequences.length - 1; i >= 0; i--) {
+    let sequence = shiftArrayRight(sequences[i])
     for (let j = 0; j < NUM_FRAMES; j++) {
       const wordGuess = sequence
         .map((t) => turdleToLetter(t))
@@ -73,6 +73,8 @@ function generateAllValidGuesses(): string[] {
       sequence = shiftArrayRight(sequence)
     }
   }
+  guesses = shuffle(guesses, xor(1))
+  console.log(guesses)
   return guesses
 }
 
@@ -140,4 +142,37 @@ function shiftArrayRight(arr: any[]): any[] {
   }
   arr[0] = temp
   return arr
+}
+
+// Predictable Fisher-Yates Shuffle, given a seed like xor(1)
+function shuffle(arr: any[], seed = Math.random): any[] {
+  let m = arr.length
+  let t
+  let i
+  while (m) {
+    i = Math.floor(seed() * m--)
+    t = arr[m]
+    arr[m] = arr[i]
+    arr[i] = t
+  }
+  return arr
+}
+
+// XORshift PRNG
+function xor(seed: number): () => number {
+  const baseSeeds = [123456789, 362436069, 521288629, 88675123]
+
+  let [x, y, z, w] = baseSeeds
+
+  const random = (): number => {
+    const t = x ^ (x << 11)
+    ;[x, y, z] = [y, z, w]
+    w = w ^ (w >> 19) ^ (t ^ (t >> 8))
+    return w / 0x7fffffff
+  }
+
+  ;[x, y, z, w] = baseSeeds.map((i) => i + seed)
+  ;[x, y, z, w] = [0, 0, 0, 0].map(() => Math.round(random() * 1e16))
+
+  return random
 }
