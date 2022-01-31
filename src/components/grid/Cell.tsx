@@ -36,7 +36,8 @@ export const Cell = ({ value, status }: Props) => {
   } as React.CSSProperties;
 
   return <div className={divClasses}>
-    <img src={'res/img/turtle_' + letterToFrameIdx(value) + '.png'} className={imgClasses}
+    <img src={'res/img/turtle_' + letterToFrameIdx(value) + '.png'}
+      className={imgClasses}
       style={imgStyles} alt={value} />
   </div>
 }

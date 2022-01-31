@@ -3,6 +3,7 @@ import {
   ChartBarIcon,
   SunIcon,
 } from '@heroicons/react/outline'
+import { FaDiscord } from 'react-icons/fa'
 import { useState, useEffect } from 'react'
 import { Alert } from './components/alerts/Alert'
 import { Grid } from './components/grid/Grid'
@@ -212,13 +213,22 @@ function App() {
         handleClose={() => setIsAboutModalOpen(false)}
       />
 
-      <button
-        type="button"
-        className="mx-auto mt-8 flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 select-none"
-        onClick={() => setIsAboutModalOpen(true)}
-      >
-        {ABOUT_GAME_MESSAGE}
-      </button>
+      <div className="flex justify-center gap-1 mt-8">
+        <button
+          type="button"
+          className="flex shrink grow-0 items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 select-none"
+          onClick={() => setIsAboutModalOpen(true)}
+        >
+          {ABOUT_GAME_MESSAGE}
+        </button>
+        <a
+          type="button"
+          className="flex shrink-0 grow-0 items-center px-2.5 py-1.5 border border-transparent text-s font-medium rounded text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 select-none"
+          href="https://discord.gg/ryjr3TbZGm"
+        >
+          <FaDiscord className="mx-auto" />
+        </a>
+      </div>
 
       <Alert message={NOT_ENOUGH_LETTERS_MESSAGE} isOpen={isNotEnoughLetters} />
       <Alert

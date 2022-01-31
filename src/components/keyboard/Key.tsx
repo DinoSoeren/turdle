@@ -56,9 +56,9 @@ export const Key = ({
       onClick={handleClick}
     >
       {children}
-      <img src={'res/img/turtle_' + letterToFrameIdx(value) + '.png'} className={imgClasses}
+      <img src={'res/img/turtle_' + letterToFrameIdx(value) + '.png'}
+        className={imgClasses}
         style={imgStyles} alt={value} />
-
     </button>
   )
 }
