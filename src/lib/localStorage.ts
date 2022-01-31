@@ -33,3 +33,18 @@ export const loadStatsFromLocalStorage = () => {
   const stats = localStorage.getItem(gameStatKey)
   return stats ? (JSON.parse(stats) as GameStats) : null
 }
+
+const gameSettingsKey = 'gameSettings'
+
+export type GameSettings = {
+  isFirstTimePlaying: boolean
+}
+
+export const saveSettingsToLocalStorage = (gameSettings: GameSettings) => {
+  localStorage.setItem(gameSettingsKey, JSON.stringify(gameSettings))
+}
+
+export const loadSettingsFromLocalStorage = () => {
+  const settings = localStorage.getItem(gameSettingsKey)
+  return settings ? (JSON.parse(settings) as GameSettings) : null
+}

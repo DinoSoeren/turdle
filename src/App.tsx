@@ -24,6 +24,8 @@ import { addStatsForCompletedGame, loadStats } from './lib/stats'
 import {
   loadGameStateFromLocalStorage,
   saveGameStateToLocalStorage,
+  loadSettingsFromLocalStorage,
+  saveSettingsToLocalStorage,
 } from './lib/localStorage'
 
 import './App.css'
@@ -50,6 +52,13 @@ function App() {
       ? true
       : false
   )
+  const [isFirstTimePlaying, setIsFirstTimePlaying] = useState<boolean>(() => {
+    const loaded = loadSettingsFromLocalStorage()
+    if (loaded?.isFirstTimePlaying === false) {
+      return false
+    }
+    return true
+  })
   const [successAlert, setSuccessAlert] = useState('')
   const [guesses, setGuesses] = useState<string[]>(() => {
     const loaded = loadGameStateFromLocalStorage()
@@ -101,6 +110,14 @@ function App() {
       }, ALERT_TIME_MS)
     }
   }, [isGameWon, isGameLost])
+
+  useEffect(() => {
+    saveSettingsToLocalStorage({ isFirstTimePlaying })
+    if (isFirstTimePlaying) {
+      setIsInfoModalOpen(true)
+      setIsFirstTimePlaying(false)
+    }
+  }, [isFirstTimePlaying])
 
   const onChar = (value: string) => {
     if (currentGuess.length < 5 && guesses.length < 6 && !isGameWon) {
