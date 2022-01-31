@@ -47,6 +47,9 @@ export const AboutModal = ({ isOpen, handleClose }: Props) => {
         </a>
         {' '}2022.
       </p>
+      <p className="mt-4 text-sm text-gray-500 dark:text-gray-300">
+        Copyright &copy; 2022 Sushi Squared LLC
+      </p>
     </BaseModal>
   )
 }
