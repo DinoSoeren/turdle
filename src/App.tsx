@@ -12,7 +12,6 @@ import { AboutModal } from './components/modals/AboutModal'
 import { InfoModal } from './components/modals/InfoModal'
 import { StatsModal } from './components/modals/StatsModal'
 import {
-  WORDLE_TITLE,
   WIN_MESSAGES,
   GAME_COPIED_MESSAGE,
   ABOUT_GAME_MESSAGE,
@@ -169,9 +168,10 @@ function App() {
   return (
     <div className="py-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
       <div className="flex w-80 mx-auto items-center mb-8 mt-12">
-        <h1 className="text-xl grow font-bold dark:text-white">
-          {WORDLE_TITLE}
-        </h1>
+        <div className="flex grow">
+          <h1 className="text-xl flex font-bold dark:text-white">Turdle</h1>
+          <div className="logo flex shrink-0 grow-0 ml-1 w-7 h-7"></div>
+        </div>
         <SunIcon
           className="h-6 w-6 cursor-pointer dark:stroke-white"
           onClick={() => handleDarkMode(!isDarkMode)}

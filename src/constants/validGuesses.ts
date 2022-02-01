@@ -1,6 +1,8 @@
 export const NUM_FRAMES = 5
 export const NUM_COLORS = 5
 
+export const ColorCodes = ['W', 'B', 'P', 'R', 'G']
+
 export const KeyboardLetters = [
   'Q',
   'W',
@@ -38,7 +40,7 @@ export function letterToTurdle(letter?: string): string {
 export function turdleToLetter(turdle: string): string {
   const [fIdx, cIdx] = turdle.split('_')
   return KeyboardLetters[
-    parseInt(cIdx) * NUM_COLORS + (parseInt(fIdx) % NUM_FRAMES)
+    parseInt(cIdx) * NUM_FRAMES + (parseInt(fIdx) % NUM_COLORS)
   ]
 }
 
@@ -47,15 +49,22 @@ export function roundMultiple(x: number, y: number): number {
   return Math.ceil(x / y) * y
 }
 
+export function turdleId(value?: string): string {
+  return letterToFrameIdx(value) + letterToColorCode(value)
+}
+
 export function letterToFrameIdx(value?: string): number {
   const letterIdx = KeyboardLetters.indexOf(value || 'Q')
-  return ((letterIdx * NUM_COLORS) % KeyboardLetters.length) / NUM_COLORS + 1
+  return (letterIdx % NUM_COLORS) + 1
+}
+
+export function letterToColorCode(value?: string): string {
+  return ColorCodes[letterToColorIdx(value) - 1]
 }
 
 export function letterToColorIdx(value?: string): number {
   const letterIdx = KeyboardLetters.indexOf(value || 'Q')
-  const nearestM = roundMultiple(letterIdx + 1, NUM_FRAMES)
-  return nearestM / KeyboardLetters.length
+  return roundMultiple(letterIdx + 1, NUM_FRAMES) / NUM_FRAMES
 }
 
 function generateAllValidGuesses(): string[] {
@@ -74,7 +83,6 @@ function generateAllValidGuesses(): string[] {
     }
   }
   guesses = shuffle(guesses, xor(1))
-  console.log(guesses)
   return guesses
 }
 

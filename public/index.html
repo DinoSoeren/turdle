@@ -15,6 +15,95 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <style>
+      .logo {
+        animation: turtleJumpFiveTimes linear 10s infinite;
+        background-image: url('%PUBLIC_URL%/res/img/turtle_1.png');
+        background-repeat: none;
+        background-position: center;
+        background-size: contain;
+      }
+
+      .logo:hover {
+        animation: turtleJump linear 0.4s infinite;
+      }
+
+      @keyframes turtleJumpFiveTimes {
+        0%,
+        6%,
+        12%,
+        18%,
+        24% {
+          background-image: url('%PUBLIC_URL%/res/img/turtle_1.png');
+        }
+
+        1%,
+        7%,
+        13%,
+        19%,
+        25% {
+          background-image: url('%PUBLIC_URL%/res/img/turtle_2.png');
+        }
+
+        2%,
+        8%,
+        14%,
+        20%,
+        26% {
+          background-image: url('%PUBLIC_URL%/res/img/turtle_3.png');
+        }
+
+        3%,
+        9%,
+        15%,
+        21%,
+        27% {
+          background-image: url('%PUBLIC_URL%/res/img/turtle_4.png');
+        }
+
+        4%,
+        10%,
+        16%,
+        22%,
+        28% {
+          background-image: url('%PUBLIC_URL%/res/img/turtle_5.png');
+        }
+
+        5%,
+        11%,
+        17%,
+        23%,
+        29% {
+          background-image: url('%PUBLIC_URL%/res/img/turtle_1.png');
+        }
+      }
+
+      @keyframes turtleJump {
+        0% {
+          background-image: url('%PUBLIC_URL%/res/img/turtle_1.png');
+        }
+
+        20% {
+          background-image: url('%PUBLIC_URL%/res/img/turtle_2.png');
+        }
+
+        40% {
+          background-image: url('%PUBLIC_URL%/res/img/turtle_3.png');
+        }
+
+        60% {
+          background-image: url('%PUBLIC_URL%/res/img/turtle_4.png');
+        }
+
+        80% {
+          background-image: url('%PUBLIC_URL%/res/img/turtle_5.png');
+        }
+
+        100% {
+          background-image: url('%PUBLIC_URL%/res/img/turtle_1.png');
+        }
+      }
+    </style>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.

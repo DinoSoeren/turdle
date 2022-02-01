@@ -4,6 +4,7 @@ import { KeyValue } from '../../lib/keyboard'
 import { CharStatus } from '../../lib/statuses'
 import { turtleFilter, turtleTransform } from '../../constants/filter'
 import { letterToFrameIdx } from '../../constants/validGuesses'
+import { Hint } from '../common/Hint'
 
 type Props = {
   children?: ReactNode
@@ -21,7 +22,7 @@ export const Key = ({
   onClick,
 }: Props) => {
   const classes = classnames(
-    'flex items-center justify-center rounded mx-0.5 text-xs font-bold cursor-pointer select-none',
+    'flex relative items-center justify-center rounded mx-0.5 text-xs font-bold cursor-pointer select-none',
     {
       'bg-slate-200 hover:bg-slate-300 active:bg-slate-400': !status,
       'bg-slate-400 text-white': status === 'absent',
@@ -59,6 +60,7 @@ export const Key = ({
       <img src={'res/img/turtle_' + letterToFrameIdx(value) + '.png'}
         className={imgClasses}
         style={imgStyles} alt={value} />
+      <Hint value={value} />
     </button>
   )
 }
