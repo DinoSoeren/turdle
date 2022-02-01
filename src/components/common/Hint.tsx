@@ -1,5 +1,4 @@
 import classnames from 'classnames'
-import { useEffect } from 'react';
 import { letterToFrameIdx, letterToColorCode } from '../../constants/validGuesses'
 
 type Props = {

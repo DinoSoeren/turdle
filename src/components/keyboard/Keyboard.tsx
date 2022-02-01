@@ -55,7 +55,7 @@ export const Keyboard = ({ onChar, onDelete, onEnter, guesses, currentGuess, ext
     return () => {
       window.removeEventListener('keyup', listener)
     }
-  }, [onEnter, onDelete, onChar])
+  }, [onEnter, onDelete, onChar, currentGuess])
 
   return (
     <div>

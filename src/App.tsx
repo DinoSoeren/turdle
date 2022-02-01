@@ -124,20 +124,13 @@ function App() {
   useEffect(() => {
     saveSettingsToLocalStorage({
       isFirstTimePlaying,
-      isExtraVisionModeEnabled: isExtraVisionModeEnabled,
+      isExtraVisionModeEnabled,
     })
     if (isFirstTimePlaying) {
       setIsInfoModalOpen(true)
       setIsFirstTimePlaying(false)
     }
-  }, [isFirstTimePlaying])
-
-  useEffect(() => {
-    saveSettingsToLocalStorage({
-      isFirstTimePlaying,
-      isExtraVisionModeEnabled: isExtraVisionModeEnabled,
-    })
-  }, [isExtraVisionModeEnabled])
+  }, [isFirstTimePlaying, isExtraVisionModeEnabled])
 
   const onChar = (value: string, replace: boolean) => {
     if (currentGuess.length < 5 && guesses.length < 6 && !isGameWon) {
