@@ -139,9 +139,15 @@ function App() {
     })
   }, [isExtraVisionModeEnabled])
 
-  const onChar = (value: string) => {
+  const onChar = (value: string, replace: boolean) => {
     if (currentGuess.length < 5 && guesses.length < 6 && !isGameWon) {
-      setCurrentGuess(`${currentGuess}${value}`)
+      if (replace) {
+        setCurrentGuess(
+          `${currentGuess.substring(0, currentGuess.length - 1)}${value}`
+        )
+      } else {
+        setCurrentGuess(`${currentGuess}${value}`)
+      }
     }
   }
 
@@ -219,6 +225,7 @@ function App() {
         onDelete={onDelete}
         onEnter={onEnter}
         guesses={guesses}
+        currentGuess={currentGuess.split('')}
         extraVision={isExtraVisionModeEnabled || isGameLost}
       />
       <InfoModal

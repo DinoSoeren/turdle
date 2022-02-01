@@ -33,6 +33,21 @@ export const KeyboardLetters = [
 
 export const VALIDGUESSES = generateAllValidGuesses()
 
+export function isDisabled(letter: string, currentGuess: string[]): boolean {
+  const frame = letterToFrameIdx(letter)
+  const lastLetterFrame = letterToFrameIdx(
+    currentGuess[currentGuess.length - 1]
+  )
+  return (
+    currentGuess.length === 5 ||
+    currentGuess.some((c) => c !== letter && letterToFrameIdx(c) === frame) ||
+    (currentGuess.length > 0 &&
+      !currentGuess.some((c) => letterToFrameIdx(c) === frame) &&
+      frame !== (lastLetterFrame - 1 === 0 ? 5 : lastLetterFrame - 1) &&
+      frame !== (lastLetterFrame + 1 === 6 ? 1 : lastLetterFrame + 1))
+  )
+}
+
 export function wordleToTurdle(wordle?: string): string {
   return (wordle || 'QQQQQ')
     .split('')

@@ -11,8 +11,9 @@ type Props = {
   value: KeyValue
   width?: number
   status?: CharStatus
-  onClick: (value: KeyValue) => void
+  onClick: (value: KeyValue, disabled: boolean) => void
   extraVision?: boolean
+  disabled?: boolean
 }
 
 export const Key = ({
@@ -22,6 +23,7 @@ export const Key = ({
   value,
   onClick,
   extraVision = false,
+  disabled = false,
 }: Props) => {
   const classes = classnames(
     'flex relative items-center justify-center rounded mx-0.5 text-xs font-bold cursor-pointer select-none',
@@ -32,11 +34,12 @@ export const Key = ({
         status === 'correct',
       'bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-700 text-white':
         status === 'present',
+      'opacity-20 cursor-default hover:bg-slate-300 active:bg-slate-400': disabled,
     }
   )
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
-    onClick(value)
+    onClick(value, disabled)
     event.currentTarget.blur()
   }
 
@@ -72,7 +75,7 @@ export const Key = ({
       <img src={'res/img/turtle_' + letterToFrameIdx(value) + '.png'}
         className={imgClasses}
         style={imgStyles} alt={value} />
-      <Hint value={value} visible={extraVision} hovered={isHovered} />
+      <Hint value={value} visible={extraVision} hovered={isHovered && !disabled} />
     </button>
   )
 }

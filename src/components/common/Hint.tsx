@@ -14,7 +14,7 @@ export const Hint = ({ value, visible = false, hovered = false }: Props) => {
   const idClasses = classnames(
     'absolute text-black px-1 opacity-1 bottom-[-2px] right-[-2px] animation-none bg-white rounded-lg leading-none text-xs select-none transition-opacity',
     {
-      'hint-animation': !hovered && !visible && !!value,
+      'hint-animation': !hovered && !visible && !!value && value?.length === 1,
       'opacity-0': (!hovered && !visible) || !value || value.length > 1,
     }
   )
