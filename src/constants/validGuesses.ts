@@ -43,7 +43,6 @@ export function isDisabled(letter: string, currentGuess: string[]): boolean {
     currentGuess.some((c) => c !== letter && letterToFrameIdx(c) === frame) ||
     (currentGuess.length > 0 &&
       !currentGuess.some((c) => letterToFrameIdx(c) === frame) &&
-      frame !== (lastLetterFrame - 1 === 0 ? 5 : lastLetterFrame - 1) &&
       frame !== (lastLetterFrame + 1 === 6 ? 1 : lastLetterFrame + 1))
   )
 }
