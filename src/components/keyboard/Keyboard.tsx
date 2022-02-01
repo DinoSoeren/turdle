@@ -8,9 +8,10 @@ type Props = {
   onDelete: () => void
   onEnter: () => void
   guesses: string[]
+  extraVision?: boolean
 }
 
-export const Keyboard = ({ onChar, onDelete, onEnter, guesses }: Props) => {
+export const Keyboard = ({ onChar, onDelete, onEnter, guesses, extraVision = false }: Props) => {
   const charStatuses = getStatuses(guesses)
 
   const onClick = (value: KeyValue) => {
@@ -45,39 +46,39 @@ export const Keyboard = ({ onChar, onDelete, onEnter, guesses }: Props) => {
   return (
     <div>
       <div className="flex justify-center mb-1">
-        <Key value="Q" onClick={onClick} status={charStatuses['Q']} />
-        <Key value="W" onClick={onClick} status={charStatuses['W']} />
-        <Key value="E" onClick={onClick} status={charStatuses['E']} />
-        <Key value="R" onClick={onClick} status={charStatuses['R']} />
-        <Key value="T" onClick={onClick} status={charStatuses['T']} />
+        <Key value="Q" onClick={onClick} extraVision={extraVision} status={charStatuses['Q']} />
+        <Key value="W" onClick={onClick} extraVision={extraVision} status={charStatuses['W']} />
+        <Key value="E" onClick={onClick} extraVision={extraVision} status={charStatuses['E']} />
+        <Key value="R" onClick={onClick} extraVision={extraVision} status={charStatuses['R']} />
+        <Key value="T" onClick={onClick} extraVision={extraVision} status={charStatuses['T']} />
       </div>
       <div className="flex justify-center mb-1">
-        <Key value="Y" onClick={onClick} status={charStatuses['Y']} />
-        <Key value="U" onClick={onClick} status={charStatuses['U']} />
-        <Key value="I" onClick={onClick} status={charStatuses['I']} />
-        <Key value="O" onClick={onClick} status={charStatuses['O']} />
-        <Key value="P" onClick={onClick} status={charStatuses['P']} />
+        <Key value="Y" onClick={onClick} extraVision={extraVision} status={charStatuses['Y']} />
+        <Key value="U" onClick={onClick} extraVision={extraVision} status={charStatuses['U']} />
+        <Key value="I" onClick={onClick} extraVision={extraVision} status={charStatuses['I']} />
+        <Key value="O" onClick={onClick} extraVision={extraVision} status={charStatuses['O']} />
+        <Key value="P" onClick={onClick} extraVision={extraVision} status={charStatuses['P']} />
       </div>
       <div className="flex justify-center mb-1">
-        <Key value="A" onClick={onClick} status={charStatuses['A']} />
-        <Key value="S" onClick={onClick} status={charStatuses['S']} />
-        <Key value="D" onClick={onClick} status={charStatuses['D']} />
-        <Key value="F" onClick={onClick} status={charStatuses['F']} />
-        <Key value="G" onClick={onClick} status={charStatuses['G']} />
+        <Key value="A" onClick={onClick} extraVision={extraVision} status={charStatuses['A']} />
+        <Key value="S" onClick={onClick} extraVision={extraVision} status={charStatuses['S']} />
+        <Key value="D" onClick={onClick} extraVision={extraVision} status={charStatuses['D']} />
+        <Key value="F" onClick={onClick} extraVision={extraVision} status={charStatuses['F']} />
+        <Key value="G" onClick={onClick} extraVision={extraVision} status={charStatuses['G']} />
       </div>
       <div className="flex justify-center mb-1">
-        <Key value="H" onClick={onClick} status={charStatuses['H']} />
-        <Key value="J" onClick={onClick} status={charStatuses['J']} />
-        <Key value="K" onClick={onClick} status={charStatuses['K']} />
-        <Key value="L" onClick={onClick} status={charStatuses['L']} />
-        <Key value="Z" onClick={onClick} status={charStatuses['Z']} />
+        <Key value="H" onClick={onClick} extraVision={extraVision} status={charStatuses['H']} />
+        <Key value="J" onClick={onClick} extraVision={extraVision} status={charStatuses['J']} />
+        <Key value="K" onClick={onClick} extraVision={extraVision} status={charStatuses['K']} />
+        <Key value="L" onClick={onClick} extraVision={extraVision} status={charStatuses['L']} />
+        <Key value="Z" onClick={onClick} extraVision={extraVision} status={charStatuses['Z']} />
       </div>
       <div className="flex justify-center mb-1">
-        <Key value="X" onClick={onClick} status={charStatuses['X']} />
-        <Key value="C" onClick={onClick} status={charStatuses['C']} />
-        <Key value="V" onClick={onClick} status={charStatuses['V']} />
-        <Key value="B" onClick={onClick} status={charStatuses['B']} />
-        <Key value="N" onClick={onClick} status={charStatuses['N']} />
+        <Key value="X" onClick={onClick} extraVision={extraVision} status={charStatuses['X']} />
+        <Key value="C" onClick={onClick} extraVision={extraVision} status={charStatuses['C']} />
+        <Key value="V" onClick={onClick} extraVision={extraVision} status={charStatuses['V']} />
+        <Key value="B" onClick={onClick} extraVision={extraVision} status={charStatuses['B']} />
+        <Key value="N" onClick={onClick} extraVision={extraVision} status={charStatuses['N']} />
       </div>
       <div className="flex justify-center">
         <Key width={65.4} value="ENTER" onClick={onClick}>

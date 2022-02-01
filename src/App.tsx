@@ -2,6 +2,7 @@ import {
   InformationCircleIcon,
   ChartBarIcon,
   SunIcon,
+  EyeIcon,
 } from '@heroicons/react/outline'
 import { FaDiscord } from 'react-icons/fa'
 import { useState, useEffect } from 'react'
@@ -59,6 +60,14 @@ function App() {
     }
     return true
   })
+  const [isExtraVisionModeEnabled, setColorBlindModeEnabled] =
+    useState<boolean>(() => {
+      const loaded = loadSettingsFromLocalStorage()
+      if (loaded?.isExtraVisionModeEnabled === false) {
+        return false
+      }
+      return true
+    })
   const [successAlert, setSuccessAlert] = useState('')
   const [guesses, setGuesses] = useState<string[]>(() => {
     const loaded = loadGameStateFromLocalStorage()
@@ -112,12 +121,22 @@ function App() {
   }, [isGameWon, isGameLost])
 
   useEffect(() => {
-    saveSettingsToLocalStorage({ isFirstTimePlaying })
+    saveSettingsToLocalStorage({
+      isFirstTimePlaying,
+      isExtraVisionModeEnabled: isExtraVisionModeEnabled,
+    })
     if (isFirstTimePlaying) {
       setIsInfoModalOpen(true)
       setIsFirstTimePlaying(false)
     }
   }, [isFirstTimePlaying])
+
+  useEffect(() => {
+    saveSettingsToLocalStorage({
+      isFirstTimePlaying,
+      isExtraVisionModeEnabled: isExtraVisionModeEnabled,
+    })
+  }, [isExtraVisionModeEnabled])
 
   const onChar = (value: string) => {
     if (currentGuess.length < 5 && guesses.length < 6 && !isGameWon) {
@@ -172,29 +191,39 @@ function App() {
           <h1 className="text-xl flex font-bold dark:text-white">Turdle</h1>
           <div className="logo flex shrink-0 grow-0 ml-1 w-7 h-7"></div>
         </div>
+        <EyeIcon
+          className="h-6 w-6 cursor-pointer dark:stroke-white hover:opacity-50 transition-opacity"
+          onClick={() => setColorBlindModeEnabled(!isExtraVisionModeEnabled)}
+        />
         <SunIcon
-          className="h-6 w-6 cursor-pointer dark:stroke-white"
+          className="h-6 w-6 cursor-pointer dark:stroke-white hover:opacity-50 transition-opacity"
           onClick={() => handleDarkMode(!isDarkMode)}
         />
         <InformationCircleIcon
-          className="h-6 w-6 cursor-pointer dark:stroke-white"
+          className="h-6 w-6 cursor-pointer dark:stroke-white hover:opacity-50 transition-opacity"
           onClick={() => setIsInfoModalOpen(true)}
         />
         <ChartBarIcon
-          className="h-6 w-6 cursor-pointer dark:stroke-white"
+          className="h-6 w-6 cursor-pointer dark:stroke-white hover:opacity-50 transition-opacity"
           onClick={() => setIsStatsModalOpen(true)}
         />
       </div>
-      <Grid guesses={guesses} currentGuess={currentGuess} />
+      <Grid
+        guesses={guesses}
+        currentGuess={currentGuess}
+        extraVision={isExtraVisionModeEnabled}
+      />
       <Keyboard
         onChar={onChar}
         onDelete={onDelete}
         onEnter={onEnter}
         guesses={guesses}
+        extraVision={isExtraVisionModeEnabled}
       />
       <InfoModal
         isOpen={isInfoModalOpen}
         handleClose={() => setIsInfoModalOpen(false)}
+        extraVision={isExtraVisionModeEnabled}
       />
       <StatsModal
         isOpen={isStatsModalOpen}

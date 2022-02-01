@@ -3,13 +3,15 @@ import { Hint } from '../common/Hint'
 import { turtleFilter, turtleTransform } from '../../constants/filter'
 import classnames from 'classnames'
 import { letterToFrameIdx, turdleId } from '../../constants/validGuesses'
+import { useState } from 'react'
 
 type Props = {
   value?: string
   status?: CharStatus
+  extraVision?: boolean
 }
 
-export const Cell = ({ value, status }: Props) => {
+export const Cell = ({ value, status, extraVision = false }: Props) => {
   const divClasses = classnames(
     'w-14 h-14 relative border-solid border-2 flex items-center justify-center mx-0.5 text-lg font-bold rounded dark:text-white',
     {
@@ -26,6 +28,7 @@ export const Cell = ({ value, status }: Props) => {
   )
 
   const imgClasses = classnames(
+    'select-none',
     {
       'hidden': !value,
     }
@@ -36,10 +39,21 @@ export const Cell = ({ value, status }: Props) => {
     'transform': turtleTransform(value),
   } as React.CSSProperties;
 
-  return <div className={divClasses}>
+  const [isHovered, setIsHovered] = useState(false);
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+  }
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+  }
+
+  return <div className={divClasses}
+    onMouseEnter={handleMouseEnter}
+    onMouseLeave={handleMouseLeave}
+  >
     <img src={'res/img/turtle_' + letterToFrameIdx(value) + '.png'}
       className={imgClasses}
       style={imgStyles} alt={turdleId(value)} />
-    <Hint value={value} />
+    <Hint value={value} visible={extraVision} hovered={isHovered} />
   </div>
 }

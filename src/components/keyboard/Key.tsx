@@ -12,6 +12,7 @@ type Props = {
   width?: number
   status?: CharStatus
   onClick: (value: KeyValue) => void
+  extraVision?: boolean
 }
 
 export const Key = ({
@@ -20,6 +21,7 @@ export const Key = ({
   width = 40,
   value,
   onClick,
+  extraVision = false,
 }: Props) => {
   const classes = classnames(
     'flex relative items-center justify-center rounded mx-0.5 text-xs font-bold cursor-pointer select-none',
@@ -60,7 +62,7 @@ export const Key = ({
       <img src={'res/img/turtle_' + letterToFrameIdx(value) + '.png'}
         className={imgClasses}
         style={imgStyles} alt={value} />
-      <Hint value={value} />
+      <Hint value={value} visible={extraVision} />
     </button>
   )
 }

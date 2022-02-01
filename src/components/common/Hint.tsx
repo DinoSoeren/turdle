@@ -1,18 +1,21 @@
-import { turtleFilter, turtleTransform } from '../../constants/filter'
 import classnames from 'classnames'
-import { letterToFrameIdx, letterToColorCode, turdleId } from '../../constants/validGuesses'
+import { useEffect } from 'react';
+import { letterToFrameIdx, letterToColorCode } from '../../constants/validGuesses'
 
 type Props = {
   value?: string
+  inExtraVisionMode?: boolean
+  visible?: boolean
+  hovered?: boolean
 }
 
-const inColorBlindMode = true;
+export const Hint = ({ value, visible = false, hovered = false }: Props) => {
 
-export const Hint = ({ value }: Props) => {
   const idClasses = classnames(
-    'absolute text-black px-1 opacity-70 bottom-0 right-0 bg-white rounded-lg leading-none text-xs select-none',
+    'absolute text-black px-1 opacity-1 bottom-[-2px] right-[-2px] animation-none bg-white rounded-lg leading-none text-xs select-none transition-opacity',
     {
-      'hidden': !inColorBlindMode || !value || value.length > 1,
+      'hint-animation': hovered && !visible && !!value,
+      'opacity-0': (!hovered && !visible) || !value || value.length > 1,
     }
   )
 

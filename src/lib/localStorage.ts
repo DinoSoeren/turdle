@@ -38,6 +38,7 @@ const gameSettingsKey = 'gameSettings'
 
 export type GameSettings = {
   isFirstTimePlaying: boolean
+  isExtraVisionModeEnabled: boolean
 }
 
 export const saveSettingsToLocalStorage = (gameSettings: GameSettings) => {
