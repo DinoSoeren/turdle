@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import classnames from 'classnames'
 import { KeyValue } from '../../lib/keyboard'
 import { CharStatus } from '../../lib/statuses'
@@ -52,17 +52,27 @@ export const Key = ({
     'transform': turtleTransform(value),
   } as React.CSSProperties;
 
+  const [isHovered, setIsHovered] = useState(false);
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+  }
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+  }
+
   return (
     <button
       style={{ width: `${width}px`, height: '58px' }}
       className={classes}
       onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {children}
       <img src={'res/img/turtle_' + letterToFrameIdx(value) + '.png'}
         className={imgClasses}
         style={imgStyles} alt={value} />
-      <Hint value={value} visible={extraVision} />
+      <Hint value={value} visible={extraVision} hovered={isHovered} />
     </button>
   )
 }

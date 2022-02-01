@@ -30,6 +30,7 @@ import {
 } from './lib/localStorage'
 
 import './App.css'
+import { wordleToTurdle } from './constants/validGuesses'
 
 const ALERT_TIME_MS = 2000
 
@@ -211,14 +212,14 @@ function App() {
       <Grid
         guesses={guesses}
         currentGuess={currentGuess}
-        extraVision={isExtraVisionModeEnabled}
+        extraVision={isExtraVisionModeEnabled || isGameLost}
       />
       <Keyboard
         onChar={onChar}
         onDelete={onDelete}
         onEnter={onEnter}
         guesses={guesses}
-        extraVision={isExtraVisionModeEnabled}
+        extraVision={isExtraVisionModeEnabled || isGameLost}
       />
       <InfoModal
         isOpen={isInfoModalOpen}
@@ -264,7 +265,10 @@ function App() {
         message={WORD_NOT_FOUND_MESSAGE}
         isOpen={isWordNotFoundAlertOpen}
       />
-      <Alert message={CORRECT_WORD_MESSAGE(solution)} isOpen={isGameLost} />
+      <Alert
+        message={CORRECT_WORD_MESSAGE(wordleToTurdle(solution))}
+        isOpen={isGameLost}
+      />
       <Alert
         message={successAlert}
         isOpen={successAlert !== ''}

@@ -33,6 +33,13 @@ export const KeyboardLetters = [
 
 export const VALIDGUESSES = generateAllValidGuesses()
 
+export function wordleToTurdle(wordle?: string): string {
+  return (wordle || 'QQQQQ')
+    .split('')
+    .map((c) => turdleId(c))
+    .join(' ')
+}
+
 export function letterToTurdle(letter?: string): string {
   return letterToFrameIdx(letter) - 1 + '_' + (letterToColorIdx(letter) - 1)
 }

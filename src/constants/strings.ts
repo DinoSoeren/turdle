@@ -7,7 +7,7 @@ export const NOT_ENOUGH_LETTERS_MESSAGE = 'Not enough turtles'
 export const WORD_NOT_FOUND_MESSAGE =
   'Not a valid Turdle sequence. The order of the frames is always the same - only the color and the starting frame can change.'
 export const CORRECT_WORD_MESSAGE = (solution: string) =>
-  `The turdle was ${solution}`
+  `The Turdle was ${solution}. Try again tomorrow!`
 export const ENTER_TEXT = 'Enter'
 export const DELETE_TEXT = 'Delete'
 export const STATISTICS_TITLE = 'Statistics'
