@@ -3,23 +3,9 @@
 @tailwind utilities;
 
 .hint-animation {
-  animation: revealHint linear, revealCharCell linear;
+  animation: revealCharCell linear;
   animation-duration: 0.5s;
   animation-iteration-count: 1;
-}
-
-@keyframes revealHint {
-  0% {
-    opacity: 0;
-  }
-
-  20% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 1;
-  }
 }
 
 .cell-animation {

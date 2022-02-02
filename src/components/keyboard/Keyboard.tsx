@@ -27,7 +27,9 @@ export const Keyboard = ({ onChar, onDelete, onEnter, guesses, currentGuess, ext
           onChar(value, true)
         }
       } else {
-        onChar(value, false)
+        if (!currentGuess.includes(value)) {
+          onChar(value, false)
+        }
       }
     }
   }
@@ -46,7 +48,9 @@ export const Keyboard = ({ onChar, onDelete, onEnter, guesses, currentGuess, ext
               onChar(key, true)
             }
           } else {
-            onChar(key, false)
+            if (!currentGuess.includes(key)) {
+              onChar(key, false)
+            }
           }
         }
       }

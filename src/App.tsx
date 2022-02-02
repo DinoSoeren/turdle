@@ -3,6 +3,7 @@ import {
   ChartBarIcon,
   SunIcon,
   EyeIcon,
+  EyeOffIcon,
 } from '@heroicons/react/outline'
 import { FaDiscord } from 'react-icons/fa'
 import { useState, useEffect } from 'react'
@@ -61,13 +62,13 @@ function App() {
     }
     return true
   })
-  const [isExtraVisionModeEnabled, setColorBlindModeEnabled] =
+  const [isExtraVisionModeEnabled, setExtraVisionModeEnabled] =
     useState<boolean>(() => {
       const loaded = loadSettingsFromLocalStorage()
-      if (loaded?.isExtraVisionModeEnabled === false) {
-        return false
+      if (loaded?.isExtraVisionModeEnabled === true) {
+        return true
       }
-      return true
+      return false
     })
   const [successAlert, setSuccessAlert] = useState('')
   const [guesses, setGuesses] = useState<string[]>(() => {
@@ -191,10 +192,17 @@ function App() {
           <h1 className="text-xl flex font-bold dark:text-white">Turdle</h1>
           <div className="logo flex shrink-0 grow-0 ml-1 w-7 h-7"></div>
         </div>
-        <EyeIcon
-          className="h-6 w-6 cursor-pointer dark:stroke-white hover:opacity-50 transition-opacity"
-          onClick={() => setColorBlindModeEnabled(!isExtraVisionModeEnabled)}
-        />
+        {!isExtraVisionModeEnabled ? (
+          <EyeIcon
+            className="h-6 w-6 cursor-pointer dark:stroke-white hover:opacity-50 transition-opacity"
+            onClick={() => setExtraVisionModeEnabled(!isExtraVisionModeEnabled)}
+          />
+        ) : (
+          <EyeOffIcon
+            className="h-6 w-6 cursor-pointer dark:stroke-white hover:opacity-50 transition-opacity"
+            onClick={() => setExtraVisionModeEnabled(!isExtraVisionModeEnabled)}
+          />
+        )}
         <SunIcon
           className="h-6 w-6 cursor-pointer dark:stroke-white hover:opacity-50 transition-opacity"
           onClick={() => handleDarkMode(!isDarkMode)}
