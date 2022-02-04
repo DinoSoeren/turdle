@@ -13,10 +13,10 @@ export const Hint = ({ value, visible = false, hovered = false }: Props) => {
   const [isInitialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (!isInitialized) {
-      if (visible) {
-        setInitialized(true);
-      } else {
+    if (visible) {
+      setInitialized(false);
+    } else {
+      if (!isInitialized) {
         const timer = setTimeout(() => {
           if (!isInitialized)
             setInitialized(true);
@@ -27,9 +27,9 @@ export const Hint = ({ value, visible = false, hovered = false }: Props) => {
   }, [isInitialized, visible]);
 
   const idClasses = classnames(
-    'absolute text-black px-1 opacity-1 bottom-[-2px] right-[-2px] animation-none bg-white rounded-lg leading-none text-xs select-none transition-opacity',
+    'absolute text-black px-1 opacity-1 bottom-[-2px] right-[-2px] animation-none bg-white rounded-lg leading-none text-xs select-none transition-opacity delay-0',
     {
-      'hint-animation': isInitialized && !hovered && !visible && !!value && value?.length === 1,
+      'hint-animation delay-[2500ms]': isInitialized && !hovered && !visible && !!value && value?.length === 1,
       'opacity-0': (isInitialized && !hovered && !visible) || !value || value.length > 1,
     }
   )

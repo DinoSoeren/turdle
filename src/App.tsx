@@ -219,7 +219,13 @@ function App() {
       <Grid
         guesses={guesses}
         currentGuess={currentGuess}
-        extraVision={isExtraVisionModeEnabled || isGameLost}
+        extraVision={
+          isExtraVisionModeEnabled ||
+          isGameLost ||
+          isInfoModalOpen ||
+          isAboutModalOpen ||
+          isStatsModalOpen
+        }
       />
       <Keyboard
         onChar={onChar}
@@ -227,7 +233,13 @@ function App() {
         onEnter={onEnter}
         guesses={guesses}
         currentGuess={currentGuess.split('')}
-        extraVision={isExtraVisionModeEnabled || isGameLost}
+        extraVision={
+          isExtraVisionModeEnabled ||
+          isGameLost ||
+          isInfoModalOpen ||
+          isAboutModalOpen ||
+          isStatsModalOpen
+        }
       />
       <InfoModal
         isOpen={isInfoModalOpen}
