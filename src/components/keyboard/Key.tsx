@@ -19,7 +19,7 @@ type Props = {
 export const Key = ({
   children,
   status,
-  width = 40,
+  width = 60,
   value,
   onClick,
   extraVision = false,
@@ -45,6 +45,7 @@ export const Key = ({
 
   const imgClasses = classnames(
     {
+      'w-[40px] relative top-0.5': !children,
       'opacity-0': !!children,
       'w-0': !!children,
     }
@@ -65,7 +66,7 @@ export const Key = ({
 
   return (
     <button
-      style={{ width: `${width}px`, height: '58px' }}
+      style={{ width: `${width}px`, height: '40px' }}
       className={classes}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
