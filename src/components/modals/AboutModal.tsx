@@ -29,12 +29,6 @@ export const AboutModal = ({ isOpen, handleClose }: Props) => {
           className="underline font-bold"
         >
           here
-        </a>. Turtle animation by{' '}
-        <a
-          href="https://tenor.com/users/totallyturtley"
-          className="underline font-bold"
-        >
-          totallyturtley
         </a>.
       </p>
       <p className="mt-4 text-sm text-gray-500 dark:text-gray-300">
@@ -48,8 +42,52 @@ export const AboutModal = ({ isOpen, handleClose }: Props) => {
         {' '}2022.
       </p>
       <p className="mt-4 text-sm text-gray-500 dark:text-gray-300">
-        Copyright &copy; 2022 Sushi Squared LLC
+        Copyright &copy; 2023 Sushi Squared LLC
       </p>
+      <h4 className="mt-4">Artwork Credits</h4>
+      <hr />
+      <ul className="mt-4 text-sm text-gray-500 dark:text-gray-300">
+        <li>Turtle animation by{' '}
+          <a
+            href="https://tenor.com/users/totallyturtley"
+            className="underline font-bold"
+          >
+            totallyturtley
+          </a>.
+        </li>
+        <li>Turd emojis by{' '}
+          <a
+            href="https://emoji.gg/user/824305925091229726"
+            className="underline font-bold"
+          >
+            Blair ?!
+          </a>,{' '}
+          <a
+            href="https://emoji.gg/user/531128263062585344"
+            className="underline font-bold"
+          >
+            yusuf !!
+          </a>,{' '}
+          <a
+            href="https://emoji.gg/user/814464599273111582"
+            className="underline font-bold"
+          >
+            Germ
+          </a>,{' '}
+          <a
+            href="https://emoji.gg/user/675328342882517034"
+            className="underline font-bold"
+          >
+            di_Vibil
+          </a>, and{' '}
+          <a
+            href="https://emoji.gg/user/707286221516439665"
+            className="underline font-bold"
+          >
+            Box
+          </a>.
+        </li>
+      </ul>
     </BaseModal>
   )
 }
