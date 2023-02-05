@@ -33,7 +33,7 @@ export const SettingsModal = ({
   isExtraVisionMode,
   handleExtraVisionMode,
   isMemeMode,
-  handleMemeMode
+  handleMemeMode,
 }: Props) => {
   return (
     <BaseModal title="Settings" isOpen={isOpen} handleClose={handleClose}>

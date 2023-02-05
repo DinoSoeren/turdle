@@ -12,34 +12,32 @@ export const AboutModal = ({ isOpen, handleClose }: Props) => {
         This is an{' '}
         <a
           href="https://github.com/DinoSoeren/turdle"
-          className="underline font-bold"
+          className="font-bold underline"
         >
           open source
-        </a>
-        {' '}clone of the game Wordle developed by{' '}
-        <a
-          href="https://sushi2.games"
-          className="underline font-bold"
-        >
+        </a>{' '}
+        clone of the game Wordle developed by{' '}
+        <a href="https://sushi2.games" className="font-bold underline">
           SUSHI² Games
         </a>
         . Play the original{' '}
         <a
           href="https://www.powerlanguage.co.uk/wordle/"
-          className="underline font-bold"
+          className="font-bold underline"
         >
           here
-        </a>.
+        </a>
+        .
       </p>
       <p className="mt-4 text-sm text-gray-500 dark:text-gray-300">
         Developed for{' '}
         <a
           href="https://globalgamejam.org/2022/games/turdlexyz-4"
-          className="underline font-bold"
+          className="font-bold underline"
         >
           Global Game Jam
-        </a>
-        {' '}2022.
+        </a>{' '}
+        2022.
       </p>
       <p className="mt-4 text-sm text-gray-500 dark:text-gray-300">
         Copyright &copy; 2023 Sushi Squared LLC
@@ -47,45 +45,53 @@ export const AboutModal = ({ isOpen, handleClose }: Props) => {
       <h4 className="mt-4">Artwork Credits</h4>
       <hr />
       <ul className="mt-4 text-sm text-gray-500 dark:text-gray-300">
-        <li>Turtle animation by{' '}
+        <li>
+          Turtle animation by{' '}
           <a
             href="https://tenor.com/users/totallyturtley"
-            className="underline font-bold"
+            className="font-bold underline"
           >
             totallyturtley
-          </a>.
+          </a>
+          .
         </li>
-        <li>Turd emojis by{' '}
+        <li>
+          Turd emojis by{' '}
           <a
             href="https://emoji.gg/user/824305925091229726"
-            className="underline font-bold"
+            className="font-bold underline"
           >
             Blair ?!
-          </a>,{' '}
+          </a>
+          ,{' '}
           <a
             href="https://emoji.gg/user/531128263062585344"
-            className="underline font-bold"
+            className="font-bold underline"
           >
             yusuf !!
-          </a>,{' '}
+          </a>
+          ,{' '}
           <a
             href="https://emoji.gg/user/814464599273111582"
-            className="underline font-bold"
+            className="font-bold underline"
           >
             Germ
-          </a>,{' '}
+          </a>
+          ,{' '}
           <a
             href="https://emoji.gg/user/675328342882517034"
-            className="underline font-bold"
+            className="font-bold underline"
           >
             di_Vibil
-          </a>, and{' '}
+          </a>
+          , and{' '}
           <a
             href="https://emoji.gg/user/707286221516439665"
-            className="underline font-bold"
+            className="font-bold underline"
           >
             Box
-          </a>.
+          </a>
+          .
         </li>
       </ul>
     </BaseModal>

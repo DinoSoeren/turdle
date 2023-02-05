@@ -1,4 +1,4 @@
-import { letterToColorIdx, KeyboardLetters, NUM_FRAMES } from './validGuesses'
+import { KeyboardLetters, NUM_FRAMES, letterToColorIdx } from './validGuesses'
 
 export interface FilterProps {
   value?: string
@@ -6,7 +6,11 @@ export interface FilterProps {
   isHighContrast?: boolean
 }
 
-export function turtleFilter({value, isMemeMode, isHighContrast}: FilterProps): string {
+export function turtleFilter({
+  value,
+  isMemeMode,
+  isHighContrast,
+}: FilterProps): string {
   const offset = isMemeMode ? 1 : 0
   const colorIdx = letterToColorIdx(value) + offset
   const hue = ((colorIdx * NUM_FRAMES) / KeyboardLetters.length) * 360

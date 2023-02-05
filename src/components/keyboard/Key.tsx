@@ -1,12 +1,11 @@
 import classnames from 'classnames'
 import { ReactNode, useState } from 'react'
 
+import { turtleFilter, turtleTransform } from '../../constants/filter'
 import { REVEAL_TIME_MS } from '../../constants/settings'
+import { letterToFrameIdx } from '../../constants/validGuesses'
 import { CharStatus } from '../../lib/statuses'
 import { solution } from '../../lib/words'
-
-import { turtleFilter, turtleTransform } from '../../constants/filter'
-import { letterToFrameIdx } from '../../constants/validGuesses'
 import { Hint } from '../common/Hint'
 
 type Props = {
@@ -32,7 +31,7 @@ export const Key = ({
   disabled,
   isRevealing,
   isMemeMode,
-  isHighContrast
+  isHighContrast,
 }: Props) => {
   const keyDelayMs = REVEAL_TIME_MS * solution.length
 
@@ -51,7 +50,8 @@ export const Key = ({
         status === 'correct' && !isHighContrast,
       'bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-700 text-white':
         status === 'present' && !isHighContrast,
-      'opacity-20 cursor-default hover:bg-slate-300 active:bg-slate-400': disabled,
+      'opacity-20 cursor-default hover:bg-slate-300 active:bg-slate-400':
+        disabled,
     }
   )
 
@@ -61,25 +61,23 @@ export const Key = ({
   }
 
   const styles = {
-    'transitionDelay': isRevealing ? `${keyDelayMs}ms` : 'unset',
-    'width': `${width}px`,
-    'height': '40px',
+    transitionDelay: isRevealing ? `${keyDelayMs}ms` : 'unset',
+    width: `${width}px`,
+    height: '40px',
   } as React.CSSProperties
 
-  const imgClasses = classnames(
-    {
-      'w-[40px] relative top-0.5': !children,
-      'opacity-0': !!children,
-      'w-0': !!children,
-    }
-  )
+  const imgClasses = classnames({
+    'w-[40px] relative top-0.5': !children,
+    'opacity-0': !!children,
+    'w-0': !!children,
+  })
 
   const imgStyles = {
-    'filter': turtleFilter({value, isMemeMode, isHighContrast}),
-    'transform': turtleTransform(value),
+    filter: turtleFilter({ value, isMemeMode, isHighContrast }),
+    transform: turtleTransform(value),
   } as React.CSSProperties
 
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState(false)
   const handleMouseEnter = () => {
     setIsHovered(true)
   }
@@ -100,9 +98,17 @@ export const Key = ({
       onMouseLeave={handleMouseLeave}
     >
       {children}
-      <img src={'res/img/' + filePrefix + '_' + letterToFrameIdx(value) + '.png'}
-        className={imgClasses} style={imgStyles} alt={ariaLabel} />
-      <Hint value={value} visible={extraVision} hovered={isHovered && !disabled} />
+      <img
+        src={'res/img/' + filePrefix + '_' + letterToFrameIdx(value) + '.png'}
+        className={imgClasses}
+        style={imgStyles}
+        alt={ariaLabel}
+      />
+      <Hint
+        value={value}
+        visible={extraVision}
+        hovered={isHovered && !disabled}
+      />
     </button>
   )
 }

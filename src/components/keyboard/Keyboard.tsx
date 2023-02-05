@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 
 import { DELETE_TEXT, ENTER_TEXT } from '../../constants/strings'
 import { isDisabled, letterToFrameIdx } from '../../constants/validGuesses'
-import { localeAwareUpperCase } from '../../lib/words'
 import { getStatuses } from '../../lib/statuses'
+import { localeAwareUpperCase } from '../../lib/words'
 import { Key } from './Key'
 
 type Props = {
@@ -40,7 +40,10 @@ export const Keyboard = ({
       onDelete()
     } else {
       if (disabled) {
-        if (letterToFrameIdx(value) === letterToFrameIdx(currentGuess[currentGuess.length - 1])) {
+        if (
+          letterToFrameIdx(value) ===
+          letterToFrameIdx(currentGuess[currentGuess.length - 1])
+        ) {
           onChar(value, true)
         }
       } else {
@@ -61,7 +64,10 @@ export const Keyboard = ({
         const key = localeAwareUpperCase(e.key)
         if (key.length === 1 && key >= 'A' && key <= 'Z') {
           if (isDisabled(key, currentGuess)) {
-            if (letterToFrameIdx(key) === letterToFrameIdx(currentGuess[currentGuess.length - 1])) {
+            if (
+              letterToFrameIdx(key) ===
+              letterToFrameIdx(currentGuess[currentGuess.length - 1])
+            ) {
               onChar(key, true)
             }
           } else {
@@ -80,7 +86,7 @@ export const Keyboard = ({
 
   return (
     <div>
-      <div className="flex justify-center mb-1">
+      <div className="mb-1 flex justify-center">
         {['Q', 'W', 'E', 'R', 'T'].map((key) => (
           <Key
             value={key}
@@ -151,10 +157,20 @@ export const Keyboard = ({
         ))}
       </div>
       <div className="flex justify-center">
-        <Key width={65.4} value="ENTER" onClick={onClick} isHighContrast={isHighContrast}>
+        <Key
+          width={65.4}
+          value="ENTER"
+          onClick={onClick}
+          isHighContrast={isHighContrast}
+        >
           {ENTER_TEXT}
         </Key>
-        <Key width={65.4} value="DELETE" onClick={onClick} isHighContrast={isHighContrast}>
+        <Key
+          width={65.4}
+          value="DELETE"
+          onClick={onClick}
+          isHighContrast={isHighContrast}
+        >
           {DELETE_TEXT}
         </Key>
       </div>

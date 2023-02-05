@@ -1,16 +1,22 @@
-import { addDays, differenceInDays, startOfDay, parseISO, formatISO } from 'date-fns'
+import {
+  addDays,
+  differenceInDays,
+  formatISO,
+  parseISO,
+  startOfDay,
+} from 'date-fns'
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 import queryString from 'query-string'
 
-import { VALID_GUESSES, wordleToTurdle } from '../constants/validGuesses'
-import { NOT_CONTAINED_MESSAGE, WRONG_SPOT_MESSAGE } from '../constants/strings'
 import { ENABLE_ARCHIVED_GAMES } from '../constants/settings'
+import { NOT_CONTAINED_MESSAGE, WRONG_SPOT_MESSAGE } from '../constants/strings'
+import { VALID_GUESSES, wordleToTurdle } from '../constants/validGuesses'
 import { getToday } from './dateutils'
 import { getGuessStatuses } from './statuses'
 
 // January 30, 2022 Game Epoch
-export const firstGameDate = new Date('January 30, 2022 00:00:00');
-export const periodInDays = 1;
+export const firstGameDate = new Date('January 30, 2022 00:00:00')
+export const periodInDays = 1
 
 export const isWordInWordList = (word: string) => {
   return VALID_GUESSES.includes(localeAwareUpperCase(word))

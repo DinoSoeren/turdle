@@ -1,8 +1,8 @@
 import classnames from 'classnames'
-
 import { useState } from 'react'
-import { REVEAL_TIME_MS } from '../../constants/settings'
+
 import { turtleFilter, turtleTransform } from '../../constants/filter'
+import { REVEAL_TIME_MS } from '../../constants/settings'
 import { letterToFrameIdx, turdleId } from '../../constants/validGuesses'
 import { CharStatus } from '../../lib/statuses'
 import { Hint } from '../common/Hint'
@@ -53,21 +53,17 @@ export const Cell = ({
     }
   )
 
-  const imgClasses = classnames(
-    'letter-container',
-    'select-none',
-    {
-      'hidden': !value,
-    }
-  )
+  const imgClasses = classnames('letter-container', 'select-none', {
+    hidden: !value,
+  })
 
   const imgStyles = {
-    'filter': turtleFilter({value, isMemeMode, isHighContrast}),
-    'transform': turtleTransform(value),
+    filter: turtleFilter({ value, isMemeMode, isHighContrast }),
+    transform: turtleTransform(value),
     animationDelay,
-  } as React.CSSProperties;
+  } as React.CSSProperties
 
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState(false)
   const handleMouseEnter = () => {
     setIsHovered(true)
   }

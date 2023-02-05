@@ -1,11 +1,11 @@
-import classnames from 'classnames'
-
 import {
   CalendarIcon,
   ChartBarIcon,
   CogIcon,
   InformationCircleIcon,
 } from '@heroicons/react/outline'
+import classnames from 'classnames'
+
 import { ENABLE_ARCHIVED_GAMES } from '../../constants/settings'
 import { GAME_TITLE } from '../../constants/strings'
 
@@ -24,12 +24,9 @@ export const Navbar = ({
   setIsSettingsModalOpen,
   isMemeMode,
 }: Props) => {
-  const logoClasses = classnames(
-    'logo flex shrink-0 grow-0 ml-1 w-7 h-7',
-    {
-      'turd': isMemeMode,
-    }
-  )
+  const logoClasses = classnames('logo flex shrink-0 grow-0 ml-1 w-7 h-7', {
+    turd: isMemeMode,
+  })
 
   return (
     <div className="navbar">

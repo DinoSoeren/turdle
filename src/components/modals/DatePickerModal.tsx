@@ -5,10 +5,10 @@ import DatePicker, { registerLocale } from 'react-datepicker'
 
 import { DATE_LOCALE } from '../../constants/settings'
 import {
-  PLAYING_ARCHIVED_GAMES_WARNING,
   DATEPICKER_CHOOSE_TEXT,
   DATEPICKER_TITLE,
   DATEPICKER_TODAY_TEXT,
+  PLAYING_ARCHIVED_GAMES_WARNING,
 } from '../../constants/strings'
 import { getToday, getYesterday } from '../../lib/dateutils'
 import {
