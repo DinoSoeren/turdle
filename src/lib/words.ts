@@ -2,7 +2,7 @@ import { addDays, differenceInDays, startOfDay, parseISO, formatISO } from 'date
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 import queryString from 'query-string'
 
-import { VALID_GUESSES } from '../constants/validGuesses'
+import { VALID_GUESSES, wordleToTurdle } from '../constants/validGuesses'
 import { NOT_CONTAINED_MESSAGE, WRONG_SPOT_MESSAGE } from '../constants/strings'
 import { ENABLE_ARCHIVED_GAMES } from '../constants/settings'
 import { getToday } from './dateutils'
@@ -54,7 +54,7 @@ export const findFirstUnusedReveal = (word: string, guesses: string[]) => {
   }
 
   if (lettersLeftArray.length > 0) {
-    return NOT_CONTAINED_MESSAGE(lettersLeftArray[0])
+    return NOT_CONTAINED_MESSAGE(wordleToTurdle(lettersLeftArray[0]))
   }
   return false
 }
