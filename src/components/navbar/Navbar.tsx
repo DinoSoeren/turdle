@@ -2,8 +2,6 @@ import {
   CalendarIcon,
   ChartBarIcon,
   CogIcon,
-  EyeIcon,
-  EyeOffIcon,
   InformationCircleIcon,
 } from '@heroicons/react/outline'
 
@@ -11,8 +9,6 @@ import { ENABLE_ARCHIVED_GAMES } from '../../constants/settings'
 import { GAME_TITLE } from '../../constants/strings'
 
 type Props = {
-  isExtraVisionModeEnabled: boolean
-  setExtraVisionModeEnabled: (value: boolean) => void
   setIsInfoModalOpen: (value: boolean) => void
   setIsStatsModalOpen: (value: boolean) => void
   setIsDatePickerModalOpen: (value: boolean) => void
@@ -20,8 +16,6 @@ type Props = {
 }
 
 export const Navbar = ({
-  isExtraVisionModeEnabled,
-  setExtraVisionModeEnabled,
   setIsInfoModalOpen,
   setIsStatsModalOpen,
   setIsDatePickerModalOpen,
@@ -44,17 +38,6 @@ export const Navbar = ({
         </div>
         <p className="text-xl font-bold dark:text-white">{GAME_TITLE}</p>
         <div className="right-icons">
-          {!isExtraVisionModeEnabled ? (
-            <EyeIcon
-              className="mr-3 h-6 w-6 cursor-pointer dark:stroke-white hover:opacity-50 transition-opacity"
-              onClick={() => setExtraVisionModeEnabled(!isExtraVisionModeEnabled)}
-            />
-          ) : (
-            <EyeOffIcon
-              className="mr-3 h-6 w-6 cursor-pointer dark:stroke-white hover:opacity-50 transition-opacity"
-              onClick={() => setExtraVisionModeEnabled(!isExtraVisionModeEnabled)}
-            />
-          )}
           <ChartBarIcon
             className="mr-3 h-6 w-6 cursor-pointer dark:stroke-white"
             onClick={() => setIsStatsModalOpen(true)}

@@ -412,6 +412,8 @@ function App() {
             handleDarkMode={handleDarkMode}
             isHighContrastMode={isHighContrastMode}
             handleHighContrastMode={setIsHighContrastMode}
+            isExtraVisionMode={isExtraVisionModeEnabled}
+            handleExtraVisionMode={setExtraVisionModeEnabled}
           />
           <AlertContainer />
           <AboutModal

@@ -1,4 +1,5 @@
 import {
+  EXTRA_VISION_MODE_DESCRIPTION,
   HARD_MODE_DESCRIPTION,
   HIGH_CONTRAST_MODE_DESCRIPTION,
 } from '../../constants/strings'
@@ -14,6 +15,8 @@ type Props = {
   handleDarkMode: Function
   isHighContrastMode: boolean
   handleHighContrastMode: Function
+  isExtraVisionMode: boolean
+  handleExtraVisionMode: (value: boolean) => void
 }
 
 export const SettingsModal = ({
@@ -25,10 +28,18 @@ export const SettingsModal = ({
   handleDarkMode,
   isHighContrastMode,
   handleHighContrastMode,
+  isExtraVisionMode,
+  handleExtraVisionMode,
 }: Props) => {
   return (
     <BaseModal title="Settings" isOpen={isOpen} handleClose={handleClose}>
       <div className="mt-2 flex flex-col divide-y">
+        <SettingsToggle
+          settingName="Hide Bubbles"
+          flag={!isExtraVisionMode}
+          handleFlag={(flag: boolean) => handleExtraVisionMode(!flag)}
+          description={EXTRA_VISION_MODE_DESCRIPTION}
+        />
         <SettingsToggle
           settingName="Hard Mode"
           flag={isHardMode}
