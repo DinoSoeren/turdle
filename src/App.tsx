@@ -296,8 +296,6 @@ function App() {
     <Div100vh>
       <div className="flex h-full flex-col">
         <Navbar
-          isExtraVisionModeEnabled={isExtraVisionModeEnabled}
-          setExtraVisionModeEnabled={setExtraVisionModeEnabled}
           setIsInfoModalOpen={setIsInfoModalOpen}
           setIsStatsModalOpen={setIsStatsModalOpen}
           setIsDatePickerModalOpen={setIsDatePickerModalOpen}
