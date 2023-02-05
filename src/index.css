@@ -25,6 +25,26 @@
   --present-cell-bg-color: theme('colors.cyan.400');
 }
 
+.hint-animation {
+  animation: revealCharCell linear;
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+}
+
+@keyframes revealCharCell {
+  0% {
+    transform: scale(0.8);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
 .cell-fill-animation {
   animation: onTypeCell linear;
   animation-duration: 0.35s;
@@ -170,6 +190,10 @@ svg.cursor-pointer:hover {
 
 .shadowed {
   text-shadow: 1px 1px 1px #000000;
+}
+
+.unshadowed {
+  text-shadow: none;
 }
 
 @keyframes jiggle {

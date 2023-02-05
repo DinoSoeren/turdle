@@ -1,18 +1,18 @@
 import './App.css'
 
 import { ClockIcon } from '@heroicons/react/outline'
-import { FaDiscord } from 'react-icons/fa'
 import { format } from 'date-fns'
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 import { useEffect, useState } from 'react'
 import Div100vh from 'react-div-100vh'
+import { FaDiscord } from 'react-icons/fa'
 
 import { AlertContainer } from './components/alerts/AlertContainer'
 import { Grid } from './components/grid/Grid'
 import { Keyboard } from './components/keyboard/Keyboard'
+import { AboutModal } from './components/modals/AboutModal'
 import { DatePickerModal } from './components/modals/DatePickerModal'
 import { InfoModal } from './components/modals/InfoModal'
-import { AboutModal } from './components/modals/AboutModal'
 import { MigrateStatsModal } from './components/modals/MigrateStatsModal'
 import { SettingsModal } from './components/modals/SettingsModal'
 import { StatsModal } from './components/modals/StatsModal'
@@ -26,10 +26,10 @@ import {
   WELCOME_INFO_MODAL_MS,
 } from './constants/settings'
 import {
+  ABOUT_GAME_MESSAGE,
   CORRECT_WORD_MESSAGE,
   DISCOURAGE_INAPP_BROWSER_TEXT,
   GAME_COPIED_MESSAGE,
-  ABOUT_GAME_MESSAGE,
   HARD_MODE_ALERT_MESSAGE,
   NOT_ENOUGH_LETTERS_MESSAGE,
   SHARE_FAILURE_TEXT,
@@ -41,8 +41,8 @@ import { useAlert } from './context/AlertContext'
 import { isInAppBrowser } from './lib/browser'
 import {
   loadGameStateFromLocalStorage,
-  saveGameStateToLocalStorage,
   loadSettingsFromLocalStorage,
+  saveGameStateToLocalStorage,
   saveSettingsToLocalStorage,
 } from './lib/localStorage'
 import { addStatsForCompletedGame, loadStats } from './lib/stats'
@@ -81,8 +81,8 @@ function App() {
     localStorage.getItem('theme')
       ? localStorage.getItem('theme') === 'dark'
       : prefersDarkMode
-        ? true
-        : false
+      ? true
+      : false
   )
   const [isFirstTimePlaying, setIsFirstTimePlaying] = useState<boolean>(() => {
     return loadSettingsFromLocalStorage()?.isFirstTimePlaying ?? true
@@ -91,7 +91,6 @@ function App() {
     useState<boolean>(() => {
       return loadSettingsFromLocalStorage()?.isExtraVisionModeEnabled ?? false
     })
-  const [successAlert, setSuccessAlert] = useState('')
   const [isHighContrastMode, setIsHighContrastMode] = useState<boolean>(() => {
     return loadSettingsFromLocalStorage()?.highContrastModeEnabled ?? false
   })
@@ -107,7 +106,7 @@ function App() {
     }
     if (loaded.guesses.length === MAX_CHALLENGES && !gameWasWon) {
       setIsGameLost(true)
-      showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
+      showErrorAlert(CORRECT_WORD_MESSAGE(wordleToTurdle(solution)), {
         persist: true,
       })
     }
@@ -285,7 +284,7 @@ function App() {
           setStats(addStatsForCompletedGame(stats, guesses.length + 1))
         }
         setIsGameLost(true)
-        showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
+        showErrorAlert(CORRECT_WORD_MESSAGE(wordleToTurdle(solution)), {
           persist: true,
           delayMs: REVEAL_TIME_MS * solution.length + 1,
         })
@@ -343,10 +342,25 @@ function App() {
               isExtraVisionModeEnabled ||
               isGameLost ||
               isInfoModalOpen ||
-              isAboutModalOpen ||
               isStatsModalOpen
             }
           />
+          <div className="mt-8 flex justify-center gap-1">
+            <button
+              type="button"
+              className="flex shrink grow-0 select-none items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              onClick={() => setIsAboutModalOpen(true)}
+            >
+              {ABOUT_GAME_MESSAGE}
+            </button>
+            <a
+              type="button"
+              className="text-s flex shrink-0 grow-0 select-none items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              href="https://discord.gg/ryjr3TbZGm"
+            >
+              <FaDiscord className="mx-auto" />
+            </a>
+          </div>
           <InfoModal
             isOpen={isInfoModalOpen}
             handleClose={() => setIsInfoModalOpen(false)}
@@ -405,23 +419,6 @@ function App() {
             handleClose={() => setIsAboutModalOpen(false)}
           />
         </div>
-      </div>
-
-      <div className="flex justify-center gap-1 mt-8">
-        <button
-          type="button"
-          className="flex shrink grow-0 items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 select-none"
-          onClick={() => setIsAboutModalOpen(true)}
-        >
-          {ABOUT_GAME_MESSAGE}
-        </button>
-        <a
-          type="button"
-          className="flex shrink-0 grow-0 items-center px-2.5 py-1.5 border border-transparent text-s font-medium rounded text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 select-none"
-          href="https://discord.gg/ryjr3TbZGm"
-        >
-          <FaDiscord className="mx-auto" />
-        </a>
       </div>
     </Div100vh>
   )

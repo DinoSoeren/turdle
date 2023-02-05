@@ -31,7 +31,7 @@ export const KeyboardLetters = [
   'N',
 ]
 
-export const VALIDGUESSES = generateAllValidGuesses()
+export const VALID_GUESSES = generateAllValidGuesses()
 
 export function isDisabled(letter: string, currentGuess: string): boolean {
   const frame = letterToFrameIdx(letter)

@@ -40,3 +40,4 @@ export const DATEPICKER_TITLE = 'Choose a past date'
 export const DATEPICKER_CHOOSE_TEXT = 'Choose'
 export const DATEPICKER_TODAY_TEXT = 'today'
 export const ARCHIVE_GAMEDATE_TEXT = 'Game date'
+export const PLAYING_ARCHIVED_GAMES_WARNING = `Playing old games (before today) won't affect your statistics, it's just for fun!`

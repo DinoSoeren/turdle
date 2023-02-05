@@ -5,6 +5,7 @@ import DatePicker, { registerLocale } from 'react-datepicker'
 
 import { DATE_LOCALE } from '../../constants/settings'
 import {
+  PLAYING_ARCHIVED_GAMES_WARNING,
   DATEPICKER_CHOOSE_TEXT,
   DATEPICKER_TITLE,
   DATEPICKER_TODAY_TEXT,
@@ -61,6 +62,9 @@ export const DatePickerModal = ({
       isOpen={isOpen}
       handleClose={handleClose}
     >
+      <p className="text-gray-600 dark:text-gray-300">
+        <em>{PLAYING_ARCHIVED_GAMES_WARNING}</em>
+      </p>
       <div className="mx-auto flex max-w-2xl items-center justify-center space-x-4 py-5 text-left sm:w-48">
         <DatePicker
           locale="locale"

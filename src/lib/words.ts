@@ -2,7 +2,7 @@ import { addDays, differenceInDays, startOfDay, parseISO, formatISO } from 'date
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 import queryString from 'query-string'
 
-import { VALIDGUESSES } from '../constants/validGuesses'
+import { VALID_GUESSES } from '../constants/validGuesses'
 import { NOT_CONTAINED_MESSAGE, WRONG_SPOT_MESSAGE } from '../constants/strings'
 import { ENABLE_ARCHIVED_GAMES } from '../constants/settings'
 import { getToday } from './dateutils'
@@ -13,12 +13,13 @@ export const firstGameDate = new Date('January 30, 2022 00:00:00');
 export const periodInDays = 1;
 
 export const isWordInWordList = (word: string) => {
-  return VALIDGUESSES.includes(localeAwareUpperCase(word))
+  return VALID_GUESSES.includes(localeAwareUpperCase(word))
 }
 
 export const isWinningWord = (word: string) => {
   return solution === word
 }
+
 // build a set of previously revealed letters - present and correct
 // guess must use correct letters in that space and any other revealed letters
 // also check if all revealed instances of a letter are used (i.e. two C's)
@@ -112,7 +113,7 @@ export const getWordOfDay = (index: number) => {
     throw new Error('Invalid index')
   }
 
-  return localeAwareUpperCase(VALIDGUESSES[index % VALIDGUESSES.length])
+  return localeAwareUpperCase(VALID_GUESSES[index % VALID_GUESSES.length])
 }
 
 export const getSolution = (gameDate: Date) => {
