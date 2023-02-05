@@ -59,14 +59,7 @@ export const InfoModal = ({ isOpen, handleClose, extraVision }: Props) => {
       </p>
 
       <p className="mt-6 text-sm italic text-gray-500 dark:text-gray-300">
-        This is an open source version of the word guessing game we all know and
-        love -{' '}
-        <a
-          href="https://github.com/DinoSoeren/turdle"
-          className="font-bold underline"
-        >
-          check out the code here
-        </a>{' '}
+        Don't get it? No worries, try playing anyway! The buttons will guide you.
       </p>
     </BaseModal>
   )
