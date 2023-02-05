@@ -13,6 +13,7 @@ type Props = {
   status?: CharStatus
   extraVision?: boolean
   isRevealing?: boolean
+  isMemeMode?: boolean
   isCompleted?: boolean
   position?: number
 }
@@ -22,6 +23,7 @@ export const Cell = ({
   status,
   extraVision,
   isRevealing,
+  isMemeMode,
   isCompleted,
   position = 0,
 }: Props) => {
@@ -60,7 +62,7 @@ export const Cell = ({
   )
 
   const imgStyles = {
-    'filter': turtleFilter(value),
+    'filter': turtleFilter({value, isMemeMode, isHighContrast}),
     'transform': turtleTransform(value),
     animationDelay,
   } as React.CSSProperties;
@@ -72,6 +74,7 @@ export const Cell = ({
   const handleMouseLeave = () => {
     setIsHovered(false)
   }
+  const filePrefix = isMemeMode ? 'turd' : 'turtle'
 
   return (
     <div
@@ -81,7 +84,7 @@ export const Cell = ({
       onMouseLeave={handleMouseLeave}
     >
       <img
-        src={'res/img/turtle_' + letterToFrameIdx(value) + '.png'}
+        src={'res/img/' + filePrefix + '_' + letterToFrameIdx(value) + '.png'}
         className={imgClasses}
         style={imgStyles}
         alt={turdleId(value)}

@@ -45,6 +45,7 @@ export type GameSettings = {
   isFirstTimePlaying: boolean
   isExtraVisionModeEnabled: boolean
   highContrastModeEnabled: boolean
+  isMemeModeEnabled: boolean
 }
 
 export const saveSettingsToLocalStorage = (gameSettings: GameSettings) => {

@@ -1,10 +1,11 @@
+import classnames from 'classnames'
+
 import {
   CalendarIcon,
   ChartBarIcon,
   CogIcon,
   InformationCircleIcon,
 } from '@heroicons/react/outline'
-
 import { ENABLE_ARCHIVED_GAMES } from '../../constants/settings'
 import { GAME_TITLE } from '../../constants/strings'
 
@@ -13,6 +14,7 @@ type Props = {
   setIsStatsModalOpen: (value: boolean) => void
   setIsDatePickerModalOpen: (value: boolean) => void
   setIsSettingsModalOpen: (value: boolean) => void
+  isMemeMode?: boolean
 }
 
 export const Navbar = ({
@@ -20,7 +22,15 @@ export const Navbar = ({
   setIsStatsModalOpen,
   setIsDatePickerModalOpen,
   setIsSettingsModalOpen,
+  isMemeMode,
 }: Props) => {
+  const logoClasses = classnames(
+    'logo flex shrink-0 grow-0 ml-1 w-7 h-7',
+    {
+      'turd': isMemeMode,
+    }
+  )
+
   return (
     <div className="navbar">
       <div className="navbar-content px-5 short:h-auto">
@@ -38,7 +48,7 @@ export const Navbar = ({
         </div>
         <div className="flex grow justify-center">
           <p className="text-xl font-bold dark:text-white">{GAME_TITLE}</p>
-          <div className="logo flex shrink-0 grow-0 ml-1 w-7 h-7"></div>
+          <div className={logoClasses}></div>
         </div>
         <div className="right-icons">
           <ChartBarIcon

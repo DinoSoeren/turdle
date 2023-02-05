@@ -7,13 +7,15 @@ type Props = {
   guess: string
   extraVision?: boolean
   isRevealing?: boolean
+  isMemeMode?: boolean
 }
 
 export const CompletedRow = ({
   solution,
   guess,
   extraVision,
-  isRevealing
+  isRevealing,
+  isMemeMode,
 }: Props) => {
   const statuses = getGuessStatuses(solution, guess)
   const splitGuess = unicodeSplit(guess)
@@ -28,6 +30,7 @@ export const CompletedRow = ({
           position={i}
           extraVision={extraVision}
           isRevealing={isRevealing}
+          isMemeMode={isMemeMode}
           isCompleted
         />
       ))}

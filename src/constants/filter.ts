@@ -1,10 +1,18 @@
 import { letterToColorIdx, KeyboardLetters, NUM_FRAMES } from './validGuesses'
 
-export function turtleFilter(value?: string): string {
-  const colorIdx = letterToColorIdx(value)
+export interface FilterProps {
+  value?: string
+  isMemeMode?: boolean
+  isHighContrast?: boolean
+}
+
+export function turtleFilter({value, isMemeMode, isHighContrast}: FilterProps): string {
+  const offset = isMemeMode ? 1 : 0
+  const colorIdx = letterToColorIdx(value) + offset
   const hue = ((colorIdx * NUM_FRAMES) / KeyboardLetters.length) * 360
-  const effect = 'saturate(' + (colorIdx === 1 ? '0' : '1') + ') contrast(260%)'
-  return 'hue-rotate(' + hue + 'deg) ' + effect
+  const contrast = isHighContrast ? 'contrast(260%)' : ''
+  const effect = 'saturate(' + (colorIdx - offset === 1 ? '0' : '1') + ') '
+  return 'hue-rotate(' + hue + 'deg) ' + effect + contrast
 }
 
 export function turtleTransform(value?: string): string {

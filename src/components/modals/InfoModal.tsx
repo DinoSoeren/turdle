@@ -5,9 +5,12 @@ type Props = {
   isOpen: boolean
   handleClose: () => void
   extraVision?: boolean
+  isMemeMode?: boolean
 }
 
-export const InfoModal = ({ isOpen, handleClose, extraVision }: Props) => {
+export const InfoModal = ({ isOpen, handleClose, extraVision, isMemeMode }: Props) => {
+  const object = isMemeMode ? 'Turd' : 'Turtle'
+
   return (
     <BaseModal title="How to play" isOpen={isOpen} handleClose={handleClose}>
       <p className="text-sm text-gray-500 dark:text-gray-300">
@@ -20,40 +23,40 @@ export const InfoModal = ({ isOpen, handleClose, extraVision }: Props) => {
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
-        <Cell value="O" extraVision={true} status="correct" />
-        <Cell value="T" extraVision={true} />
-        <Cell value="H" extraVision={true} />
-        <Cell value="S" extraVision={true} />
-        <Cell value="K" extraVision={true} />
+        <Cell value="O" extraVision={true} isMemeMode={isMemeMode} status="correct" />
+        <Cell value="T" extraVision={true} isMemeMode={isMemeMode} />
+        <Cell value="H" extraVision={true} isMemeMode={isMemeMode} />
+        <Cell value="S" extraVision={true} isMemeMode={isMemeMode} />
+        <Cell value="K" extraVision={true} isMemeMode={isMemeMode} />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        The <strong>Blue Turtle</strong>
+        The <strong>Blue {object}</strong>
         {' '}(<strong>4<span className="text-blue-500">B</span></strong>)
         is in the sequence and in the correct spot.
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
-        <Cell value="I" extraVision={true} />
-        <Cell value="R" extraVision={true} />
-        <Cell value="Z" extraVision={true} status="present" />
-        <Cell value="Y" extraVision={true} />
-        <Cell value="S" extraVision={true} />
+        <Cell value="I" extraVision={true} isMemeMode={isMemeMode} />
+        <Cell value="R" extraVision={true} isMemeMode={isMemeMode} />
+        <Cell value="Z" extraVision={true} isMemeMode={isMemeMode} status="present" />
+        <Cell value="Y" extraVision={true} isMemeMode={isMemeMode} />
+        <Cell value="S" extraVision={true} isMemeMode={isMemeMode} />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        The <strong>Red Turtle</strong>
+        The <strong>Red {object}</strong>
         {' '}(<strong>5<span className="text-red-500">R</span></strong>)
         is in the sequence but in the wrong spot.
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
-        <Cell value="Z" extraVision={true} />
-        <Cell value="X" extraVision={true} />
-        <Cell value="W" extraVision={true} />
-        <Cell value="D" extraVision={true} status="absent" />
-        <Cell value="F" extraVision={true} />
+        <Cell value="Z" extraVision={true} isMemeMode={isMemeMode} />
+        <Cell value="X" extraVision={true} isMemeMode={isMemeMode} />
+        <Cell value="W" extraVision={true} isMemeMode={isMemeMode} />
+        <Cell value="D" extraVision={true} isMemeMode={isMemeMode} status="absent" />
+        <Cell value="F" extraVision={true} isMemeMode={isMemeMode} />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        The <strong>Purple Turtle</strong>
+        The <strong>Purple {object}</strong>
         {' '}(<strong>3<span className="text-purple-500">P</span></strong>)
         is not in the sequence in any spot.
       </p>

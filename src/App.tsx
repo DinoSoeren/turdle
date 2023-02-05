@@ -94,6 +94,9 @@ function App() {
   const [isHighContrastMode, setIsHighContrastMode] = useState<boolean>(() => {
     return loadSettingsFromLocalStorage()?.highContrastModeEnabled ?? false
   })
+  const [isMemeModeEnabled, setIsMemeMode] = useState<boolean>(() => {
+    return loadSettingsFromLocalStorage()?.isMemeModeEnabled ?? false
+  })
   const [isRevealing, setIsRevealing] = useState(false)
   const [guesses, setGuesses] = useState<string[]>(() => {
     const loaded = loadGameStateFromLocalStorage(isLatestGame)
@@ -177,12 +180,18 @@ function App() {
       isFirstTimePlaying,
       isExtraVisionModeEnabled,
       highContrastModeEnabled: isHighContrastMode,
+      isMemeModeEnabled,
     })
     if (isFirstTimePlaying) {
       setIsInfoModalOpen(true)
       setIsFirstTimePlaying(false)
     }
-  }, [isFirstTimePlaying, isExtraVisionModeEnabled, isHighContrastMode])
+  }, [
+    isFirstTimePlaying,
+    isExtraVisionModeEnabled,
+    isHighContrastMode,
+    isMemeModeEnabled,
+  ])
 
   useEffect(() => {
     saveGameStateToLocalStorage(getIsLatestGame(), { guesses, solution })
@@ -300,6 +309,7 @@ function App() {
           setIsStatsModalOpen={setIsStatsModalOpen}
           setIsDatePickerModalOpen={setIsDatePickerModalOpen}
           setIsSettingsModalOpen={setIsSettingsModalOpen}
+          isMemeMode={isMemeModeEnabled}
         />
 
         {!isLatestGame && (
@@ -326,6 +336,7 @@ function App() {
                 isAboutModalOpen ||
                 isStatsModalOpen
               }
+              isMemeMode={isMemeModeEnabled}
             />
           </div>
           <Keyboard
@@ -342,6 +353,7 @@ function App() {
               isInfoModalOpen ||
               isStatsModalOpen
             }
+            isMemeMode={isMemeModeEnabled}
           />
           <div className="mt-8 flex justify-center gap-1">
             <button
@@ -363,6 +375,7 @@ function App() {
             isOpen={isInfoModalOpen}
             handleClose={() => setIsInfoModalOpen(false)}
             extraVision={isExtraVisionModeEnabled}
+            isMemeMode={isMemeModeEnabled}
           />
           <StatsModal
             isOpen={isStatsModalOpen}
@@ -412,6 +425,8 @@ function App() {
             handleHighContrastMode={setIsHighContrastMode}
             isExtraVisionMode={isExtraVisionModeEnabled}
             handleExtraVisionMode={setExtraVisionModeEnabled}
+            isMemeMode={isMemeModeEnabled}
+            handleMemeMode={setIsMemeMode}
           />
           <AlertContainer />
           <AboutModal

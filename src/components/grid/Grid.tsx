@@ -9,6 +9,7 @@ type Props = {
   currentGuess: string
   extraVision?: boolean
   isRevealing?: boolean
+  isMemeMode?: boolean
   currentRowClassName: string
 }
 
@@ -18,6 +19,7 @@ export const Grid = ({
   currentGuess,
   extraVision,
   isRevealing,
+  isMemeMode,
   currentRowClassName,
 }: Props) => {
   const empties =
@@ -34,12 +36,14 @@ export const Grid = ({
           guess={guess}
           extraVision={extraVision}
           isRevealing={isRevealing && guesses.length - 1 === i}
+          isMemeMode={isMemeMode}
         />
       ))}
       {guesses.length < MAX_CHALLENGES && (
         <CurrentRow
           guess={currentGuess}
           extraVision={extraVision}
+          isMemeMode={isMemeMode}
           className={currentRowClassName}
         />
       )}

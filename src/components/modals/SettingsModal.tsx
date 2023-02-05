@@ -16,7 +16,9 @@ type Props = {
   isHighContrastMode: boolean
   handleHighContrastMode: Function
   isExtraVisionMode: boolean
-  handleExtraVisionMode: (value: boolean) => void
+  handleExtraVisionMode: Function
+  isMemeMode: boolean
+  handleMemeMode: Function
 }
 
 export const SettingsModal = ({
@@ -30,6 +32,8 @@ export const SettingsModal = ({
   handleHighContrastMode,
   isExtraVisionMode,
   handleExtraVisionMode,
+  isMemeMode,
+  handleMemeMode
 }: Props) => {
   return (
     <BaseModal title="Settings" isOpen={isOpen} handleClose={handleClose}>
@@ -56,6 +60,11 @@ export const SettingsModal = ({
           flag={isHighContrastMode}
           handleFlag={handleHighContrastMode}
           description={HIGH_CONTRAST_MODE_DESCRIPTION}
+        />
+        <SettingsToggle
+          settingName="💩"
+          flag={isMemeMode}
+          handleFlag={handleMemeMode}
         />
       </div>
     </BaseModal>

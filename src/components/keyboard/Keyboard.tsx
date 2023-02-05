@@ -15,6 +15,7 @@ type Props = {
   currentGuess: string
   extraVision?: boolean
   isRevealing?: boolean
+  isMemeMode?: boolean
 }
 
 export const Keyboard = ({
@@ -26,6 +27,7 @@ export const Keyboard = ({
   currentGuess,
   extraVision,
   isRevealing,
+  isMemeMode,
 }: Props) => {
   const charStatuses = getStatuses(solution, guesses)
 
@@ -82,6 +84,7 @@ export const Keyboard = ({
             value={key}
             onClick={onClick}
             extraVision={extraVision}
+            isMemeMode={isMemeMode}
             status={charStatuses[key]}
             disabled={isDisabled(key, currentGuess)}
             isRevealing={isRevealing}
@@ -94,6 +97,7 @@ export const Keyboard = ({
             value={key}
             onClick={onClick}
             extraVision={extraVision}
+            isMemeMode={isMemeMode}
             status={charStatuses[key]}
             disabled={isDisabled(key, currentGuess)}
             isRevealing={isRevealing}
@@ -106,6 +110,7 @@ export const Keyboard = ({
             value={key}
             onClick={onClick}
             extraVision={extraVision}
+            isMemeMode={isMemeMode}
             status={charStatuses[key]}
             disabled={isDisabled(key, currentGuess)}
             isRevealing={isRevealing}
@@ -118,6 +123,7 @@ export const Keyboard = ({
             value={key}
             onClick={onClick}
             extraVision={extraVision}
+            isMemeMode={isMemeMode}
             status={charStatuses[key]}
             disabled={isDisabled(key, currentGuess)}
             isRevealing={isRevealing}
@@ -130,6 +136,7 @@ export const Keyboard = ({
             value={key}
             onClick={onClick}
             extraVision={extraVision}
+            isMemeMode={isMemeMode}
             status={charStatuses[key]}
             disabled={isDisabled(key, currentGuess)}
             isRevealing={isRevealing}

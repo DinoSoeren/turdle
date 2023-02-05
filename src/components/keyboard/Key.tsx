@@ -19,6 +19,7 @@ type Props = {
   extraVision?: boolean
   disabled?: boolean
   isRevealing?: boolean
+  isMemeMode?: boolean
 }
 
 export const Key = ({
@@ -30,6 +31,7 @@ export const Key = ({
   extraVision,
   disabled,
   isRevealing,
+  isMemeMode,
 }: Props) => {
   const keyDelayMs = REVEAL_TIME_MS * solution.length
   const isHighContrast = loadSettingsFromLocalStorage()?.highContrastModeEnabled ?? false
@@ -73,7 +75,7 @@ export const Key = ({
   )
 
   const imgStyles = {
-    'filter': turtleFilter(value),
+    'filter': turtleFilter({value, isMemeMode, isHighContrast}),
     'transform': turtleTransform(value),
   } as React.CSSProperties
 
@@ -86,6 +88,7 @@ export const Key = ({
   }
 
   const ariaLabel = `${value}${status ? ' ' + status : ''}`
+  const filePrefix = isMemeMode ? 'turd' : 'turtle'
 
   return (
     <button
@@ -97,7 +100,7 @@ export const Key = ({
       onMouseLeave={handleMouseLeave}
     >
       {children}
-      <img src={'res/img/turtle_' + letterToFrameIdx(value) + '.png'}
+      <img src={'res/img/' + filePrefix + '_' + letterToFrameIdx(value) + '.png'}
         className={imgClasses} style={imgStyles} alt={ariaLabel} />
       <Hint value={value} visible={extraVision} hovered={isHovered && !disabled} />
     </button>
