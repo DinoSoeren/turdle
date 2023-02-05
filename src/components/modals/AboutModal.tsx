@@ -11,7 +11,7 @@ export const AboutModal = ({ isOpen, handleClose }: Props) => {
       <p className="text-sm text-gray-500 dark:text-gray-300">
         This is an{' '}
         <a
-          href="https://github.com/SWalls/turdle"
+          href="https://github.com/DinoSoeren/turdle"
           className="underline font-bold"
         >
           open source
