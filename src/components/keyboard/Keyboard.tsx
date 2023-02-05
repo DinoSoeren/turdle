@@ -16,6 +16,7 @@ type Props = {
   extraVision?: boolean
   isRevealing?: boolean
   isMemeMode?: boolean
+  isHighContrast?: boolean
 }
 
 export const Keyboard = ({
@@ -28,6 +29,7 @@ export const Keyboard = ({
   extraVision,
   isRevealing,
   isMemeMode,
+  isHighContrast,
 }: Props) => {
   const charStatuses = getStatuses(solution, guesses)
 
@@ -85,6 +87,7 @@ export const Keyboard = ({
             onClick={onClick}
             extraVision={extraVision}
             isMemeMode={isMemeMode}
+            isHighContrast={isHighContrast}
             status={charStatuses[key]}
             disabled={isDisabled(key, currentGuess)}
             isRevealing={isRevealing}
@@ -98,6 +101,7 @@ export const Keyboard = ({
             onClick={onClick}
             extraVision={extraVision}
             isMemeMode={isMemeMode}
+            isHighContrast={isHighContrast}
             status={charStatuses[key]}
             disabled={isDisabled(key, currentGuess)}
             isRevealing={isRevealing}
@@ -111,6 +115,7 @@ export const Keyboard = ({
             onClick={onClick}
             extraVision={extraVision}
             isMemeMode={isMemeMode}
+            isHighContrast={isHighContrast}
             status={charStatuses[key]}
             disabled={isDisabled(key, currentGuess)}
             isRevealing={isRevealing}
@@ -124,6 +129,7 @@ export const Keyboard = ({
             onClick={onClick}
             extraVision={extraVision}
             isMemeMode={isMemeMode}
+            isHighContrast={isHighContrast}
             status={charStatuses[key]}
             disabled={isDisabled(key, currentGuess)}
             isRevealing={isRevealing}
@@ -137,6 +143,7 @@ export const Keyboard = ({
             onClick={onClick}
             extraVision={extraVision}
             isMemeMode={isMemeMode}
+            isHighContrast={isHighContrast}
             status={charStatuses[key]}
             disabled={isDisabled(key, currentGuess)}
             isRevealing={isRevealing}
@@ -144,10 +151,10 @@ export const Keyboard = ({
         ))}
       </div>
       <div className="flex justify-center">
-        <Key width={65.4} value="ENTER" onClick={onClick}>
+        <Key width={65.4} value="ENTER" onClick={onClick} isHighContrast={isHighContrast}>
           {ENTER_TEXT}
         </Key>
-        <Key width={65.4} value="DELETE" onClick={onClick}>
+        <Key width={65.4} value="DELETE" onClick={onClick} isHighContrast={isHighContrast}>
           {DELETE_TEXT}
         </Key>
       </div>

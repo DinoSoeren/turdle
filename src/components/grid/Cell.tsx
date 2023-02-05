@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { REVEAL_TIME_MS } from '../../constants/settings'
 import { turtleFilter, turtleTransform } from '../../constants/filter'
 import { letterToFrameIdx, turdleId } from '../../constants/validGuesses'
-import { loadSettingsFromLocalStorage } from '../../lib/localStorage'
 import { CharStatus } from '../../lib/statuses'
 import { Hint } from '../common/Hint'
 
@@ -14,6 +13,7 @@ type Props = {
   extraVision?: boolean
   isRevealing?: boolean
   isMemeMode?: boolean
+  isHighContrast?: boolean
   isCompleted?: boolean
   position?: number
 }
@@ -24,13 +24,13 @@ export const Cell = ({
   extraVision,
   isRevealing,
   isMemeMode,
+  isHighContrast,
   isCompleted,
   position = 0,
 }: Props) => {
   const isFilled = value && !isCompleted
   const shouldReveal = isRevealing && isCompleted
   const animationDelay = `${position * REVEAL_TIME_MS}ms`
-  const isHighContrast = loadSettingsFromLocalStorage()?.highContrastModeEnabled ?? false;
 
   const divClasses = classnames(
     'xxshort:w-11 xxshort:h-11 short:text-2xl short:w-12 short:h-12 w-14 h-14 border-solid border-2 flex relative items-center justify-center mx-0.5 text-4xl font-bold rounded dark:text-white',

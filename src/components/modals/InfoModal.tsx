@@ -6,9 +6,10 @@ type Props = {
   handleClose: () => void
   extraVision?: boolean
   isMemeMode?: boolean
+  isHighContrast?: boolean
 }
 
-export const InfoModal = ({ isOpen, handleClose, extraVision, isMemeMode }: Props) => {
+export const InfoModal = ({ isOpen, handleClose, extraVision, isMemeMode, isHighContrast }: Props) => {
   const object = isMemeMode ? 'Turd' : 'Turtle'
 
   return (
@@ -23,11 +24,11 @@ export const InfoModal = ({ isOpen, handleClose, extraVision, isMemeMode }: Prop
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
-        <Cell value="O" extraVision={true} isMemeMode={isMemeMode} status="correct" />
-        <Cell value="T" extraVision={true} isMemeMode={isMemeMode} />
-        <Cell value="H" extraVision={true} isMemeMode={isMemeMode} />
-        <Cell value="S" extraVision={true} isMemeMode={isMemeMode} />
-        <Cell value="K" extraVision={true} isMemeMode={isMemeMode} />
+        <Cell value="O" extraVision={true} isMemeMode={isMemeMode} isHighContrast={isHighContrast} status="correct" />
+        <Cell value="T" extraVision={true} isMemeMode={isMemeMode} isHighContrast={isHighContrast} />
+        <Cell value="H" extraVision={true} isMemeMode={isMemeMode} isHighContrast={isHighContrast} />
+        <Cell value="S" extraVision={true} isMemeMode={isMemeMode} isHighContrast={isHighContrast} />
+        <Cell value="K" extraVision={true} isMemeMode={isMemeMode} isHighContrast={isHighContrast} />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
         The <strong>Blue {object}</strong>
@@ -36,11 +37,11 @@ export const InfoModal = ({ isOpen, handleClose, extraVision, isMemeMode }: Prop
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
-        <Cell value="I" extraVision={true} isMemeMode={isMemeMode} />
-        <Cell value="R" extraVision={true} isMemeMode={isMemeMode} />
-        <Cell value="Z" extraVision={true} isMemeMode={isMemeMode} status="present" />
-        <Cell value="Y" extraVision={true} isMemeMode={isMemeMode} />
-        <Cell value="S" extraVision={true} isMemeMode={isMemeMode} />
+        <Cell value="I" extraVision={true} isMemeMode={isMemeMode} isHighContrast={isHighContrast} />
+        <Cell value="R" extraVision={true} isMemeMode={isMemeMode} isHighContrast={isHighContrast} />
+        <Cell value="Z" extraVision={true} isMemeMode={isMemeMode} isHighContrast={isHighContrast} status="present" />
+        <Cell value="Y" extraVision={true} isMemeMode={isMemeMode} isHighContrast={isHighContrast} />
+        <Cell value="S" extraVision={true} isMemeMode={isMemeMode} isHighContrast={isHighContrast} />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
         The <strong>Red {object}</strong>
@@ -49,11 +50,11 @@ export const InfoModal = ({ isOpen, handleClose, extraVision, isMemeMode }: Prop
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
-        <Cell value="Z" extraVision={true} isMemeMode={isMemeMode} />
-        <Cell value="X" extraVision={true} isMemeMode={isMemeMode} />
-        <Cell value="W" extraVision={true} isMemeMode={isMemeMode} />
-        <Cell value="D" extraVision={true} isMemeMode={isMemeMode} status="absent" />
-        <Cell value="F" extraVision={true} isMemeMode={isMemeMode} />
+        <Cell value="Z" extraVision={true} isMemeMode={isMemeMode} isHighContrast={isHighContrast} />
+        <Cell value="X" extraVision={true} isMemeMode={isMemeMode} isHighContrast={isHighContrast} />
+        <Cell value="W" extraVision={true} isMemeMode={isMemeMode} isHighContrast={isHighContrast} />
+        <Cell value="D" extraVision={true} isMemeMode={isMemeMode} isHighContrast={isHighContrast} status="absent" />
+        <Cell value="F" extraVision={true} isMemeMode={isMemeMode} isHighContrast={isHighContrast} />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
         The <strong>Purple {object}</strong>

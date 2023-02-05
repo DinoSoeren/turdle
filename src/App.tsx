@@ -337,6 +337,7 @@ function App() {
                 isStatsModalOpen
               }
               isMemeMode={isMemeModeEnabled}
+              isHighContrast={isHighContrastMode}
             />
           </div>
           <Keyboard
@@ -354,6 +355,7 @@ function App() {
               isStatsModalOpen
             }
             isMemeMode={isMemeModeEnabled}
+            isHighContrast={isHighContrastMode}
           />
           <div className="mt-8 flex justify-center gap-1">
             <button
@@ -376,6 +378,7 @@ function App() {
             handleClose={() => setIsInfoModalOpen(false)}
             extraVision={isExtraVisionModeEnabled}
             isMemeMode={isMemeModeEnabled}
+            isHighContrast={isHighContrastMode}
           />
           <StatsModal
             isOpen={isStatsModalOpen}

@@ -2,7 +2,6 @@ import classnames from 'classnames'
 import { ReactNode, useState } from 'react'
 
 import { REVEAL_TIME_MS } from '../../constants/settings'
-import { loadSettingsFromLocalStorage } from '../../lib/localStorage'
 import { CharStatus } from '../../lib/statuses'
 import { solution } from '../../lib/words'
 
@@ -20,6 +19,7 @@ type Props = {
   disabled?: boolean
   isRevealing?: boolean
   isMemeMode?: boolean
+  isHighContrast?: boolean
 }
 
 export const Key = ({
@@ -32,9 +32,9 @@ export const Key = ({
   disabled,
   isRevealing,
   isMemeMode,
+  isHighContrast
 }: Props) => {
   const keyDelayMs = REVEAL_TIME_MS * solution.length
-  const isHighContrast = loadSettingsFromLocalStorage()?.highContrastModeEnabled ?? false
 
   const classes = classnames(
     'xxshort:h-8 xxshort:w-8 xxshort:text-xxs xshort:w-10 xshort:h-10 flex relative short:h-12 h-14 items-center justify-center rounded mx-0.5 text-xs font-bold cursor-pointer select-none dark:text-white',

@@ -10,6 +10,7 @@ type Props = {
   extraVision?: boolean
   isRevealing?: boolean
   isMemeMode?: boolean
+  isHighContrast?: boolean
   currentRowClassName: string
 }
 
@@ -20,6 +21,7 @@ export const Grid = ({
   extraVision,
   isRevealing,
   isMemeMode,
+  isHighContrast,
   currentRowClassName,
 }: Props) => {
   const empties =
@@ -37,6 +39,7 @@ export const Grid = ({
           extraVision={extraVision}
           isRevealing={isRevealing && guesses.length - 1 === i}
           isMemeMode={isMemeMode}
+          isHighContrast={isHighContrast}
         />
       ))}
       {guesses.length < MAX_CHALLENGES && (
@@ -44,6 +47,7 @@ export const Grid = ({
           guess={currentGuess}
           extraVision={extraVision}
           isMemeMode={isMemeMode}
+          isHighContrast={isHighContrast}
           className={currentRowClassName}
         />
       )}
