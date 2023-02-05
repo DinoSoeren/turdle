@@ -39,7 +39,7 @@ export const findFirstUnusedReveal = (word: string, guesses: string[]) => {
       lettersLeftArray.push(splitGuess[i])
     }
     if (statuses[i] === 'correct' && splitWord[i] !== splitGuess[i]) {
-      return WRONG_SPOT_MESSAGE(splitGuess[i], i + 1)
+      return WRONG_SPOT_MESSAGE(wordleToTurdle(splitGuess[i]), i + 1)
     }
   }
 
