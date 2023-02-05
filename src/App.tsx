@@ -1,78 +1,103 @@
-import {
-  InformationCircleIcon,
-  ChartBarIcon,
-  SunIcon,
-  EyeIcon,
-  EyeOffIcon,
-} from '@heroicons/react/outline'
+import './App.css'
+
+import { ClockIcon } from '@heroicons/react/outline'
 import { FaDiscord } from 'react-icons/fa'
-import { useState, useEffect } from 'react'
-import { Alert } from './components/alerts/Alert'
+import { format } from 'date-fns'
+import { default as GraphemeSplitter } from 'grapheme-splitter'
+import { useEffect, useState } from 'react'
+import Div100vh from 'react-div-100vh'
+
+import { AlertContainer } from './components/alerts/AlertContainer'
 import { Grid } from './components/grid/Grid'
 import { Keyboard } from './components/keyboard/Keyboard'
-import { AboutModal } from './components/modals/AboutModal'
+import { DatePickerModal } from './components/modals/DatePickerModal'
 import { InfoModal } from './components/modals/InfoModal'
+import { AboutModal } from './components/modals/AboutModal'
+import { MigrateStatsModal } from './components/modals/MigrateStatsModal'
+import { SettingsModal } from './components/modals/SettingsModal'
 import { StatsModal } from './components/modals/StatsModal'
+import { Navbar } from './components/navbar/Navbar'
 import {
-  WIN_MESSAGES,
+  DATE_LOCALE,
+  DISCOURAGE_INAPP_BROWSERS,
+  LONG_ALERT_TIME_MS,
+  MAX_CHALLENGES,
+  REVEAL_TIME_MS,
+  WELCOME_INFO_MODAL_MS,
+} from './constants/settings'
+import {
+  CORRECT_WORD_MESSAGE,
+  DISCOURAGE_INAPP_BROWSER_TEXT,
   GAME_COPIED_MESSAGE,
   ABOUT_GAME_MESSAGE,
+  HARD_MODE_ALERT_MESSAGE,
   NOT_ENOUGH_LETTERS_MESSAGE,
+  SHARE_FAILURE_TEXT,
+  WIN_MESSAGES,
   WORD_NOT_FOUND_MESSAGE,
-  CORRECT_WORD_MESSAGE,
 } from './constants/strings'
-import { isWordInWordList, isWinningWord, solution } from './lib/words'
-import { addStatsForCompletedGame, loadStats } from './lib/stats'
+import { wordleToTurdle } from './constants/validGuesses'
+import { useAlert } from './context/AlertContext'
+import { isInAppBrowser } from './lib/browser'
 import {
   loadGameStateFromLocalStorage,
   saveGameStateToLocalStorage,
   loadSettingsFromLocalStorage,
   saveSettingsToLocalStorage,
 } from './lib/localStorage'
-
-import './App.css'
-import { wordleToTurdle } from './constants/validGuesses'
-
-const ALERT_TIME_MS = 2000
+import { addStatsForCompletedGame, loadStats } from './lib/stats'
+import {
+  findFirstUnusedReveal,
+  getGameDate,
+  getIsLatestGame,
+  isWinningWord,
+  isWordInWordList,
+  setGameDate,
+  solution,
+  solutionGameDate,
+  unicodeLength,
+} from './lib/words'
 
 function App() {
+  const isLatestGame = getIsLatestGame()
+  const gameDate = getGameDate()
   const prefersDarkMode = window.matchMedia(
     '(prefers-color-scheme: dark)'
   ).matches
 
+  const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
+    useAlert()
   const [currentGuess, setCurrentGuess] = useState('')
   const [isGameWon, setIsGameWon] = useState(false)
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false)
-  const [isNotEnoughLetters, setIsNotEnoughLetters] = useState(false)
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
-  const [isWordNotFoundAlertOpen, setIsWordNotFoundAlertOpen] = useState(false)
+  const [isDatePickerModalOpen, setIsDatePickerModalOpen] = useState(false)
+  const [isMigrateStatsModalOpen, setIsMigrateStatsModalOpen] = useState(false)
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
+  const [currentRowClass, setCurrentRowClass] = useState('')
   const [isGameLost, setIsGameLost] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(
     localStorage.getItem('theme')
       ? localStorage.getItem('theme') === 'dark'
       : prefersDarkMode
-      ? true
-      : false
+        ? true
+        : false
   )
   const [isFirstTimePlaying, setIsFirstTimePlaying] = useState<boolean>(() => {
-    const loaded = loadSettingsFromLocalStorage()
-    if (loaded?.isFirstTimePlaying === false) {
-      return false
-    }
-    return true
+    return loadSettingsFromLocalStorage()?.isFirstTimePlaying ?? true
   })
   const [isExtraVisionModeEnabled, setExtraVisionModeEnabled] =
     useState<boolean>(() => {
-      const loaded = loadSettingsFromLocalStorage()
-      if (loaded?.isExtraVisionModeEnabled === true) {
-        return true
-      }
-      return false
+      return loadSettingsFromLocalStorage()?.isExtraVisionModeEnabled ?? false
     })
   const [successAlert, setSuccessAlert] = useState('')
+  const [isHighContrastMode, setIsHighContrastMode] = useState<boolean>(() => {
+    return loadSettingsFromLocalStorage()?.highContrastModeEnabled ?? false
+  })
+  const [isRevealing, setIsRevealing] = useState(false)
   const [guesses, setGuesses] = useState<string[]>(() => {
-    const loaded = loadGameStateFromLocalStorage()
+    const loaded = loadGameStateFromLocalStorage(isLatestGame)
     if (loaded?.solution !== solution) {
       return []
     }
@@ -80,13 +105,41 @@ function App() {
     if (gameWasWon) {
       setIsGameWon(true)
     }
-    if (loaded.guesses.length === 6 && !gameWasWon) {
+    if (loaded.guesses.length === MAX_CHALLENGES && !gameWasWon) {
       setIsGameLost(true)
+      showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
+        persist: true,
+      })
     }
     return loaded.guesses
   })
 
   const [stats, setStats] = useState(() => loadStats())
+
+  const [isHardMode, setIsHardMode] = useState(
+    localStorage.getItem('gameMode')
+      ? localStorage.getItem('gameMode') === 'hard'
+      : false
+  )
+
+  useEffect(() => {
+    // if no game state on load,
+    // show the user the how-to info modal
+    if (!loadGameStateFromLocalStorage(true)) {
+      setTimeout(() => {
+        setIsInfoModalOpen(true)
+      }, WELCOME_INFO_MODAL_MS)
+    }
+  })
+
+  useEffect(() => {
+    DISCOURAGE_INAPP_BROWSERS &&
+      isInAppBrowser() &&
+      showErrorAlert(DISCOURAGE_INAPP_BROWSER_TEXT, {
+        persist: false,
+        durationMs: 7000,
+      })
+  }, [showErrorAlert])
 
   useEffect(() => {
     if (isDarkMode) {
@@ -94,44 +147,66 @@ function App() {
     } else {
       document.documentElement.classList.remove('dark')
     }
-  }, [isDarkMode])
+
+    if (isHighContrastMode) {
+      document.documentElement.classList.add('high-contrast')
+    } else {
+      document.documentElement.classList.remove('high-contrast')
+    }
+  }, [isDarkMode, isHighContrastMode])
 
   const handleDarkMode = (isDark: boolean) => {
     setIsDarkMode(isDark)
     localStorage.setItem('theme', isDark ? 'dark' : 'light')
   }
 
-  useEffect(() => {
-    saveGameStateToLocalStorage({ guesses, solution })
-  }, [guesses])
+  const handleHardMode = (isHard: boolean) => {
+    if (guesses.length === 0 || localStorage.getItem('gameMode') === 'hard') {
+      setIsHardMode(isHard)
+      localStorage.setItem('gameMode', isHard ? 'hard' : 'normal')
+    } else {
+      showErrorAlert(HARD_MODE_ALERT_MESSAGE)
+    }
+  }
 
-  useEffect(() => {
-    if (isGameWon) {
-      setSuccessAlert(
-        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
-      )
-      setTimeout(() => {
-        setSuccessAlert('')
-        setIsStatsModalOpen(true)
-      }, ALERT_TIME_MS)
-    }
-    if (isGameLost) {
-      setTimeout(() => {
-        setIsStatsModalOpen(true)
-      }, ALERT_TIME_MS)
-    }
-  }, [isGameWon, isGameLost])
+  const clearCurrentRowClass = () => {
+    setCurrentRowClass('')
+  }
 
   useEffect(() => {
     saveSettingsToLocalStorage({
       isFirstTimePlaying,
       isExtraVisionModeEnabled,
+      highContrastModeEnabled: isHighContrastMode,
     })
     if (isFirstTimePlaying) {
       setIsInfoModalOpen(true)
       setIsFirstTimePlaying(false)
     }
-  }, [isFirstTimePlaying, isExtraVisionModeEnabled])
+  }, [isFirstTimePlaying, isExtraVisionModeEnabled, isHighContrastMode])
+
+  useEffect(() => {
+    saveGameStateToLocalStorage(getIsLatestGame(), { guesses, solution })
+  }, [guesses])
+
+  useEffect(() => {
+    if (isGameWon) {
+      const winMessage =
+        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
+      const delayMs = REVEAL_TIME_MS * solution.length
+
+      showSuccessAlert(winMessage, {
+        delayMs,
+        onClose: () => setIsStatsModalOpen(true),
+      })
+    }
+
+    if (isGameLost) {
+      setTimeout(() => {
+        setIsStatsModalOpen(true)
+      }, (solution.length + 1) * REVEAL_TIME_MS)
+    }
+  }, [isGameWon, isGameLost, showSuccessAlert])
 
   const onChar = (value: string, replace: boolean) => {
     if (currentGuess.length < 5 && guesses.length < 6 && !isGameWon) {
@@ -146,122 +221,191 @@ function App() {
   }
 
   const onDelete = () => {
-    setCurrentGuess(currentGuess.slice(0, -1))
+    setCurrentGuess(
+      new GraphemeSplitter().splitGraphemes(currentGuess).slice(0, -1).join('')
+    )
   }
 
   const onEnter = () => {
     if (isGameWon || isGameLost) {
       return
     }
-    if (!(currentGuess.length === 5)) {
-      setIsNotEnoughLetters(true)
-      return setTimeout(() => {
-        setIsNotEnoughLetters(false)
-      }, ALERT_TIME_MS)
+
+    if (!(unicodeLength(currentGuess) === solution.length)) {
+      setCurrentRowClass('jiggle')
+      return showErrorAlert(NOT_ENOUGH_LETTERS_MESSAGE, {
+        onClose: clearCurrentRowClass,
+      })
     }
 
     if (!isWordInWordList(currentGuess)) {
-      setIsWordNotFoundAlertOpen(true)
-      return setTimeout(() => {
-        setIsWordNotFoundAlertOpen(false)
-      }, ALERT_TIME_MS)
+      setCurrentRowClass('jiggle')
+      return showErrorAlert(WORD_NOT_FOUND_MESSAGE, {
+        onClose: clearCurrentRowClass,
+      })
     }
+
+    // enforce hard mode - all guesses must contain all previously revealed letters
+    if (isHardMode) {
+      const firstMissingReveal = findFirstUnusedReveal(currentGuess, guesses)
+      if (firstMissingReveal) {
+        setCurrentRowClass('jiggle')
+        return showErrorAlert(firstMissingReveal, {
+          onClose: clearCurrentRowClass,
+        })
+      }
+    }
+
+    setIsRevealing(true)
+    // turn this back off after all
+    // chars have been revealed
+    setTimeout(() => {
+      setIsRevealing(false)
+    }, REVEAL_TIME_MS * solution.length)
 
     const winningWord = isWinningWord(currentGuess)
 
-    if (currentGuess.length === 5 && guesses.length < 6 && !isGameWon) {
+    if (
+      unicodeLength(currentGuess) === solution.length &&
+      guesses.length < MAX_CHALLENGES &&
+      !isGameWon
+    ) {
       setGuesses([...guesses, currentGuess])
       setCurrentGuess('')
 
       if (winningWord) {
-        setStats(addStatsForCompletedGame(stats, guesses.length))
+        if (isLatestGame) {
+          setStats(addStatsForCompletedGame(stats, guesses.length))
+        }
         return setIsGameWon(true)
       }
 
-      if (guesses.length === 5) {
-        setStats(addStatsForCompletedGame(stats, guesses.length + 1))
+      if (guesses.length === MAX_CHALLENGES - 1) {
+        if (isLatestGame) {
+          setStats(addStatsForCompletedGame(stats, guesses.length + 1))
+        }
         setIsGameLost(true)
+        showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
+          persist: true,
+          delayMs: REVEAL_TIME_MS * solution.length + 1,
+        })
       }
     }
   }
 
   return (
-    <div className="py-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <div className="flex w-80 mx-auto items-center mb-8 mt-12">
-        <div className="flex grow">
-          <h1 className="text-xl flex font-bold dark:text-white">Turdle</h1>
-          <div className="logo flex shrink-0 grow-0 ml-1 w-7 h-7"></div>
-        </div>
-        {!isExtraVisionModeEnabled ? (
-          <EyeIcon
-            className="h-6 w-6 cursor-pointer dark:stroke-white hover:opacity-50 transition-opacity"
-            onClick={() => setExtraVisionModeEnabled(!isExtraVisionModeEnabled)}
-          />
-        ) : (
-          <EyeOffIcon
-            className="h-6 w-6 cursor-pointer dark:stroke-white hover:opacity-50 transition-opacity"
-            onClick={() => setExtraVisionModeEnabled(!isExtraVisionModeEnabled)}
-          />
+    <Div100vh>
+      <div className="flex h-full flex-col">
+        <Navbar
+          isExtraVisionModeEnabled={isExtraVisionModeEnabled}
+          setExtraVisionModeEnabled={setExtraVisionModeEnabled}
+          setIsInfoModalOpen={setIsInfoModalOpen}
+          setIsStatsModalOpen={setIsStatsModalOpen}
+          setIsDatePickerModalOpen={setIsDatePickerModalOpen}
+          setIsSettingsModalOpen={setIsSettingsModalOpen}
+        />
+
+        {!isLatestGame && (
+          <div className="flex items-center justify-center">
+            <ClockIcon className="h-6 w-6 stroke-gray-600 dark:stroke-gray-300" />
+            <p className="text-base text-gray-600 dark:text-gray-300">
+              {format(gameDate, 'd MMMM yyyy', { locale: DATE_LOCALE })}
+            </p>
+          </div>
         )}
-        <SunIcon
-          className="h-6 w-6 cursor-pointer dark:stroke-white hover:opacity-50 transition-opacity"
-          onClick={() => handleDarkMode(!isDarkMode)}
-        />
-        <InformationCircleIcon
-          className="h-6 w-6 cursor-pointer dark:stroke-white hover:opacity-50 transition-opacity"
-          onClick={() => setIsInfoModalOpen(true)}
-        />
-        <ChartBarIcon
-          className="h-6 w-6 cursor-pointer dark:stroke-white hover:opacity-50 transition-opacity"
-          onClick={() => setIsStatsModalOpen(true)}
-        />
+
+        <div className="mx-auto flex w-full grow flex-col px-1 pt-2 pb-8 sm:px-6 md:max-w-7xl lg:px-8 short:pb-2 short:pt-2">
+          <div className="flex grow flex-col justify-center pb-6 short:pb-2">
+            <Grid
+              solution={solution}
+              guesses={guesses}
+              currentGuess={currentGuess}
+              isRevealing={isRevealing}
+              currentRowClassName={currentRowClass}
+              extraVision={
+                isExtraVisionModeEnabled ||
+                isGameLost ||
+                isInfoModalOpen ||
+                isAboutModalOpen ||
+                isStatsModalOpen
+              }
+            />
+          </div>
+          <Keyboard
+            onChar={onChar}
+            onDelete={onDelete}
+            onEnter={onEnter}
+            solution={solution}
+            guesses={guesses}
+            currentGuess={currentGuess}
+            isRevealing={isRevealing}
+            extraVision={
+              isExtraVisionModeEnabled ||
+              isGameLost ||
+              isInfoModalOpen ||
+              isAboutModalOpen ||
+              isStatsModalOpen
+            }
+          />
+          <InfoModal
+            isOpen={isInfoModalOpen}
+            handleClose={() => setIsInfoModalOpen(false)}
+            extraVision={isExtraVisionModeEnabled}
+          />
+          <StatsModal
+            isOpen={isStatsModalOpen}
+            handleClose={() => setIsStatsModalOpen(false)}
+            solution={solution}
+            guesses={guesses}
+            gameStats={stats}
+            isLatestGame={isLatestGame}
+            isGameLost={isGameLost}
+            isGameWon={isGameWon}
+            handleShareToClipboard={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
+            handleShareFailure={() =>
+              showErrorAlert(SHARE_FAILURE_TEXT, {
+                durationMs: LONG_ALERT_TIME_MS,
+              })
+            }
+            handleMigrateStatsButton={() => {
+              setIsStatsModalOpen(false)
+              setIsMigrateStatsModalOpen(true)
+            }}
+            isHardMode={isHardMode}
+            isDarkMode={isDarkMode}
+            isHighContrastMode={isHighContrastMode}
+            numberOfGuessesMade={guesses.length}
+          />
+          <DatePickerModal
+            isOpen={isDatePickerModalOpen}
+            initialDate={solutionGameDate}
+            handleSelectDate={(d) => {
+              setIsDatePickerModalOpen(false)
+              setGameDate(d)
+            }}
+            handleClose={() => setIsDatePickerModalOpen(false)}
+          />
+          <MigrateStatsModal
+            isOpen={isMigrateStatsModalOpen}
+            handleClose={() => setIsMigrateStatsModalOpen(false)}
+          />
+          <SettingsModal
+            isOpen={isSettingsModalOpen}
+            handleClose={() => setIsSettingsModalOpen(false)}
+            isHardMode={isHardMode}
+            handleHardMode={handleHardMode}
+            isDarkMode={isDarkMode}
+            handleDarkMode={handleDarkMode}
+            isHighContrastMode={isHighContrastMode}
+            handleHighContrastMode={setIsHighContrastMode}
+          />
+          <AlertContainer />
+          <AboutModal
+            isOpen={isAboutModalOpen}
+            handleClose={() => setIsAboutModalOpen(false)}
+          />
+        </div>
       </div>
-      <Grid
-        guesses={guesses}
-        currentGuess={currentGuess}
-        extraVision={
-          isExtraVisionModeEnabled ||
-          isGameLost ||
-          isInfoModalOpen ||
-          isAboutModalOpen ||
-          isStatsModalOpen
-        }
-      />
-      <Keyboard
-        onChar={onChar}
-        onDelete={onDelete}
-        onEnter={onEnter}
-        guesses={guesses}
-        currentGuess={currentGuess.split('')}
-        extraVision={
-          isExtraVisionModeEnabled ||
-          isGameLost ||
-          isInfoModalOpen ||
-          isAboutModalOpen ||
-          isStatsModalOpen
-        }
-      />
-      <InfoModal
-        isOpen={isInfoModalOpen}
-        handleClose={() => setIsInfoModalOpen(false)}
-        extraVision={isExtraVisionModeEnabled}
-      />
-      <StatsModal
-        isOpen={isStatsModalOpen}
-        handleClose={() => setIsStatsModalOpen(false)}
-        guesses={guesses}
-        gameStats={stats}
-        isGameLost={isGameLost}
-        isGameWon={isGameWon}
-        handleShare={() => {
-          setSuccessAlert(GAME_COPIED_MESSAGE)
-          return setTimeout(() => setSuccessAlert(''), ALERT_TIME_MS)
-        }}
-      />
-      <AboutModal
-        isOpen={isAboutModalOpen}
-        handleClose={() => setIsAboutModalOpen(false)}
-      />
 
       <div className="flex justify-center gap-1 mt-8">
         <button
@@ -279,22 +423,7 @@ function App() {
           <FaDiscord className="mx-auto" />
         </a>
       </div>
-
-      <Alert message={NOT_ENOUGH_LETTERS_MESSAGE} isOpen={isNotEnoughLetters} />
-      <Alert
-        message={WORD_NOT_FOUND_MESSAGE}
-        isOpen={isWordNotFoundAlertOpen}
-      />
-      <Alert
-        message={CORRECT_WORD_MESSAGE(wordleToTurdle(solution))}
-        isOpen={isGameLost}
-      />
-      <Alert
-        message={successAlert}
-        isOpen={successAlert !== ''}
-        variant="success"
-      />
-    </div>
+    </Div100vh>
   )
 }
 

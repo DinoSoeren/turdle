@@ -1,18 +1,35 @@
 import { getGuessStatuses } from '../../lib/statuses'
+import { unicodeSplit } from '../../lib/words'
 import { Cell } from './Cell'
 
 type Props = {
+  solution: string
   guess: string
   extraVision?: boolean
+  isRevealing?: boolean
 }
 
-export const CompletedRow = ({ guess, extraVision = false }: Props) => {
-  const statuses = getGuessStatuses(guess)
+export const CompletedRow = ({
+  solution,
+  guess,
+  extraVision,
+  isRevealing
+}: Props) => {
+  const statuses = getGuessStatuses(solution, guess)
+  const splitGuess = unicodeSplit(guess)
 
   return (
-    <div className="flex justify-center mb-1">
-      {guess.split('').map((letter, i) => (
-        <Cell key={i} value={letter} extraVision={extraVision} status={statuses[i]} />
+    <div className="mb-1 flex justify-center">
+      {splitGuess.map((letter, i) => (
+        <Cell
+          key={i}
+          value={letter}
+          status={statuses[i]}
+          position={i}
+          extraVision={extraVision}
+          isRevealing={isRevealing}
+          isCompleted
+        />
       ))}
     </div>
   )

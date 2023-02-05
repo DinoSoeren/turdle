@@ -7,7 +7,7 @@ type Props = {
   extraVision?: boolean
 }
 
-export const InfoModal = ({ isOpen, handleClose, extraVision = false }: Props) => {
+export const InfoModal = ({ isOpen, handleClose, extraVision }: Props) => {
   return (
     <BaseModal title="How to play" isOpen={isOpen} handleClose={handleClose}>
       <p className="text-sm text-gray-500 dark:text-gray-300">
@@ -56,6 +56,17 @@ export const InfoModal = ({ isOpen, handleClose, extraVision = false }: Props) =
         The <strong>Purple Turtle</strong>
         {' '}(<strong>3<span className="text-purple-500">P</span></strong>)
         is not in the sequence in any spot.
+      </p>
+
+      <p className="mt-6 text-sm italic text-gray-500 dark:text-gray-300">
+        This is an open source version of the word guessing game we all know and
+        love -{' '}
+        <a
+          href="https://github.com/DinoSoeren/turdle"
+          className="font-bold underline"
+        >
+          check out the code here
+        </a>{' '}
       </p>
     </BaseModal>
   )

@@ -33,16 +33,17 @@ export const KeyboardLetters = [
 
 export const VALIDGUESSES = generateAllValidGuesses()
 
-export function isDisabled(letter: string, currentGuess: string[]): boolean {
+export function isDisabled(letter: string, currentGuess: string): boolean {
   const frame = letterToFrameIdx(letter)
+  const guessLetters = currentGuess.split('')
   const lastLetterFrame = letterToFrameIdx(
-    currentGuess[currentGuess.length - 1]
+    guessLetters[guessLetters.length - 1]
   )
   return (
-    currentGuess.length === 5 ||
-    currentGuess.some((c) => c !== letter && letterToFrameIdx(c) === frame) ||
-    (currentGuess.length > 0 &&
-      !currentGuess.some((c) => letterToFrameIdx(c) === frame) &&
+    guessLetters.length === 5 ||
+    guessLetters.some((c) => c !== letter && letterToFrameIdx(c) === frame) ||
+    (guessLetters.length > 0 &&
+      !guessLetters.some((c) => letterToFrameIdx(c) === frame) &&
       frame !== (lastLetterFrame + 1 === 6 ? 1 : lastLetterFrame + 1))
   )
 }

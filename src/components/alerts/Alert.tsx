@@ -1,19 +1,25 @@
-import { Fragment } from 'react'
 import { Transition } from '@headlessui/react'
 import classNames from 'classnames'
+import { Fragment } from 'react'
 
 type Props = {
   isOpen: boolean
   message: string
-  variant?: 'success' | 'warning'
+  variant?: 'success' | 'error'
+  topMost?: boolean
 }
 
-export const Alert = ({ isOpen, message, variant = 'warning' }: Props) => {
+export const Alert = ({
+  isOpen,
+  message,
+  variant = 'error',
+  topMost = false,
+}: Props) => {
   const classes = classNames(
-    'fixed top-5 left-1/2 transform -translate-x-1/2 max-w-sm w-full shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden',
+    'fixed z-20 top-14 left-1/2 transform -translate-x-1/2 max-w-sm shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden',
     {
-      'bg-rose-200': variant === 'warning',
-      'bg-green-200 z-20': variant === 'success',
+      'bg-rose-500 text-white': variant === 'error',
+      'bg-blue-500 text-white': variant === 'success',
     }
   )
 
@@ -29,10 +35,8 @@ export const Alert = ({ isOpen, message, variant = 'warning' }: Props) => {
       leaveTo="opacity-0"
     >
       <div className={classes}>
-        <div className="p-4">
-          <p className="text-sm text-center font-medium text-gray-900">
-            {message}
-          </p>
+        <div className="p-2">
+          <p className="text-center text-sm font-medium">{message}</p>
         </div>
       </div>
     </Transition>
