@@ -2,6 +2,7 @@ import {
   EXTRA_VISION_MODE_DESCRIPTION,
   HARD_MODE_DESCRIPTION,
   HIGH_CONTRAST_MODE_DESCRIPTION,
+  MEME_MODE_DESCRIPTION,
 } from '../../constants/strings'
 import { BaseModal } from './BaseModal'
 import { SettingsToggle } from './SettingsToggle'
@@ -39,12 +40,6 @@ export const SettingsModal = ({
     <BaseModal title="Settings" isOpen={isOpen} handleClose={handleClose}>
       <div className="mt-2 flex flex-col divide-y">
         <SettingsToggle
-          settingName="Auto-hide Bubbles"
-          flag={!isExtraVisionMode}
-          handleFlag={(flag: boolean) => handleExtraVisionMode(!flag)}
-          description={EXTRA_VISION_MODE_DESCRIPTION}
-        />
-        <SettingsToggle
           settingName="Hard Mode"
           flag={isHardMode}
           handleFlag={handleHardMode}
@@ -62,9 +57,16 @@ export const SettingsModal = ({
           description={HIGH_CONTRAST_MODE_DESCRIPTION}
         />
         <SettingsToggle
+          settingName="Auto-hide Bubbles"
+          flag={!isExtraVisionMode}
+          handleFlag={(flag: boolean) => handleExtraVisionMode(!flag)}
+          description={EXTRA_VISION_MODE_DESCRIPTION}
+        />
+        <SettingsToggle
           settingName="💩"
           flag={isMemeMode}
           handleFlag={handleMemeMode}
+          description={MEME_MODE_DESCRIPTION}
         />
       </div>
     </BaseModal>

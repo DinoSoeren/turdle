@@ -44,8 +44,10 @@ export const loadStatsFromLocalStorage = () => {
 export type GameSettings = {
   isFirstTimePlaying: boolean
   isExtraVisionModeEnabled: boolean
-  highContrastModeEnabled: boolean
-  isMemeModeEnabled: boolean
+  // Note: All GameSettings added beyond this point _MUST_ be optional,
+  // otherwise the app will fail to load settings from previous versions.
+  highContrastModeEnabled?: boolean
+  isMemeModeEnabled?: boolean
 }
 
 export const saveSettingsToLocalStorage = (gameSettings: GameSettings) => {
