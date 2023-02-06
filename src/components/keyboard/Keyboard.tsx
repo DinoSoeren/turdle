@@ -90,6 +90,7 @@ export const Keyboard = ({
         {['Q', 'W', 'E', 'R', 'T'].map((key) => (
           <Key
             value={key}
+            key={key}
             onClick={onClick}
             extraVision={extraVision}
             isMemeMode={isMemeMode}
@@ -104,6 +105,7 @@ export const Keyboard = ({
         {['Y', 'U', 'I', 'O', 'P'].map((key) => (
           <Key
             value={key}
+            key={key}
             onClick={onClick}
             extraVision={extraVision}
             isMemeMode={isMemeMode}
@@ -118,6 +120,7 @@ export const Keyboard = ({
         {['A', 'S', 'D', 'F', 'G'].map((key) => (
           <Key
             value={key}
+            key={key}
             onClick={onClick}
             extraVision={extraVision}
             isMemeMode={isMemeMode}
@@ -132,6 +135,7 @@ export const Keyboard = ({
         {['H', 'J', 'K', 'L', 'Z'].map((key) => (
           <Key
             value={key}
+            key={key}
             onClick={onClick}
             extraVision={extraVision}
             isMemeMode={isMemeMode}
@@ -146,6 +150,7 @@ export const Keyboard = ({
         {['X', 'C', 'V', 'B', 'N'].map((key) => (
           <Key
             value={key}
+            key={key}
             onClick={onClick}
             extraVision={extraVision}
             isMemeMode={isMemeMode}
