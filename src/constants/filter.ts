@@ -13,10 +13,12 @@ export function turtleFilter({
 }: FilterProps): string {
   const offset = isMemeMode ? 1 : 0
   const colorIdx = letterToColorIdx(value) + offset
-  const hue = ((colorIdx * NUM_FRAMES) / KeyboardLetters.length) * 360
+  const hueDegrees = ((colorIdx * NUM_FRAMES) / KeyboardLetters.length) * 360
+  const hue = `hue-rotate(${hueDegrees}deg)`
   const contrast = isHighContrast ? 'contrast(260%)' : ''
-  const effect = 'saturate(' + (colorIdx - offset === 1 ? '0' : '1') + ') '
-  return 'hue-rotate(' + hue + 'deg) ' + effect + contrast
+  const saturate = `saturate(${colorIdx - offset === 1 ? '0' : '1'})`
+  const shadow = isHighContrast ? `drop-shadow(0 0 1px rgb(50, 50, 50))` : ''
+  return `${hue} ${saturate} ${shadow} ${contrast}`
 }
 
 export function turtleTransform(value?: string): string {
