@@ -39,7 +39,7 @@ export const SettingsModal = ({
     <BaseModal title="Settings" isOpen={isOpen} handleClose={handleClose}>
       <div className="mt-2 flex flex-col divide-y">
         <SettingsToggle
-          settingName="Hide Bubbles"
+          settingName="Auto-hide Bubbles"
           flag={!isExtraVisionMode}
           handleFlag={(flag: boolean) => handleExtraVisionMode(!flag)}
           description={EXTRA_VISION_MODE_DESCRIPTION}
