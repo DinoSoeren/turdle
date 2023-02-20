@@ -1,5 +1,6 @@
 import './index.css'
 
+import { CookieConsentProvider } from '@use-cookie-consent/react'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
@@ -11,9 +12,11 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 
 ReactDOM.render(
   <React.StrictMode>
-    <AlertProvider>
-      <App />
-    </AlertProvider>
+    <CookieConsentProvider>
+      <AlertProvider>
+        <App />
+      </AlertProvider>
+    </CookieConsentProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )

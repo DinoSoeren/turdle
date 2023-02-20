@@ -5,6 +5,7 @@ import { format } from 'date-fns'
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 import { useEffect, useState } from 'react'
 import Div100vh from 'react-div-100vh'
+import { Toaster } from 'react-hot-toast'
 import { FaDiscord } from 'react-icons/fa'
 
 import { AlertContainer } from './components/alerts/AlertContainer'
@@ -106,12 +107,14 @@ function App() {
     const gameWasWon = loaded.guesses.includes(solution)
     if (gameWasWon) {
       setIsGameWon(true)
+      setIsFirstTimePlaying(false)
     }
     if (loaded.guesses.length === MAX_CHALLENGES && !gameWasWon) {
       setIsGameLost(true)
       showErrorAlert(CORRECT_WORD_MESSAGE(wordleToTurdle(solution)), {
         persist: true,
       })
+      setIsFirstTimePlaying(false)
     }
     return loaded.guesses
   })
@@ -125,14 +128,12 @@ function App() {
   )
 
   useEffect(() => {
-    // if no game state on load,
-    // show the user the how-to info modal
-    if (!loadGameStateFromLocalStorage(true)) {
+    if (isFirstTimePlaying) {
       setTimeout(() => {
         setIsInfoModalOpen(true)
       }, WELCOME_INFO_MODAL_MS)
     }
-  })
+  }, [isFirstTimePlaying])
 
   useEffect(() => {
     DISCOURAGE_INAPP_BROWSERS &&
@@ -182,10 +183,6 @@ function App() {
       highContrastModeEnabled: isHighContrastMode,
       isMemeModeEnabled,
     })
-    if (isFirstTimePlaying) {
-      setIsInfoModalOpen(true)
-      setIsFirstTimePlaying(false)
-    }
   }, [
     isFirstTimePlaying,
     isExtraVisionModeEnabled,
@@ -217,7 +214,11 @@ function App() {
   }, [isGameWon, isGameLost, showSuccessAlert])
 
   const onChar = (value: string, replace: boolean) => {
-    if (currentGuess.length < 5 && guesses.length < 6 && !isGameWon) {
+    if (
+      currentGuess.length < solution.length &&
+      guesses.length < MAX_CHALLENGES &&
+      !isGameWon
+    ) {
       if (replace) {
         setCurrentGuess(
           `${currentGuess.substring(0, currentGuess.length - 1)}${value}`
@@ -280,6 +281,11 @@ function App() {
     ) {
       setGuesses([...guesses, currentGuess])
       setCurrentGuess('')
+
+      const gameOver = winningWord || guesses.length === MAX_CHALLENGES - 1
+      if (isFirstTimePlaying && gameOver) {
+        setIsFirstTimePlaying(false)
+      }
 
       if (winningWord) {
         if (isLatestGame) {
@@ -345,6 +351,8 @@ function App() {
 
   return (
     <Div100vh>
+      {/* Toaster allows toast() to be called from anywhere in the App. */}
+      <Toaster />
       <div className="flex h-full flex-col">
         <Navbar
           setIsInfoModalOpen={setIsInfoModalOpen}
@@ -372,10 +380,7 @@ function App() {
               isRevealing={isRevealing}
               currentRowClassName={currentRowClass}
               extraVision={
-                isExtraVisionModeEnabled ||
-                isGameLost ||
-                isInfoModalOpen ||
-                isStatsModalOpen
+                isExtraVisionModeEnabled || isGameLost || isInfoModalOpen
               }
               isMemeMode={isMemeModeEnabled}
               isHighContrast={isHighContrastMode}
@@ -390,10 +395,7 @@ function App() {
             currentGuess={currentGuess}
             isRevealing={isRevealing}
             extraVision={
-              isExtraVisionModeEnabled ||
-              isGameLost ||
-              isInfoModalOpen ||
-              isStatsModalOpen
+              isExtraVisionModeEnabled || isGameLost || isInfoModalOpen
             }
             isMemeMode={isMemeModeEnabled}
             isHighContrast={isHighContrastMode}
@@ -467,6 +469,7 @@ function App() {
           <SettingsModal
             isOpen={isSettingsModalOpen}
             handleClose={() => setIsSettingsModalOpen(false)}
+            isFirstTimePlaying={isFirstTimePlaying}
             isHardMode={isHardMode}
             handleHardMode={handleHardMode}
             isDarkMode={isDarkMode}

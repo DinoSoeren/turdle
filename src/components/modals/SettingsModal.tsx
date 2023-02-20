@@ -10,6 +10,7 @@ import { SettingsToggle } from './SettingsToggle'
 type Props = {
   isOpen: boolean
   handleClose: () => void
+  isFirstTimePlaying: boolean
   isHardMode: boolean
   handleHardMode: Function
   isDarkMode: boolean
@@ -25,6 +26,7 @@ type Props = {
 export const SettingsModal = ({
   isOpen,
   handleClose,
+  isFirstTimePlaying,
   isHardMode,
   handleHardMode,
   isDarkMode,
@@ -63,12 +65,14 @@ export const SettingsModal = ({
           inverted={true}
           description={EXTRA_VISION_MODE_DESCRIPTION}
         />
-        <SettingsToggle
-          settingName="💩"
-          flag={isMemeMode}
-          handleFlag={handleMemeMode}
-          description={MEME_MODE_DESCRIPTION}
-        />
+        {!isFirstTimePlaying && (
+          <SettingsToggle
+            settingName="💩"
+            flag={isMemeMode}
+            handleFlag={handleMemeMode}
+            description={MEME_MODE_DESCRIPTION}
+          />
+        )}
       </div>
     </BaseModal>
   )

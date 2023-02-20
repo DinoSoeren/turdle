@@ -48,7 +48,7 @@ export const SettingsToggle = ({
             handleFlag(newFlag)
             gaEvent({
               category: 'UI Event',
-              action: `Toggle ${settingName}`,
+              action: `Toggle ${settingName === '💩' ? '💩 Meme Mode' : settingName}`,
               value: newFlag ? 1 : 0,
               label: newFlag ? 'enable' : 'disable',
             })
