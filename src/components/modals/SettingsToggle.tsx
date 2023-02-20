@@ -5,7 +5,7 @@ import { gaEvent } from '../../lib/browser'
 type Props = {
   settingName: string
   flag: boolean
-  handleFlag: Function
+  handleFlag?: Function
   inverted?: boolean
   description?: string
 }
@@ -17,10 +17,13 @@ export const SettingsToggle = ({
   inverted,
   description,
 }: Props) => {
+  const disabled = handleFlag === undefined
+
   const toggleHolder = classnames(
     'w-14 h-8 flex shrink-0 items-center bg-gray-300 rounded-full p-1 duration-300 ease-in-out cursor-pointer',
     {
       'bg-green-400': flag,
+      'opacity-30': disabled,
     }
   )
   const toggleButton = classnames(
@@ -29,6 +32,18 @@ export const SettingsToggle = ({
       'translate-x-6': flag,
     }
   )
+
+  function toggleFlag() {
+    if (disabled) return
+    const newFlag = inverted ? flag : !flag
+    handleFlag(newFlag)
+    gaEvent({
+      category: 'UI Event',
+      action: `Toggle ${settingName === '💩' ? '💩 Meme Mode' : settingName}`,
+      value: newFlag ? 1 : 0,
+      label: newFlag ? 'enable' : 'disable',
+    })
+  }
 
   return (
     <>
@@ -41,21 +56,7 @@ export const SettingsToggle = ({
             </p>
           )}
         </div>
-        <div
-          className={toggleHolder}
-          onClick={() => {
-            const newFlag = inverted ? flag : !flag
-            handleFlag(newFlag)
-            gaEvent({
-              category: 'UI Event',
-              action: `Toggle ${
-                settingName === '💩' ? '💩 Meme Mode' : settingName
-              }`,
-              value: newFlag ? 1 : 0,
-              label: newFlag ? 'enable' : 'disable',
-            })
-          }}
-        >
+        <div className={toggleHolder} onClick={toggleFlag}>
           <div className={toggleButton} />
         </div>
       </div>

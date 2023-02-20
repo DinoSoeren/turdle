@@ -1,17 +1,21 @@
 import './App.css'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { ClockIcon } from '@heroicons/react/outline'
+import { useCookieConsentContext } from '@use-cookie-consent/react'
 import { format } from 'date-fns'
 import { default as GraphemeSplitter } from 'grapheme-splitter'
-import { useEffect, useState } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 import Div100vh from 'react-div-100vh'
-import { Toaster } from 'react-hot-toast'
 import { FaDiscord } from 'react-icons/fa'
+import { ToastContainer } from 'react-toastify'
 
 import { AlertContainer } from './components/alerts/AlertContainer'
+import { openCookieToast } from './components/common/CookieToast'
 import { Grid } from './components/grid/Grid'
 import { Keyboard } from './components/keyboard/Keyboard'
 import { AboutModal } from './components/modals/AboutModal'
+import { CookieModal } from './components/modals/CookieModal'
 import { DatePickerModal } from './components/modals/DatePickerModal'
 import { InfoModal } from './components/modals/InfoModal'
 import { MigrateStatsModal } from './components/modals/MigrateStatsModal'
@@ -68,14 +72,23 @@ function App() {
 
   const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
     useAlert()
+  const { consent, acceptCookies } = useCookieConsentContext()
   const [currentGuess, setCurrentGuess] = useState('')
   const [isGameWon, setIsGameWon] = useState(false)
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
+  const [isInfoModalOpening, setIsInfoModalOpening] = useState(true)
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false)
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
+  const [isStatsModalOpening, setIsStatsModalOpening] = useState(false)
   const [isDatePickerModalOpen, setIsDatePickerModalOpen] = useState(false)
   const [isMigrateStatsModalOpen, setIsMigrateStatsModalOpen] = useState(false)
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
+  const [isCookieModalOpen, setIsCookieModalOpen] = useState(false)
+  const [hasCookieModalOpened, setHasCookieModalOpened] = useState(false)
+  const [cookieToastCount, incCookieToastCount] = useReducer(
+    ({ count }) => ({ count: count + 1 }),
+    { count: 0 }
+  )
   const [currentRowClass, setCurrentRowClass] = useState('')
   const [isGameLost, setIsGameLost] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(
@@ -118,20 +131,23 @@ function App() {
     }
     return loaded.guesses
   })
-
   const [stats, setStats] = useState(() => loadStats())
-
   const [isHardMode, setIsHardMode] = useState(
     localStorage.getItem('gameMode')
       ? localStorage.getItem('gameMode') === 'hard'
       : false
   )
+  const [canOpenToast, setCanOpenToast] = useState(false)
 
   useEffect(() => {
     if (isFirstTimePlaying) {
+      setIsInfoModalOpening(true)
       setTimeout(() => {
         setIsInfoModalOpen(true)
+        setIsInfoModalOpening(false)
       }, WELCOME_INFO_MODAL_MS)
+    } else {
+      setIsInfoModalOpening(false)
     }
   }, [isFirstTimePlaying])
 
@@ -191,6 +207,51 @@ function App() {
   ])
 
   useEffect(() => {
+    if (
+      !(
+        isCookieModalOpen ||
+        hasCookieModalOpened ||
+        isInfoModalOpen ||
+        isInfoModalOpening ||
+        isStatsModalOpen ||
+        isStatsModalOpening ||
+        isMigrateStatsModalOpen
+      ) &&
+      cookieToastCount.count < 2 &&
+      (currentGuess.length === 0 || isGameWon || isGameLost)
+    ) {
+      setCanOpenToast(true)
+    } else {
+      setCanOpenToast(false)
+    }
+  }, [
+    isCookieModalOpen,
+    hasCookieModalOpened,
+    isInfoModalOpen,
+    isInfoModalOpening,
+    isStatsModalOpen,
+    isStatsModalOpening,
+    isMigrateStatsModalOpen,
+    cookieToastCount,
+    currentGuess,
+    isGameWon,
+    isGameLost,
+  ])
+
+  useEffect(() => {
+    const opened = openCookieToast({
+      canOpen: canOpenToast,
+      acceptCookies,
+      setIsCookieModalOpen,
+      consent,
+      stats,
+    })
+    if (opened) {
+      incCookieToastCount()
+    }
+  }, [canOpenToast, acceptCookies, consent, stats])
+
+  useEffect(() => {
     saveGameStateToLocalStorage(getIsLatestGame(), { guesses, solution })
   }, [guesses])
 
@@ -200,15 +261,21 @@ function App() {
         WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
       const delayMs = REVEAL_TIME_MS * solution.length
 
+      setIsStatsModalOpening(true)
       showSuccessAlert(winMessage, {
         delayMs,
-        onClose: () => setIsStatsModalOpen(true),
+        onClose: () => {
+          setIsStatsModalOpen(true)
+          setIsStatsModalOpening(false)
+        },
       })
     }
 
     if (isGameLost) {
+      setIsStatsModalOpening(true)
       setTimeout(() => {
         setIsStatsModalOpen(true)
+        setIsStatsModalOpening(false)
       }, (solution.length + 1) * REVEAL_TIME_MS)
     }
   }, [isGameWon, isGameLost, showSuccessAlert])
@@ -360,8 +427,6 @@ function App() {
 
   return (
     <Div100vh>
-      {/* Toaster allows toast() to be called from anywhere in the App. */}
-      <Toaster />
       <div className="flex h-full flex-col">
         <Navbar
           setIsInfoModalOpen={setIsInfoModalOpen}
@@ -491,13 +556,23 @@ function App() {
             isMemeMode={isMemeModeEnabled}
             handleMemeMode={setIsMemeMode}
           />
-          <AlertContainer />
           <AboutModal
             isOpen={isAboutModalOpen}
             handleClose={() => setIsAboutModalOpen(false)}
           />
+          <CookieModal
+            isOpen={isCookieModalOpen}
+            handleClose={() => {
+              setIsCookieModalOpen(false)
+              setHasCookieModalOpened(true)
+            }}
+            acceptCookies={acceptCookies}
+            consent={consent}
+          />
+          <AlertContainer />
         </div>
       </div>
+      <ToastContainer theme={isDarkMode ? 'dark' : 'light'} />
     </Div100vh>
   )
 }
