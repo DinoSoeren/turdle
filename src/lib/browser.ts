@@ -1,6 +1,7 @@
 import assert from 'assert'
 import ReactGA from 'react-ga4'
 import { UAParser } from 'ua-parser-js'
+import { Metric } from 'web-vitals'
 
 const inAppBrowserNames = [
   'Facebook',
@@ -32,7 +33,7 @@ export function initGA({ debug }: { debug?: boolean } = {}) {
 
 /** Set @param debug `true` to send event to GA in dev mode (why tho?) */
 export function gaEvent(options: {
-  category: 'Game Stats'|'UI Event'|'Web Vitals'|'Error'
+  category: 'Game Stats' | 'UI Event' | 'Web Vitals' | 'Error'
   action: string
   value?: number
   label?: string
@@ -47,20 +48,12 @@ export function gaEvent(options: {
   })
 }
 
-export function sendVitalsToGA({
-  id,
-  name,
-  value,
-}: {
-  id: string
-  name: string
-  value: number
-}) {
+export function sendVitalsToGA(metric: Metric) {
   gaEvent({
     category: 'Web Vitals',
-    action: name,
-    value: name === 'CLS' ? value * 1000 : value,
-    label: id,
+    action: metric.name,
+    value: metric.name === 'CLS' ? metric.value * 1000 : metric.value,
+    label: metric.id,
     nonInteraction: true, // avoids affecting bounce rate
   })
 }
