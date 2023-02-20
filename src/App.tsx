@@ -282,11 +282,6 @@ function App() {
       setGuesses([...guesses, currentGuess])
       setCurrentGuess('')
 
-      const gameOver = winningWord || guesses.length === MAX_CHALLENGES - 1
-      if (isFirstTimePlaying && gameOver) {
-        setIsFirstTimePlaying(false)
-      }
-
       if (winningWord) {
         if (isLatestGame) {
           setStats(addStatsForCompletedGame(stats, guesses.length))
@@ -295,7 +290,11 @@ function App() {
             action: 'Won',
             value: guesses.length,
             label: JSON.stringify(
-              { guesses: guesses.map((g) => wordleToTurdle(g)), stats },
+              {
+                guesses: guesses.map((g) => wordleToTurdle(g)),
+                stats,
+                isFirstTimePlaying,
+              },
               null,
               2
             ),
@@ -312,6 +311,9 @@ function App() {
             ),
           })
         }
+        if (isFirstTimePlaying) {
+          setIsFirstTimePlaying(false)
+        }
         return setIsGameWon(true)
       }
 
@@ -323,7 +325,11 @@ function App() {
             action: 'Lost',
             value: guesses.length,
             label: JSON.stringify(
-              { guesses: guesses.map((g) => wordleToTurdle(g)), stats },
+              {
+                guesses: guesses.map((g) => wordleToTurdle(g)),
+                stats,
+                isFirstTimePlaying,
+              },
               null,
               2
             ),
@@ -345,6 +351,9 @@ function App() {
           persist: true,
           delayMs: REVEAL_TIME_MS * solution.length + 1,
         })
+        if (isFirstTimePlaying) {
+          setIsFirstTimePlaying(false)
+        }
       }
     }
   }
@@ -359,6 +368,7 @@ function App() {
           setIsStatsModalOpen={setIsStatsModalOpen}
           setIsDatePickerModalOpen={setIsDatePickerModalOpen}
           setIsSettingsModalOpen={setIsSettingsModalOpen}
+          isFirstTimePlaying={isFirstTimePlaying}
           isMemeMode={isMemeModeEnabled}
         />
 

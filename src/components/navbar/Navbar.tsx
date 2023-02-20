@@ -15,6 +15,7 @@ type Props = {
   setIsStatsModalOpen: (value: boolean) => void
   setIsDatePickerModalOpen: (value: boolean) => void
   setIsSettingsModalOpen: (value: boolean) => void
+  isFirstTimePlaying: boolean
   isMemeMode?: boolean
 }
 
@@ -23,6 +24,7 @@ export const Navbar = ({
   setIsStatsModalOpen,
   setIsDatePickerModalOpen,
   setIsSettingsModalOpen,
+  isFirstTimePlaying,
   isMemeMode,
 }: Props) => {
   const logoClasses = classnames('logo flex shrink-0 grow-0 ml-1 w-7 h-7', {
@@ -40,7 +42,7 @@ export const Navbar = ({
               gaEvent({ category: 'UI Event', action: 'Info' })
             }}
           />
-          {ENABLE_ARCHIVED_GAMES && (
+          {ENABLE_ARCHIVED_GAMES && !isFirstTimePlaying && (
             <CalendarIcon
               className="ml-3 h-6 w-6 cursor-pointer dark:stroke-white"
               onClick={() => setIsDatePickerModalOpen(true)}
