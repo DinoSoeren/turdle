@@ -106,7 +106,7 @@ export const Key = ({
       />
       <Hint
         value={value}
-        visible={extraVision}
+        visible={extraVision && !isRevealing}
         hovered={isHovered && !disabled}
       />
     </button>

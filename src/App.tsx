@@ -333,7 +333,6 @@ function App() {
                 isExtraVisionModeEnabled ||
                 isGameLost ||
                 isInfoModalOpen ||
-                isAboutModalOpen ||
                 isStatsModalOpen
               }
               isMemeMode={isMemeModeEnabled}
