@@ -1,6 +1,7 @@
 import { SaveIcon } from '@heroicons/react/outline'
 import { useState } from 'react'
 
+import { gaEvent } from '../../lib/browser'
 import { decrypt } from '../../lib/encryption'
 import {
   saveGameStateToLocalStorage,
@@ -70,6 +71,8 @@ export const ImmigratePanel = () => {
       if (migrationStats.statistics) {
         saveStatsToLocalStorage(migrationStats.statistics)
       }
+
+      gaEvent({ category: 'UI Event', action: 'Immigrate' })
 
       alert('The site will now reload.')
 

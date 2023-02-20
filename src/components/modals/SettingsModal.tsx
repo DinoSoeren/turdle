@@ -59,7 +59,8 @@ export const SettingsModal = ({
         <SettingsToggle
           settingName="Auto-hide Bubbles"
           flag={!isExtraVisionMode}
-          handleFlag={(flag: boolean) => handleExtraVisionMode(!flag)}
+          handleFlag={handleExtraVisionMode}
+          inverted={true}
           description={EXTRA_VISION_MODE_DESCRIPTION}
         />
         <SettingsToggle

@@ -33,7 +33,7 @@ export function initGA({ debug }: { debug?: boolean } = {}) {
 
 /** Set @param debug `true` to send event to GA in dev mode (why tho?) */
 export function gaEvent(options: {
-  category: 'Game Stats' | 'UI Event' | 'Web Vitals' | 'Error'
+  category: 'Game Stats' | 'Archive' | 'UI Event' | 'Web Vitals' | 'Error'
   action: string
   value?: number
   label?: string

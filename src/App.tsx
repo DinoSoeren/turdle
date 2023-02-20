@@ -38,7 +38,7 @@ import {
 } from './constants/strings'
 import { wordleToTurdle } from './constants/validGuesses'
 import { useAlert } from './context/AlertContext'
-import { isInAppBrowser } from './lib/browser'
+import { gaEvent, isInAppBrowser } from './lib/browser'
 import {
   loadGameStateFromLocalStorage,
   loadSettingsFromLocalStorage,
@@ -284,6 +284,27 @@ function App() {
       if (winningWord) {
         if (isLatestGame) {
           setStats(addStatsForCompletedGame(stats, guesses.length))
+          gaEvent({
+            category: 'Game Stats',
+            action: 'Won',
+            value: guesses.length,
+            label: JSON.stringify(
+              { guesses: guesses.map((g) => wordleToTurdle(g)), stats },
+              null,
+              2
+            ),
+          })
+        } else {
+          gaEvent({
+            category: 'Archive',
+            action: 'Won',
+            value: guesses.length,
+            label: JSON.stringify(
+              { guesses: guesses.map((g) => wordleToTurdle(g)), stats },
+              null,
+              2
+            ),
+          })
         }
         return setIsGameWon(true)
       }
@@ -291,6 +312,27 @@ function App() {
       if (guesses.length === MAX_CHALLENGES - 1) {
         if (isLatestGame) {
           setStats(addStatsForCompletedGame(stats, guesses.length + 1))
+          gaEvent({
+            category: 'Game Stats',
+            action: 'Lost',
+            value: guesses.length,
+            label: JSON.stringify(
+              { guesses: guesses.map((g) => wordleToTurdle(g)), stats },
+              null,
+              2
+            ),
+          })
+        } else {
+          gaEvent({
+            category: 'Archive',
+            action: 'Lost',
+            value: guesses.length,
+            label: JSON.stringify(
+              { guesses: guesses.map((g) => wordleToTurdle(g)), stats },
+              null,
+              2
+            ),
+          })
         }
         setIsGameLost(true)
         showErrorAlert(CORRECT_WORD_MESSAGE(wordleToTurdle(solution)), {
@@ -360,7 +402,10 @@ function App() {
             <button
               type="button"
               className="flex shrink grow-0 select-none items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              onClick={() => setIsAboutModalOpen(true)}
+              onClick={() => {
+                setIsAboutModalOpen(true)
+                gaEvent({ category: 'UI Event', action: 'About' })
+              }}
             >
               {ABOUT_GAME_MESSAGE}
             </button>
@@ -368,6 +413,9 @@ function App() {
               type="button"
               className="text-s flex shrink-0 grow-0 select-none items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               href="https://discord.gg/ryjr3TbZGm"
+              onClick={() =>
+                gaEvent({ category: 'UI Event', action: 'Discord' })
+              }
             >
               <FaDiscord className="mx-auto" />
             </a>

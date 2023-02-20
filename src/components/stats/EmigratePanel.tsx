@@ -1,6 +1,7 @@
 import { DuplicateIcon } from '@heroicons/react/outline'
 import { useState } from 'react'
 
+import { gaEvent } from '../../lib/browser'
 import { copyTextToClipboard } from '../../lib/clipboard'
 import { encrypt } from '../../lib/encryption'
 import { loadGameStateFromLocalStorage } from '../../lib/localStorage'
@@ -24,6 +25,8 @@ export const EmigratePanel = () => {
     copyTextToClipboard(emigrationCode)
     setCopyButtonText('Copied!')
     setIsCopyButtonEnabled(false)
+    // Don't send any encrypted data to GA.
+    gaEvent({ category: 'UI Event', action: 'Emigrate' })
   }
 
   return (

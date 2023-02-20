@@ -57,6 +57,8 @@ export const shareStatus = (
   } catch (error) {
     handleShareFailure()
   }
+
+  return shareData
 }
 
 export const generateEmojiGrid = (

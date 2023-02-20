@@ -1,9 +1,12 @@
 import classnames from 'classnames'
 
+import { gaEvent } from '../../lib/browser'
+
 type Props = {
   settingName: string
   flag: boolean
   handleFlag: Function
+  inverted?: boolean
   description?: string
 }
 
@@ -11,6 +14,7 @@ export const SettingsToggle = ({
   settingName,
   flag,
   handleFlag,
+  inverted,
   description,
 }: Props) => {
   const toggleHolder = classnames(
@@ -37,7 +41,19 @@ export const SettingsToggle = ({
             </p>
           )}
         </div>
-        <div className={toggleHolder} onClick={() => handleFlag(!flag)}>
+        <div
+          className={toggleHolder}
+          onClick={() => {
+            const newFlag = inverted ? flag : !flag
+            handleFlag(newFlag)
+            gaEvent({
+              category: 'UI Event',
+              action: `Toggle ${settingName}`,
+              value: newFlag ? 1 : 0,
+              label: newFlag ? 'enable' : 'disable',
+            })
+          }}
+        >
           <div className={toggleButton} />
         </div>
       </div>

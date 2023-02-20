@@ -10,6 +10,7 @@ import {
   DATEPICKER_TODAY_TEXT,
   PLAYING_ARCHIVED_GAMES_WARNING,
 } from '../../constants/strings'
+import { gaEvent } from '../../lib/browser'
 import { getToday, getYesterday } from '../../lib/dateutils'
 import {
   firstGameDate,
@@ -138,7 +139,14 @@ export const DatePickerModal = ({
           type="button"
           className="mt-2 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-center text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 "
           disabled={selectedDate >= getToday()}
-          onClick={() => handleSelectDate(selectedDate)}
+          onClick={() => {
+            handleSelectDate(selectedDate)
+            gaEvent({
+              category: 'UI Event',
+              action: 'Select Date',
+              value: selectedDate.getTime(),
+            })
+          }}
         >
           {DATEPICKER_CHOOSE_TEXT}
           <br />

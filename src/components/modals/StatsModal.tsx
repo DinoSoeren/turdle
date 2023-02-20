@@ -14,6 +14,8 @@ import {
   SHARE_TEXT,
   STATISTICS_TITLE,
 } from '../../constants/strings'
+import { wordleToTurdle } from '../../constants/validGuesses'
+import { gaEvent } from '../../lib/browser'
 import { GameStats } from '../../lib/localStorage'
 import { shareStatus } from '../../lib/share'
 import { solutionGameDate, tomorrow } from '../../lib/words'
@@ -71,6 +73,29 @@ export const StatsModal = ({
       </BaseModal>
     )
   }
+  const handleShareClick = () => {
+    const shareData = shareStatus(
+      solution,
+      guesses,
+      isGameLost,
+      isHardMode,
+      isDarkMode,
+      isHighContrastMode,
+      handleShareToClipboard,
+      handleShareFailure
+    )
+    gaEvent({
+      category: 'UI Event',
+      action: `Share after ${isGameLost ? 'lost' : 'won'}`,
+      value: guesses.length,
+      label: JSON.stringify(
+        { guesses: guesses.map((g) => wordleToTurdle(g)), shareData },
+        null,
+        2
+      ),
+    })
+  }
+
   return (
     <BaseModal
       title={STATISTICS_TITLE}
@@ -117,18 +142,7 @@ export const StatsModal = ({
             <button
               type="button"
               className="mt-2 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-center text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-base"
-              onClick={() => {
-                shareStatus(
-                  solution,
-                  guesses,
-                  isGameLost,
-                  isHardMode,
-                  isDarkMode,
-                  isHighContrastMode,
-                  handleShareToClipboard,
-                  handleShareFailure
-                )
-              }}
+              onClick={handleShareClick}
             >
               <ShareIcon className="mr-2 h-6 w-6 cursor-pointer dark:stroke-white" />
               {SHARE_TEXT}

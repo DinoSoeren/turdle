@@ -1,3 +1,4 @@
+import { gaEvent } from '../../lib/browser'
 import { BaseModal } from './BaseModal'
 
 type Props = {
@@ -11,8 +12,9 @@ export const AboutModal = ({ isOpen, handleClose }: Props) => {
       <p className="text-sm text-gray-500 dark:text-gray-300">
         This is an{' '}
         <a
-          href="https://github.com/DinoSoeren/turdle"
+          href="https://github.com/dinosoeren/turdle"
           className="font-bold underline"
+          onClick={() => gaEvent({ category: 'UI Event', action: 'Github' })}
         >
           open source
         </a>{' '}
@@ -20,12 +22,12 @@ export const AboutModal = ({ isOpen, handleClose }: Props) => {
         <a href="https://sushi2.games" className="font-bold underline">
           SUSHI² Games
         </a>
-        . Play the original{' '}
+        . It is a fork of{' '}
         <a
-          href="https://www.powerlanguage.co.uk/wordle/"
+          href="https://github.com/cwackerfuss/react-wordle"
           className="font-bold underline"
         >
-          here
+          Reactle
         </a>
         .
       </p>
@@ -34,6 +36,9 @@ export const AboutModal = ({ isOpen, handleClose }: Props) => {
         <a
           href="https://globalgamejam.org/2022/games/turdlexyz-4"
           className="font-bold underline"
+          onClick={() =>
+            gaEvent({ category: 'UI Event', action: 'Global Game Jam' })
+          }
         >
           Global Game Jam
         </a>{' '}

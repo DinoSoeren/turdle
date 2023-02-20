@@ -8,6 +8,7 @@ import classnames from 'classnames'
 
 import { ENABLE_ARCHIVED_GAMES } from '../../constants/settings'
 import { GAME_TITLE } from '../../constants/strings'
+import { gaEvent } from '../../lib/browser'
 
 type Props = {
   setIsInfoModalOpen: (value: boolean) => void
@@ -34,7 +35,10 @@ export const Navbar = ({
         <div className="flex">
           <InformationCircleIcon
             className="h-6 w-6 cursor-pointer dark:stroke-white"
-            onClick={() => setIsInfoModalOpen(true)}
+            onClick={() => {
+              setIsInfoModalOpen(true)
+              gaEvent({ category: 'UI Event', action: 'Info' })
+            }}
           />
           {ENABLE_ARCHIVED_GAMES && (
             <CalendarIcon
