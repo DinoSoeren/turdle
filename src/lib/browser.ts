@@ -30,29 +30,20 @@ export function initGA({ debug }: { debug?: boolean } = {}) {
   ReactGA.initialize(process.env.REACT_APP_GOOGLE_MEASUREMENT_ID)
 }
 
-/** Set @param debug `true` to send to GA in dev mode (why tho?) */
-export function sendToAnalytics({
-  category,
-  action,
-  value,
-  label,
-  nonInteraction,
-  debug,
-}: {
-  category: string
+/** Set @param debug `true` to send event to GA in dev mode (why tho?) */
+export function gaEvent(options: {
+  category: 'Game Stats'|'UI Event'|'Web Vitals'|'Error'
   action: string
-  value: number
-  label: string
-  nonInteraction: boolean
+  value?: number
+  label?: string
+  nonInteraction?: boolean
+  transport?: 'beacon' | 'xhr' | 'image'
   debug?: boolean
 }) {
-  if (!debug && !isProd()) return
+  if (!options.debug && !isProd()) return
   ReactGA.event({
-    category,
-    action,
-    value: Math.round(value), // values must be integers
-    label,
-    nonInteraction,
+    ...options,
+    value: options.value ? Math.round(options.value) : undefined, // values must be integers
   })
 }
 
@@ -65,7 +56,7 @@ export function sendVitalsToGA({
   name: string
   value: number
 }) {
-  sendToAnalytics({
+  gaEvent({
     category: 'Web Vitals',
     action: name,
     value: name === 'CLS' ? value * 1000 : value,
