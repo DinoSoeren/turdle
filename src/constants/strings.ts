@@ -16,7 +16,9 @@ export const HARD_MODE_DESCRIPTION =
 export const HIGH_CONTRAST_MODE_DESCRIPTION = 'For improved color vision'
 export const EXTRA_VISION_MODE_DESCRIPTION = `Bubbles appear w/letters (e.g. '3W') on mouseover`
 export const MEME_MODE_DESCRIPTION = 'For the lolz'
-export const USAGE_STATISTICS_DESCRIPTION = 'Your data is never shared'
+export const ESSENTIAL_GAMEPLAY_DESCRIPTION =
+  'Win/loss state, guesses and stats'
+export const USAGE_STATISTICS_DESCRIPTION = 'Help the developer improve'
 export const CORRECT_WORD_MESSAGE = (solution: string) =>
   `The Turdle was ${solution}. Try again tomorrow!`
 export const WRONG_SPOT_MESSAGE = (guess: string, position: number) =>

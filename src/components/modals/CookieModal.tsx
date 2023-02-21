@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import {
   COOKIE_STATEMENT,
+  ESSENTIAL_GAMEPLAY_DESCRIPTION,
   USAGE_STATISTICS_DESCRIPTION,
 } from '../../constants/strings'
 import { PurposeCookieType } from '../common/CookieToast'
@@ -32,11 +33,15 @@ export const CookieModal = ({
 
   return (
     <BaseModal title="Cookie settings" isOpen={isOpen} handleClose={onClose}>
-      <div className="mt-2 mb-2 flex italic text-gray-500 dark:text-gray-300">
+      <p className="mt-2 mb-2 flex text-sm italic text-gray-500 dark:text-gray-300">
         {COOKIE_STATEMENT}
-      </div>
+      </p>
       <div className="mb-2 flex flex-col divide-y">
-        <SettingsToggle settingName="Essential gameplay" flag={true} />
+        <SettingsToggle
+          settingName="Essential gameplay"
+          flag={true}
+          description={ESSENTIAL_GAMEPLAY_DESCRIPTION}
+        />
         <SettingsToggle
           settingName="Collect usage statistics"
           flag={isStatisticsAllowed}

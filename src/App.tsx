@@ -79,7 +79,7 @@ function App() {
   const [isInfoModalOpening, setIsInfoModalOpening] = useState(true)
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false)
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
-  const [isStatsModalOpening, setIsStatsModalOpening] = useState(false)
+  const [isStatsModalOpening, setIsStatsModalOpening] = useState(true)
   const [isDatePickerModalOpen, setIsDatePickerModalOpen] = useState(false)
   const [isMigrateStatsModalOpen, setIsMigrateStatsModalOpen] = useState(false)
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
@@ -206,6 +206,7 @@ function App() {
     isMemeModeEnabled,
   ])
 
+  // Don't open the cookie toast until all the possible automatically-opening modals have finished opening and are closed.
   useEffect(() => {
     if (
       !(
@@ -269,14 +270,14 @@ function App() {
           setIsStatsModalOpening(false)
         },
       })
-    }
-
-    if (isGameLost) {
+    } else if (isGameLost) {
       setIsStatsModalOpening(true)
       setTimeout(() => {
         setIsStatsModalOpen(true)
         setIsStatsModalOpening(false)
       }, (solution.length + 1) * REVEAL_TIME_MS)
+    } else {
+      setIsStatsModalOpening(false)
     }
   }, [isGameWon, isGameLost, showSuccessAlert])
 
@@ -555,6 +556,7 @@ function App() {
             handleExtraVisionMode={setExtraVisionModeEnabled}
             isMemeMode={isMemeModeEnabled}
             handleMemeMode={setIsMemeMode}
+            setIsCookieModalOpen={setIsCookieModalOpen}
           />
           <AboutModal
             isOpen={isAboutModalOpen}

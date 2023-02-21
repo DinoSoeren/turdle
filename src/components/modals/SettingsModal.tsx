@@ -1,3 +1,5 @@
+import { BiCookie } from 'react-icons/bi'
+
 import {
   EXTRA_VISION_MODE_DESCRIPTION,
   HARD_MODE_DESCRIPTION,
@@ -21,6 +23,7 @@ type Props = {
   handleExtraVisionMode: Function
   isMemeMode: boolean
   handleMemeMode: Function
+  setIsCookieModalOpen: (value: boolean) => void
 }
 
 export const SettingsModal = ({
@@ -37,9 +40,17 @@ export const SettingsModal = ({
   handleExtraVisionMode,
   isMemeMode,
   handleMemeMode,
+  setIsCookieModalOpen,
 }: Props) => {
   return (
-    <BaseModal title="Settings" isOpen={isOpen} handleClose={handleClose}>
+    <BaseModal
+      title="Settings"
+      isOpen={isOpen}
+      handleClose={handleClose}
+      extraButton={BiCookie}
+      extraButtonDesc="Cookie settings"
+      handleExtraButtonClick={() => setIsCookieModalOpen(true)}
+    >
       <div className="mt-2 flex flex-col divide-y">
         <SettingsToggle
           settingName="Hard Mode"

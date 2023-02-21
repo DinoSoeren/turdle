@@ -40,7 +40,7 @@ export function openCookieToast({
           setIsCookieModalOpen={setIsCookieModalOpen}
         />
       ),
-      { position: 'bottom-left', delay: 700 }
+      { position: 'bottom-left', delay: 700, closeOnClick: false }
     )
     return true
   }
