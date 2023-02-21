@@ -8,6 +8,7 @@ import { BaseModal } from './BaseModal'
 type Props = {
   isOpen: boolean
   handleClose: () => void
+  isAnalyticsAllowed: boolean
 }
 
 export type MigrationStats = {
@@ -15,7 +16,11 @@ export type MigrationStats = {
   gameState: StoredGameState | null
 }
 
-export const MigrateStatsModal = ({ isOpen, handleClose }: Props) => {
+export const MigrateStatsModal = ({
+  isOpen,
+  handleClose,
+  isAnalyticsAllowed,
+}: Props) => {
   const [isEmigrateVisible, setIsEmigrateVisible] = useState(true)
 
   return (
@@ -73,8 +78,12 @@ export const MigrateStatsModal = ({ isOpen, handleClose }: Props) => {
         </div>
       </div>
 
-      {isEmigrateVisible && <EmigratePanel />}
-      {!isEmigrateVisible && <ImmigratePanel />}
+      {isEmigrateVisible && (
+        <EmigratePanel isAnalyticsAllowed={isAnalyticsAllowed} />
+      )}
+      {!isEmigrateVisible && (
+        <ImmigratePanel isAnalyticsAllowed={isAnalyticsAllowed} />
+      )}
     </BaseModal>
   )
 }

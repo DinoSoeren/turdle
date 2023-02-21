@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import {
   COOKIE_STATEMENT,
   ESSENTIAL_GAMEPLAY_DESCRIPTION,
@@ -13,26 +11,29 @@ type Props = {
   isOpen: boolean
   handleClose: () => void
   acceptCookies: (cookies: PurposeCookieType) => void
-  consent: PurposeCookieType
+  isAnalyticsAllowed: boolean
+  setIsAnalyticsAllowed: (value: boolean) => void
 }
 
 export const CookieModal = ({
   isOpen,
   handleClose,
   acceptCookies,
-  consent,
+  isAnalyticsAllowed,
+  setIsAnalyticsAllowed,
 }: Props) => {
-  const [isStatisticsAllowed, setIsStatisticsAllowed] = useState<boolean>(
-    () => consent.statistics ?? true
-  )
-
-  const onClose = () => {
-    acceptCookies({ necessary: true, statistics: isStatisticsAllowed })
+  const close = ({ accept }: { accept?: boolean } = {}) => {
+    if (accept || isAnalyticsAllowed) {
+      acceptCookies({ necessary: true, statistics: isAnalyticsAllowed })
+    } else {
+      // Reset state to match cookie value if changes were not saved
+      setTimeout(() => setIsAnalyticsAllowed(true), 500)
+    }
     handleClose()
   }
 
   return (
-    <BaseModal title="Cookie settings" isOpen={isOpen} handleClose={onClose}>
+    <BaseModal title="Cookie settings" isOpen={isOpen} handleClose={close}>
       <p className="mt-2 mb-2 flex text-sm italic text-gray-500 dark:text-gray-300">
         {COOKIE_STATEMENT}
       </p>
@@ -41,18 +42,20 @@ export const CookieModal = ({
           settingName="Essential gameplay"
           flag={true}
           description={ESSENTIAL_GAMEPLAY_DESCRIPTION}
+          isAnalyticsAllowed={isAnalyticsAllowed}
         />
         <SettingsToggle
           settingName="Collect usage statistics"
-          flag={isStatisticsAllowed}
-          handleFlag={setIsStatisticsAllowed}
+          flag={isAnalyticsAllowed}
+          handleFlag={setIsAnalyticsAllowed}
           description={USAGE_STATISTICS_DESCRIPTION}
+          isAnalyticsAllowed={isAnalyticsAllowed}
         />
       </div>
       <div className="flex">
         <button
           className="flex-1 rounded border-b-4 border-blue-700 bg-blue-500 py-1 px-2 font-bold text-white hover:border-blue-500 hover:bg-blue-400"
-          onClick={onClose}
+          onClick={() => close({ accept: true })}
         >
           Save and accept
         </button>

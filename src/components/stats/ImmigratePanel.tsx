@@ -9,7 +9,11 @@ import {
 } from '../../lib/localStorage'
 import { MigrationStats } from '../modals/MigrateStatsModal'
 
-export const ImmigratePanel = () => {
+export const ImmigratePanel = ({
+  isAnalyticsAllowed,
+}: {
+  isAnalyticsAllowed: boolean
+}) => {
   const [isSaveButtonEnabled, setIsSaveButtonEnabled] = useState(false)
 
   const textareaClassNames = {
@@ -72,7 +76,7 @@ export const ImmigratePanel = () => {
         saveStatsToLocalStorage(migrationStats.statistics)
       }
 
-      gaEvent({ category: 'UI Event', action: 'Immigrate' })
+      gaEvent({ category: 'UI Event', action: 'Immigrate', isAnalyticsAllowed })
 
       alert('The site will now reload.')
 

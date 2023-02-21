@@ -8,7 +8,11 @@ import { loadGameStateFromLocalStorage } from '../../lib/localStorage'
 import { loadStats } from '../../lib/stats'
 import { MigrationStats } from '../modals/MigrateStatsModal'
 
-export const EmigratePanel = () => {
+export const EmigratePanel = ({
+  isAnalyticsAllowed,
+}: {
+  isAnalyticsAllowed: boolean
+}) => {
   const [isCopyButtonEnabled, setIsCopyButtonEnabled] = useState(true)
   const [copyButtonText, setCopyButtonText] = useState('Copy')
   const stats = loadStats()
@@ -26,7 +30,7 @@ export const EmigratePanel = () => {
     setCopyButtonText('Copied!')
     setIsCopyButtonEnabled(false)
     // Don't send any encrypted data to GA.
-    gaEvent({ category: 'UI Event', action: 'Emigrate' })
+    gaEvent({ category: 'UI Event', action: 'Emigrate', isAnalyticsAllowed })
   }
 
   return (

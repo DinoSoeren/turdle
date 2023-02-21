@@ -44,6 +44,7 @@ import {
 import { wordleToTurdle } from './constants/validGuesses'
 import { useAlert } from './context/AlertContext'
 import { gaEvent, isInAppBrowser } from './lib/browser'
+import { usePrevious } from './lib/hooks'
 import {
   loadGameStateFromLocalStorage,
   loadSettingsFromLocalStorage,
@@ -76,6 +77,7 @@ function App() {
   const [currentGuess, setCurrentGuess] = useState('')
   const [isGameWon, setIsGameWon] = useState(false)
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
+  const wasInfoModalOpen = usePrevious(isInfoModalOpen)
   const [isInfoModalOpening, setIsInfoModalOpening] = useState(true)
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false)
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
@@ -136,6 +138,9 @@ function App() {
     localStorage.getItem('gameMode')
       ? localStorage.getItem('gameMode') === 'hard'
       : false
+  )
+  const [isAnalyticsAllowed, setIsAnalyticsAllowed] = useState<boolean>(
+    () => consent.statistics ?? true
   )
   const [canOpenToast, setCanOpenToast] = useState(false)
 
@@ -206,9 +211,12 @@ function App() {
     isMemeModeEnabled,
   ])
 
-  // Don't open the cookie toast until all the possible automatically-opening modals have finished opening and are closed.
+  // Don't open the cookie toast until all the possible automatically-
+  // opening modals have finished opening and are closed.
   useEffect(() => {
     if (
+      cookieToastCount.count < 1 &&
+      (currentGuess.length === 0 || isGameWon || isGameLost) &&
       !(
         isCookieModalOpen ||
         hasCookieModalOpened ||
@@ -218,18 +226,20 @@ function App() {
         isStatsModalOpening ||
         isMigrateStatsModalOpen
       ) &&
-      cookieToastCount.count < 2 &&
-      (currentGuess.length === 0 || isGameWon || isGameLost)
+      // Don't normally trigger a toast after closing Info modal.
+      (isFirstTimePlaying || !wasInfoModalOpen)
     ) {
       setCanOpenToast(true)
     } else {
       setCanOpenToast(false)
     }
   }, [
+    isFirstTimePlaying,
     isCookieModalOpen,
     hasCookieModalOpened,
     isInfoModalOpen,
     isInfoModalOpening,
+    wasInfoModalOpen,
     isStatsModalOpen,
     isStatsModalOpening,
     isMigrateStatsModalOpen,
@@ -366,6 +376,7 @@ function App() {
               null,
               2
             ),
+            isAnalyticsAllowed,
           })
         } else {
           gaEvent({
@@ -377,6 +388,7 @@ function App() {
               null,
               2
             ),
+            isAnalyticsAllowed,
           })
         }
         if (isFirstTimePlaying) {
@@ -401,6 +413,7 @@ function App() {
               null,
               2
             ),
+            isAnalyticsAllowed,
           })
         } else {
           gaEvent({
@@ -412,6 +425,7 @@ function App() {
               null,
               2
             ),
+            isAnalyticsAllowed,
           })
         }
         setIsGameLost(true)
@@ -436,6 +450,7 @@ function App() {
           setIsSettingsModalOpen={setIsSettingsModalOpen}
           isFirstTimePlaying={isFirstTimePlaying}
           isMemeMode={isMemeModeEnabled}
+          isAnalyticsAllowed={isAnalyticsAllowed}
         />
 
         {!isLatestGame && (
@@ -482,7 +497,11 @@ function App() {
               className="flex shrink grow-0 select-none items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               onClick={() => {
                 setIsAboutModalOpen(true)
-                gaEvent({ category: 'UI Event', action: 'About' })
+                gaEvent({
+                  category: 'UI Event',
+                  action: 'About',
+                  isAnalyticsAllowed,
+                })
               }}
             >
               {ABOUT_GAME_MESSAGE}
@@ -492,7 +511,11 @@ function App() {
               className="text-s flex shrink-0 grow-0 select-none items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               href="https://discord.gg/ryjr3TbZGm"
               onClick={() =>
-                gaEvent({ category: 'UI Event', action: 'Discord' })
+                gaEvent({
+                  category: 'UI Event',
+                  action: 'Discord',
+                  isAnalyticsAllowed,
+                })
               }
             >
               <FaDiscord className="mx-auto" />
@@ -528,6 +551,7 @@ function App() {
             isDarkMode={isDarkMode}
             isHighContrastMode={isHighContrastMode}
             numberOfGuessesMade={guesses.length}
+            isAnalyticsAllowed={isAnalyticsAllowed}
           />
           <DatePickerModal
             isOpen={isDatePickerModalOpen}
@@ -537,10 +561,12 @@ function App() {
               setGameDate(d)
             }}
             handleClose={() => setIsDatePickerModalOpen(false)}
+            isAnalyticsAllowed={isAnalyticsAllowed}
           />
           <MigrateStatsModal
             isOpen={isMigrateStatsModalOpen}
             handleClose={() => setIsMigrateStatsModalOpen(false)}
+            isAnalyticsAllowed={isAnalyticsAllowed}
           />
           <SettingsModal
             isOpen={isSettingsModalOpen}
@@ -557,10 +583,12 @@ function App() {
             isMemeMode={isMemeModeEnabled}
             handleMemeMode={setIsMemeMode}
             setIsCookieModalOpen={setIsCookieModalOpen}
+            isAnalyticsAllowed={isAnalyticsAllowed}
           />
           <AboutModal
             isOpen={isAboutModalOpen}
             handleClose={() => setIsAboutModalOpen(false)}
+            isAnalyticsAllowed={isAnalyticsAllowed}
           />
           <CookieModal
             isOpen={isCookieModalOpen}
@@ -569,7 +597,8 @@ function App() {
               setHasCookieModalOpened(true)
             }}
             acceptCookies={acceptCookies}
-            consent={consent}
+            isAnalyticsAllowed={isAnalyticsAllowed}
+            setIsAnalyticsAllowed={setIsAnalyticsAllowed}
           />
           <AlertContainer />
         </div>

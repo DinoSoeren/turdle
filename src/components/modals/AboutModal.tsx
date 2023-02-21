@@ -4,9 +4,14 @@ import { BaseModal } from './BaseModal'
 type Props = {
   isOpen: boolean
   handleClose: () => void
+  isAnalyticsAllowed: boolean
 }
 
-export const AboutModal = ({ isOpen, handleClose }: Props) => {
+export const AboutModal = ({
+  isOpen,
+  handleClose,
+  isAnalyticsAllowed,
+}: Props) => {
   return (
     <BaseModal title="About" isOpen={isOpen} handleClose={handleClose}>
       <p className="text-sm text-gray-500 dark:text-gray-300">
@@ -14,7 +19,13 @@ export const AboutModal = ({ isOpen, handleClose }: Props) => {
         <a
           href="https://github.com/dinosoeren/turdle"
           className="font-bold underline"
-          onClick={() => gaEvent({ category: 'UI Event', action: 'Github' })}
+          onClick={() =>
+            gaEvent({
+              category: 'UI Event',
+              action: 'Github',
+              isAnalyticsAllowed,
+            })
+          }
         >
           open source
         </a>{' '}
@@ -37,7 +48,11 @@ export const AboutModal = ({ isOpen, handleClose }: Props) => {
           href="https://globalgamejam.org/2022/games/turdlexyz-4"
           className="font-bold underline"
           onClick={() =>
-            gaEvent({ category: 'UI Event', action: 'Global Game Jam' })
+            gaEvent({
+              category: 'UI Event',
+              action: 'Global Game Jam',
+              isAnalyticsAllowed,
+            })
           }
         >
           Global Game Jam

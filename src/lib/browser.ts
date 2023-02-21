@@ -40,8 +40,10 @@ export function gaEvent(options: {
   nonInteraction?: boolean
   transport?: 'beacon' | 'xhr' | 'image'
   debug?: boolean
+  isAnalyticsAllowed: boolean | undefined
 }) {
   if (!options.debug && !isProd()) return
+  if (options.isAnalyticsAllowed === false) return
   ReactGA.event({
     ...options,
     value: options.value ? Math.round(options.value) : undefined, // values must be integers
@@ -55,5 +57,6 @@ export function sendVitalsToGA(metric: Metric) {
     value: metric.name === 'CLS' ? metric.value * 1000 : metric.value,
     label: metric.id,
     nonInteraction: true, // avoids affecting bounce rate
+    isAnalyticsAllowed: undefined,
   })
 }

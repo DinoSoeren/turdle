@@ -40,6 +40,7 @@ type Props = {
   isDarkMode: boolean
   isHighContrastMode: boolean
   numberOfGuessesMade: number
+  isAnalyticsAllowed: boolean
 }
 
 export const StatsModal = ({
@@ -58,6 +59,7 @@ export const StatsModal = ({
   isDarkMode,
   isHighContrastMode,
   numberOfGuessesMade,
+  isAnalyticsAllowed,
 }: Props) => {
   if (gameStats.totalGames <= 0) {
     return (
@@ -93,6 +95,7 @@ export const StatsModal = ({
         null,
         2
       ),
+      isAnalyticsAllowed,
     })
   }
 

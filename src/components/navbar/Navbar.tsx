@@ -17,6 +17,7 @@ type Props = {
   setIsSettingsModalOpen: (value: boolean) => void
   isFirstTimePlaying: boolean
   isMemeMode?: boolean
+  isAnalyticsAllowed: boolean
 }
 
 export const Navbar = ({
@@ -26,6 +27,7 @@ export const Navbar = ({
   setIsSettingsModalOpen,
   isFirstTimePlaying,
   isMemeMode,
+  isAnalyticsAllowed,
 }: Props) => {
   const logoClasses = classnames('logo flex shrink-0 grow-0 ml-1 w-7 h-7', {
     turd: isMemeMode,
@@ -39,7 +41,11 @@ export const Navbar = ({
             className="h-6 w-6 cursor-pointer dark:stroke-white"
             onClick={() => {
               setIsInfoModalOpen(true)
-              gaEvent({ category: 'UI Event', action: 'Info' })
+              gaEvent({
+                category: 'UI Event',
+                action: 'Info',
+                isAnalyticsAllowed,
+              })
             }}
           />
           {ENABLE_ARCHIVED_GAMES && !isFirstTimePlaying && (

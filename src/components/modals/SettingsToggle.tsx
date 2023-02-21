@@ -8,6 +8,7 @@ type Props = {
   handleFlag?: Function
   inverted?: boolean
   description?: string
+  isAnalyticsAllowed: boolean
 }
 
 export const SettingsToggle = ({
@@ -16,6 +17,7 @@ export const SettingsToggle = ({
   handleFlag,
   inverted,
   description,
+  isAnalyticsAllowed,
 }: Props) => {
   const disabled = handleFlag === undefined
 
@@ -42,6 +44,7 @@ export const SettingsToggle = ({
       action: `Toggle ${settingName === '💩' ? '💩 Meme Mode' : settingName}`,
       value: newFlag ? 1 : 0,
       label: newFlag ? 'enable' : 'disable',
+      isAnalyticsAllowed,
     })
   }
 

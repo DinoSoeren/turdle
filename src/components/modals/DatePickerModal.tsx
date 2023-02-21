@@ -25,6 +25,7 @@ type Props = {
   initialDate?: Date
   handleSelectDate: (date: Date) => void
   handleClose: () => void
+  isAnalyticsAllowed: boolean
 }
 
 export const DatePickerModal = ({
@@ -32,6 +33,7 @@ export const DatePickerModal = ({
   initialDate,
   handleSelectDate,
   handleClose,
+  isAnalyticsAllowed,
 }: Props) => {
   const lastGameDate = getLastGameDate(getYesterday())
   const [selectedDate, setSelectedDate] = useState(() => {
@@ -145,6 +147,7 @@ export const DatePickerModal = ({
               category: 'UI Event',
               action: 'Select Date',
               value: selectedDate.getTime(),
+              isAnalyticsAllowed,
             })
           }}
         >
