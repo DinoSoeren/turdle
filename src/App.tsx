@@ -8,6 +8,7 @@ import { default as GraphemeSplitter } from 'grapheme-splitter'
 import { useEffect, useReducer, useState } from 'react'
 import Div100vh from 'react-div-100vh'
 import { FaDiscord } from 'react-icons/fa'
+import { HiOutlineDownload } from 'react-icons/hi'
 import { ToastContainer } from 'react-toastify'
 
 import { AlertContainer } from './components/alerts/AlertContainer'
@@ -45,7 +46,7 @@ import { wordleToTurdle } from './constants/validGuesses'
 import { useAlert } from './context/AlertContext'
 import { useGaContext } from './context/GaContext'
 import { isInAppBrowser } from './lib/browser'
-import { usePrevious } from './lib/hooks'
+import { usePrevious, usePwaInstall } from './lib/hooks'
 import {
   loadGameStateFromLocalStorage,
   loadSettingsFromLocalStorage,
@@ -71,7 +72,7 @@ function App() {
   const prefersDarkMode = window.matchMedia(
     '(prefers-color-scheme: dark)'
   ).matches
-
+  const { isInstalled, install } = usePwaInstall()
   const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
     useAlert()
   const { consent, acceptCookies } = useCookieConsentContext()
@@ -489,10 +490,7 @@ function App() {
               className="flex shrink grow-0 select-none items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               onClick={() => {
                 setIsAboutModalOpen(true)
-                gaEvent({
-                  category: 'UI Event',
-                  action: 'About',
-                })
+                gaEvent({ category: 'UI Event', action: 'About' })
               }}
             >
               {ABOUT_GAME_MESSAGE}
@@ -502,14 +500,23 @@ function App() {
               className="text-s flex shrink-0 grow-0 select-none items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               href="https://discord.gg/ryjr3TbZGm"
               onClick={() =>
-                gaEvent({
-                  category: 'UI Event',
-                  action: 'Discord',
-                })
+                gaEvent({ category: 'UI Event', action: 'Discord' })
               }
             >
               <FaDiscord className="mx-auto" />
             </a>
+            {!isInstalled && (
+              <button
+                type="button"
+                className="flex shrink grow-0 select-none items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                onClick={() => {
+                  install()
+                  gaEvent({ category: 'UI Event', action: 'Install' })
+                }}
+              >
+                <HiOutlineDownload /> Install
+              </button>
+            )}
           </div>
           <InfoModal
             isOpen={isInfoModalOpen}
