@@ -6,10 +6,9 @@ import {
 } from '@heroicons/react/outline'
 import classnames from 'classnames'
 
-import { useGaContext } from '../../context/GaContext'
-
 import { ENABLE_ARCHIVED_GAMES } from '../../constants/settings'
 import { GAME_TITLE } from '../../constants/strings'
+import { useGaContext } from '../../context/GaContext'
 
 type Props = {
   setIsInfoModalOpen: (value: boolean) => void

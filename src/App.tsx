@@ -75,7 +75,7 @@ function App() {
   const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
     useAlert()
   const { consent, acceptCookies } = useCookieConsentContext()
-  const { isGaAllowed, setIsGaAllowed, gaEvent } = useGaContext()
+  const { gaEvent } = useGaContext()
   const [currentGuess, setCurrentGuess] = useState('')
   const [isGameWon, setIsGameWon] = useState(false)
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
@@ -584,8 +584,6 @@ function App() {
               setHasCookieModalOpened(true)
             }}
             acceptCookies={acceptCookies}
-            isAnalyticsAllowed={isGaAllowed}
-            setIsAnalyticsAllowed={setIsGaAllowed}
           />
           <AlertContainer />
         </div>

@@ -1,8 +1,11 @@
+import { useEffect, useState } from 'react'
+
 import {
   COOKIE_STATEMENT,
   ESSENTIAL_GAMEPLAY_DESCRIPTION,
   USAGE_STATISTICS_DESCRIPTION,
 } from '../../constants/strings'
+import { useGaContext } from '../../context/GaContext'
 import { PurposeCookieType } from '../../lib/browser'
 import { BaseModal } from './BaseModal'
 import { SettingsToggle } from './SettingsToggle'
@@ -11,26 +14,24 @@ type Props = {
   isOpen: boolean
   handleClose: () => void
   acceptCookies: (cookies: PurposeCookieType) => void
-  isAnalyticsAllowed: boolean
-  setIsAnalyticsAllowed: (value: boolean) => void
 }
 
-export const CookieModal = ({
-  isOpen,
-  handleClose,
-  acceptCookies,
-  isAnalyticsAllowed,
-  setIsAnalyticsAllowed,
-}: Props) => {
+export const CookieModal = ({ isOpen, handleClose, acceptCookies }: Props) => {
+  const { isGaAllowed } = useGaContext()
+  const [isGaToggled, setIsGaToggled] = useState(isGaAllowed)
   const close = ({ accept }: { accept?: boolean } = {}) => {
-    if (accept || isAnalyticsAllowed) {
-      acceptCookies({ necessary: true, statistics: isAnalyticsAllowed })
+    if (accept || isGaToggled) {
+      acceptCookies({ necessary: true, statistics: isGaToggled })
     } else {
-      // Reset state to match cookie value if changes were not saved
-      setTimeout(() => setIsAnalyticsAllowed(true), 500)
+      // Reset toggle state to match cookie value if changes were not saved
+      setTimeout(() => setIsGaToggled(isGaAllowed), 500)
     }
     handleClose()
   }
+
+  useEffect(() => {
+    setIsGaToggled(isGaAllowed)
+  }, [isGaAllowed])
 
   return (
     <BaseModal title="Cookie settings" isOpen={isOpen} handleClose={close}>
@@ -45,8 +46,8 @@ export const CookieModal = ({
         />
         <SettingsToggle
           settingName="Collect usage statistics"
-          flag={isAnalyticsAllowed}
-          handleFlag={setIsAnalyticsAllowed}
+          flag={isGaToggled}
+          handleFlag={setIsGaToggled}
           description={USAGE_STATISTICS_DESCRIPTION}
         />
       </div>
