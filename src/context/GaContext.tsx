@@ -53,11 +53,10 @@ export interface GaProviderProps {
  */
 export const GaProvider = ({ children, debugMode }: GaProviderProps) => {
   const { consent } = useCookieConsentContext()
-  const [wereVitalsSent, setWereVitalsSent] = useState(false)
-  const [isGaReady, setIsGaReady] = useState(false)
   const [isGaAllowed, setIsGaAllowed] = useState<boolean>(
     () => consent.statistics ?? true
   )
+  const [isGaReady, setIsGaReady] = useState(false)
   const gaEvent = useCallback(
     (options: GaEventOptions) => {
       if (isGaReady && isGaAllowed && (isProd() || debugMode)) {
@@ -73,6 +72,7 @@ export const GaProvider = ({ children, debugMode }: GaProviderProps) => {
     },
     [isGaAllowed, isGaReady, debugMode]
   )
+  const [wereVitalsSent, setWereVitalsSent] = useState(false)
   const sendVitalsToGA = useCallback(
     (metric: Metric) => {
       gaEvent({
