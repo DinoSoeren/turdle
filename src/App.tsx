@@ -99,8 +99,6 @@ function App() {
     localStorage.getItem('theme')
       ? localStorage.getItem('theme') === 'dark'
       : prefersDarkMode
-      ? true
-      : false
   )
   const [isFirstTimePlaying, setIsFirstTimePlaying] = useState<boolean>(() => {
     return loadSettingsFromLocalStorage()?.isFirstTimePlaying ?? true
