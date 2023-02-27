@@ -12,7 +12,11 @@ export function usePrevious<T>(value: T): T | undefined {
 }
 
 export function usePwaInstall() {
-  const { isInstalled: wasInstalled, install } = usePWAInstall()
+  const { isInstalled: wasInstalled, install } = usePWAInstall({
+    acceptedFn: () => {}, // do nothing to stop logging
+    dismissedFn: () => {},
+    installedFn: () => {},
+  })
   const isInstalled = useIsInstalled() || wasInstalled
   return { isInstalled, install }
 }
