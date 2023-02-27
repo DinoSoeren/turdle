@@ -19,7 +19,6 @@ export interface GaState {
   debugMode?: boolean
   isGaReady: boolean
   isGaAllowed: boolean
-  setIsGaAllowed: (allowed: boolean) => void
   gaEvent: (options: GaEventOptions) => void
 }
 
@@ -36,7 +35,6 @@ export const GaContext = createContext<GaState>({
   debugMode: false,
   isGaReady: false,
   isGaAllowed: false,
-  setIsGaAllowed: () => null,
   gaEvent: () => null,
 })
 GaContext.displayName = 'GaContext'
@@ -45,6 +43,7 @@ export const useGaContext = () => useContext(GaContext)
 
 export interface GaProviderProps {
   children?: ReactNode
+  /** If debug mode is enabled, GA events will be sent to console logs (disables requests). */
   debugMode?: boolean
 }
 
@@ -122,7 +121,6 @@ export const GaProvider = ({ children, debugMode }: GaProviderProps) => {
         debugMode,
         isGaReady,
         isGaAllowed,
-        setIsGaAllowed,
         gaEvent,
       }}
     >
