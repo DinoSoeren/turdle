@@ -1,17 +1,14 @@
-import { gaEvent } from '../../lib/browser'
+import { useGaContext } from '../../context/GaContext'
 import { BaseModal } from './BaseModal'
 
 type Props = {
   isOpen: boolean
   handleClose: () => void
-  isAnalyticsAllowed: boolean
 }
 
-export const AboutModal = ({
-  isOpen,
-  handleClose,
-  isAnalyticsAllowed,
-}: Props) => {
+export const AboutModal = ({ isOpen, handleClose }: Props) => {
+  const { gaEvent } = useGaContext()
+
   return (
     <BaseModal title="About" isOpen={isOpen} handleClose={handleClose}>
       <p className="text-sm text-gray-500 dark:text-gray-300">
@@ -19,13 +16,7 @@ export const AboutModal = ({
         <a
           href="https://github.com/dinosoeren/turdle"
           className="font-bold underline"
-          onClick={() =>
-            gaEvent({
-              category: 'UI Event',
-              action: 'Github',
-              isAnalyticsAllowed,
-            })
-          }
+          onClick={() => gaEvent({ category: 'UI Event', action: 'Github' })}
         >
           open source
         </a>{' '}
@@ -48,11 +39,7 @@ export const AboutModal = ({
           href="https://globalgamejam.org/2022/games/turdlexyz-4"
           className="font-bold underline"
           onClick={() =>
-            gaEvent({
-              category: 'UI Event',
-              action: 'Global Game Jam',
-              isAnalyticsAllowed,
-            })
+            gaEvent({ category: 'UI Event', action: 'Global Game Jam' })
           }
         >
           Global Game Jam

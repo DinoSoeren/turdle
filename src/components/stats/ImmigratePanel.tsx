@@ -1,7 +1,7 @@
 import { SaveIcon } from '@heroicons/react/outline'
 import { useState } from 'react'
 
-import { gaEvent } from '../../lib/browser'
+import { useGaContext } from '../../context/GaContext'
 import { decrypt } from '../../lib/encryption'
 import {
   saveGameStateToLocalStorage,
@@ -9,11 +9,8 @@ import {
 } from '../../lib/localStorage'
 import { MigrationStats } from '../modals/MigrateStatsModal'
 
-export const ImmigratePanel = ({
-  isAnalyticsAllowed,
-}: {
-  isAnalyticsAllowed: boolean
-}) => {
+export const ImmigratePanel = () => {
+  const { gaEvent } = useGaContext()
   const [isSaveButtonEnabled, setIsSaveButtonEnabled] = useState(false)
 
   const textareaClassNames = {
@@ -76,7 +73,7 @@ export const ImmigratePanel = ({
         saveStatsToLocalStorage(migrationStats.statistics)
       }
 
-      gaEvent({ category: 'UI Event', action: 'Immigrate', isAnalyticsAllowed })
+      gaEvent({ category: 'UI Event', action: 'Immigrate' })
 
       alert('The site will now reload.')
 

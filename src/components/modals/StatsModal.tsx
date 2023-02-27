@@ -15,7 +15,7 @@ import {
   STATISTICS_TITLE,
 } from '../../constants/strings'
 import { wordleToTurdle } from '../../constants/validGuesses'
-import { gaEvent } from '../../lib/browser'
+import { useGaContext } from '../../context/GaContext'
 import { GameStats } from '../../lib/localStorage'
 import { shareStatus } from '../../lib/share'
 import { solutionGameDate, tomorrow } from '../../lib/words'
@@ -40,7 +40,6 @@ type Props = {
   isDarkMode: boolean
   isHighContrastMode: boolean
   numberOfGuessesMade: number
-  isAnalyticsAllowed: boolean
 }
 
 export const StatsModal = ({
@@ -59,8 +58,8 @@ export const StatsModal = ({
   isDarkMode,
   isHighContrastMode,
   numberOfGuessesMade,
-  isAnalyticsAllowed,
 }: Props) => {
+  const { gaEvent } = useGaContext()
   if (gameStats.totalGames <= 0) {
     return (
       <BaseModal
@@ -95,7 +94,6 @@ export const StatsModal = ({
         null,
         2
       ),
-      isAnalyticsAllowed,
     })
   }
 

@@ -6,9 +6,10 @@ import {
 } from '@heroicons/react/outline'
 import classnames from 'classnames'
 
+import { useGaContext } from '../../context/GaContext'
+
 import { ENABLE_ARCHIVED_GAMES } from '../../constants/settings'
 import { GAME_TITLE } from '../../constants/strings'
-import { gaEvent } from '../../lib/browser'
 
 type Props = {
   setIsInfoModalOpen: (value: boolean) => void
@@ -17,7 +18,6 @@ type Props = {
   setIsSettingsModalOpen: (value: boolean) => void
   isFirstTimePlaying: boolean
   isMemeMode?: boolean
-  isAnalyticsAllowed: boolean
 }
 
 export const Navbar = ({
@@ -27,8 +27,8 @@ export const Navbar = ({
   setIsSettingsModalOpen,
   isFirstTimePlaying,
   isMemeMode,
-  isAnalyticsAllowed,
 }: Props) => {
+  const { gaEvent } = useGaContext()
   const logoClasses = classnames('logo flex shrink-0 grow-0 ml-1 w-7 h-7', {
     turd: isMemeMode,
   })
@@ -44,7 +44,6 @@ export const Navbar = ({
               gaEvent({
                 category: 'UI Event',
                 action: 'Info',
-                isAnalyticsAllowed,
               })
             }}
           />

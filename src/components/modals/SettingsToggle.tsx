@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import { gaEvent } from '../../lib/browser'
+import { useGaContext } from '../../context/GaContext'
 
 type Props = {
   settingName: string
@@ -8,7 +8,6 @@ type Props = {
   handleFlag?: Function
   inverted?: boolean
   description?: string
-  isAnalyticsAllowed: boolean
 }
 
 export const SettingsToggle = ({
@@ -17,10 +16,9 @@ export const SettingsToggle = ({
   handleFlag,
   inverted,
   description,
-  isAnalyticsAllowed,
 }: Props) => {
+  const { gaEvent } = useGaContext()
   const disabled = handleFlag === undefined
-
   const toggleHolder = classnames(
     'w-14 h-8 flex shrink-0 items-center bg-gray-300 rounded-full p-1 duration-300 ease-in-out cursor-pointer',
     {
@@ -44,7 +42,6 @@ export const SettingsToggle = ({
       action: `Toggle ${settingName === '💩' ? '💩 Meme Mode' : settingName}`,
       value: newFlag ? 1 : 0,
       label: newFlag ? 'enable' : 'disable',
-      isAnalyticsAllowed,
     })
   }
 

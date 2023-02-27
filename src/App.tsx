@@ -43,7 +43,8 @@ import {
 } from './constants/strings'
 import { wordleToTurdle } from './constants/validGuesses'
 import { useAlert } from './context/AlertContext'
-import { gaEvent, isInAppBrowser } from './lib/browser'
+import { useGaContext } from './context/GaContext'
+import { isInAppBrowser } from './lib/browser'
 import { usePrevious } from './lib/hooks'
 import {
   loadGameStateFromLocalStorage,
@@ -74,6 +75,7 @@ function App() {
   const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
     useAlert()
   const { consent, acceptCookies } = useCookieConsentContext()
+  const { isGaAllowed, setIsGaAllowed, gaEvent } = useGaContext()
   const [currentGuess, setCurrentGuess] = useState('')
   const [isGameWon, setIsGameWon] = useState(false)
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
@@ -138,9 +140,6 @@ function App() {
     localStorage.getItem('gameMode')
       ? localStorage.getItem('gameMode') === 'hard'
       : false
-  )
-  const [isAnalyticsAllowed, setIsAnalyticsAllowed] = useState<boolean>(
-    () => consent.statistics ?? true
   )
   const [canOpenToast, setCanOpenToast] = useState(false)
 
@@ -376,7 +375,6 @@ function App() {
               null,
               2
             ),
-            isAnalyticsAllowed,
           })
         } else {
           gaEvent({
@@ -388,7 +386,6 @@ function App() {
               null,
               2
             ),
-            isAnalyticsAllowed,
           })
         }
         if (isFirstTimePlaying) {
@@ -413,7 +410,6 @@ function App() {
               null,
               2
             ),
-            isAnalyticsAllowed,
           })
         } else {
           gaEvent({
@@ -425,7 +421,6 @@ function App() {
               null,
               2
             ),
-            isAnalyticsAllowed,
           })
         }
         setIsGameLost(true)
@@ -450,7 +445,6 @@ function App() {
           setIsSettingsModalOpen={setIsSettingsModalOpen}
           isFirstTimePlaying={isFirstTimePlaying}
           isMemeMode={isMemeModeEnabled}
-          isAnalyticsAllowed={isAnalyticsAllowed}
         />
 
         {!isLatestGame && (
@@ -500,7 +494,6 @@ function App() {
                 gaEvent({
                   category: 'UI Event',
                   action: 'About',
-                  isAnalyticsAllowed,
                 })
               }}
             >
@@ -514,7 +507,6 @@ function App() {
                 gaEvent({
                   category: 'UI Event',
                   action: 'Discord',
-                  isAnalyticsAllowed,
                 })
               }
             >
@@ -551,7 +543,6 @@ function App() {
             isDarkMode={isDarkMode}
             isHighContrastMode={isHighContrastMode}
             numberOfGuessesMade={guesses.length}
-            isAnalyticsAllowed={isAnalyticsAllowed}
           />
           <DatePickerModal
             isOpen={isDatePickerModalOpen}
@@ -561,12 +552,10 @@ function App() {
               setGameDate(d)
             }}
             handleClose={() => setIsDatePickerModalOpen(false)}
-            isAnalyticsAllowed={isAnalyticsAllowed}
           />
           <MigrateStatsModal
             isOpen={isMigrateStatsModalOpen}
             handleClose={() => setIsMigrateStatsModalOpen(false)}
-            isAnalyticsAllowed={isAnalyticsAllowed}
           />
           <SettingsModal
             isOpen={isSettingsModalOpen}
@@ -583,12 +572,10 @@ function App() {
             isMemeMode={isMemeModeEnabled}
             handleMemeMode={setIsMemeMode}
             setIsCookieModalOpen={setIsCookieModalOpen}
-            isAnalyticsAllowed={isAnalyticsAllowed}
           />
           <AboutModal
             isOpen={isAboutModalOpen}
             handleClose={() => setIsAboutModalOpen(false)}
-            isAnalyticsAllowed={isAnalyticsAllowed}
           />
           <CookieModal
             isOpen={isCookieModalOpen}
@@ -597,8 +584,8 @@ function App() {
               setHasCookieModalOpened(true)
             }}
             acceptCookies={acceptCookies}
-            isAnalyticsAllowed={isAnalyticsAllowed}
-            setIsAnalyticsAllowed={setIsAnalyticsAllowed}
+            isAnalyticsAllowed={isGaAllowed}
+            setIsAnalyticsAllowed={setIsGaAllowed}
           />
           <AlertContainer />
         </div>

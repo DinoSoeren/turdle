@@ -6,16 +6,17 @@ import ReactDOM from 'react-dom'
 
 import App from './App'
 import { AlertProvider } from './context/AlertContext'
-import { initGA, sendVitalsToGA } from './lib/browser'
-import reportWebVitals from './reportWebVitals'
+import { GaProvider } from './context/GaContext'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 
 ReactDOM.render(
   <React.StrictMode>
     <CookieConsentProvider>
-      <AlertProvider>
-        <App />
-      </AlertProvider>
+      <GaProvider>
+        <AlertProvider>
+          <App />
+        </AlertProvider>
+      </GaProvider>
     </CookieConsentProvider>
   </React.StrictMode>,
   document.getElementById('root')
@@ -25,10 +26,3 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://cra.link/PWA
 serviceWorkerRegistration.register()
-
-initGA()
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals(sendVitalsToGA)

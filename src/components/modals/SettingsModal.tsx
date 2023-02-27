@@ -24,7 +24,6 @@ type Props = {
   isMemeMode: boolean
   handleMemeMode: Function
   setIsCookieModalOpen: (value: boolean) => void
-  isAnalyticsAllowed: boolean
 }
 
 export const SettingsModal = ({
@@ -42,7 +41,6 @@ export const SettingsModal = ({
   isMemeMode,
   handleMemeMode,
   setIsCookieModalOpen,
-  isAnalyticsAllowed,
 }: Props) => {
   return (
     <BaseModal
@@ -59,20 +57,17 @@ export const SettingsModal = ({
           flag={isHardMode}
           handleFlag={handleHardMode}
           description={HARD_MODE_DESCRIPTION}
-          isAnalyticsAllowed={isAnalyticsAllowed}
         />
         <SettingsToggle
           settingName="Dark Mode"
           flag={isDarkMode}
           handleFlag={handleDarkMode}
-          isAnalyticsAllowed={isAnalyticsAllowed}
         />
         <SettingsToggle
           settingName="High Contrast Mode"
           flag={isHighContrastMode}
           handleFlag={handleHighContrastMode}
           description={HIGH_CONTRAST_MODE_DESCRIPTION}
-          isAnalyticsAllowed={isAnalyticsAllowed}
         />
         <SettingsToggle
           settingName="Auto-hide Bubbles"
@@ -80,7 +75,6 @@ export const SettingsModal = ({
           handleFlag={handleExtraVisionMode}
           inverted={true}
           description={EXTRA_VISION_MODE_DESCRIPTION}
-          isAnalyticsAllowed={isAnalyticsAllowed}
         />
         {!isFirstTimePlaying && (
           <SettingsToggle
@@ -88,7 +82,6 @@ export const SettingsModal = ({
             flag={isMemeMode}
             handleFlag={handleMemeMode}
             description={MEME_MODE_DESCRIPTION}
-            isAnalyticsAllowed={isAnalyticsAllowed}
           />
         )}
       </div>

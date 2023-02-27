@@ -1,22 +1,19 @@
 import { DuplicateIcon } from '@heroicons/react/outline'
 import { useState } from 'react'
 
-import { gaEvent } from '../../lib/browser'
+import { useGaContext } from '../../context/GaContext'
 import { copyTextToClipboard } from '../../lib/clipboard'
 import { encrypt } from '../../lib/encryption'
 import { loadGameStateFromLocalStorage } from '../../lib/localStorage'
 import { loadStats } from '../../lib/stats'
 import { MigrationStats } from '../modals/MigrateStatsModal'
 
-export const EmigratePanel = ({
-  isAnalyticsAllowed,
-}: {
-  isAnalyticsAllowed: boolean
-}) => {
+export const EmigratePanel = () => {
   const [isCopyButtonEnabled, setIsCopyButtonEnabled] = useState(true)
   const [copyButtonText, setCopyButtonText] = useState('Copy')
   const stats = loadStats()
   const gameState = loadGameStateFromLocalStorage(true)
+  const { gaEvent } = useGaContext()
 
   const migrationStats: MigrationStats = {
     statistics: stats,
@@ -30,7 +27,7 @@ export const EmigratePanel = ({
     setCopyButtonText('Copied!')
     setIsCopyButtonEnabled(false)
     // Don't send any encrypted data to GA.
-    gaEvent({ category: 'UI Event', action: 'Emigrate', isAnalyticsAllowed })
+    gaEvent({ category: 'UI Event', action: 'Emigrate' })
   }
 
   return (

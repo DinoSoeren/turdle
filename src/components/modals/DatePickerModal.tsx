@@ -10,7 +10,7 @@ import {
   DATEPICKER_TODAY_TEXT,
   PLAYING_ARCHIVED_GAMES_WARNING,
 } from '../../constants/strings'
-import { gaEvent } from '../../lib/browser'
+import { useGaContext } from '../../context/GaContext'
 import { getToday, getYesterday } from '../../lib/dateutils'
 import {
   firstGameDate,
@@ -25,7 +25,6 @@ type Props = {
   initialDate?: Date
   handleSelectDate: (date: Date) => void
   handleClose: () => void
-  isAnalyticsAllowed: boolean
 }
 
 export const DatePickerModal = ({
@@ -33,8 +32,8 @@ export const DatePickerModal = ({
   initialDate,
   handleSelectDate,
   handleClose,
-  isAnalyticsAllowed,
 }: Props) => {
+  const { gaEvent } = useGaContext()
   const lastGameDate = getLastGameDate(getYesterday())
   const [selectedDate, setSelectedDate] = useState(() => {
     if (initialDate == null || initialDate > lastGameDate) {
@@ -147,7 +146,6 @@ export const DatePickerModal = ({
               category: 'UI Event',
               action: 'Select Date',
               value: selectedDate.getTime(),
-              isAnalyticsAllowed,
             })
           }}
         >

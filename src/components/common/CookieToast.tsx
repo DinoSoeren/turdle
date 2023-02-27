@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import { ToastContentProps, toast } from 'react-toastify'
 
 import { COOKIE_STATEMENT } from '../../constants/strings'
+import { PurposeCookieType } from '../../lib/browser'
 import { GameStats } from '../../lib/localStorage'
 
 export type OpenToast = {
@@ -10,13 +11,6 @@ export type OpenToast = {
   setIsCookieModalOpen: (open: boolean) => void
   consent: PurposeCookieType
   stats: GameStats
-}
-
-export type PurposeCookieType = {
-  necessary?: boolean
-  preferences?: boolean
-  statistics?: boolean
-  marketing?: boolean
 }
 
 export function openCookieToast({

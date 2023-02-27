@@ -3,7 +3,7 @@ import {
   ESSENTIAL_GAMEPLAY_DESCRIPTION,
   USAGE_STATISTICS_DESCRIPTION,
 } from '../../constants/strings'
-import { PurposeCookieType } from '../common/CookieToast'
+import { PurposeCookieType } from '../../lib/browser'
 import { BaseModal } from './BaseModal'
 import { SettingsToggle } from './SettingsToggle'
 
@@ -42,14 +42,12 @@ export const CookieModal = ({
           settingName="Essential gameplay"
           flag={true}
           description={ESSENTIAL_GAMEPLAY_DESCRIPTION}
-          isAnalyticsAllowed={isAnalyticsAllowed}
         />
         <SettingsToggle
           settingName="Collect usage statistics"
           flag={isAnalyticsAllowed}
           handleFlag={setIsAnalyticsAllowed}
           description={USAGE_STATISTICS_DESCRIPTION}
-          isAnalyticsAllowed={isAnalyticsAllowed}
         />
       </div>
       <div className="flex">
