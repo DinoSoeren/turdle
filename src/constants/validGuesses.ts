@@ -51,28 +51,37 @@ export function isDisabled(letter: string, currentGuess: string): boolean {
 export function wordleToTurdle(wordle?: string): string {
   return (wordle || 'QQQQQ')
     .split('')
-    .map((c) => turdleId(c))
+    .map((c) => letterToTurdleId(c))
     .join(' ')
 }
 
-export function letterToTurdle(letter?: string): string {
-  return letterToFrameIdx(letter) - 1 + '_' + (letterToColorIdx(letter) - 1)
+/** Converts e.g. 'F' -> '3P' */
+export function letterToTurdleId(letter?: string): string {
+  return letterToFrameIdx(letter) + letterToColorCode(letter)
 }
 
-export function turdleToLetter(turdle: string): string {
-  const [fIdx, cIdx] = turdle.split('_')
+/** Converts e.g. '3P' -> 'F' */
+export function turdleIdToLetter(turdleId: string): string {
+  const [frameIdx, colorCode] = turdleId.split('')
+  const colorIdx = ColorCodes.indexOf(colorCode)
+  return getLetter({ frameIdx: Number(frameIdx) - 1, colorIdx })
+}
+
+function getLetter({
+  frameIdx,
+  colorIdx,
+}: {
+  frameIdx: number
+  colorIdx: number
+}) {
   return KeyboardLetters[
-    parseInt(cIdx) * NUM_FRAMES + (parseInt(fIdx) % NUM_COLORS)
+    colorIdx * NUM_FRAMES + (Math.round(frameIdx) % NUM_COLORS)
   ]
 }
 
 /** Rounds to the nearest multiple of Y. */
 export function roundMultiple(x: number, y: number): number {
   return Math.ceil(x / y) * y
-}
-
-export function turdleId(value?: string): string {
-  return letterToFrameIdx(value) + letterToColorCode(value)
 }
 
 export function letterToFrameIdx(value?: string): number {
@@ -95,9 +104,7 @@ function generateAllValidGuesses(): string[] {
   for (let i = sequences.length - 1; i >= 0; i--) {
     let sequence = shiftArrayRight(sequences[i])
     for (let j = 0; j < NUM_FRAMES; j++) {
-      const wordGuess = sequence
-        .map((t) => turdleToLetter(t))
-        .reduce((prefix, l) => prefix + l)
+      const wordGuess = sequence.reduce((prefix, l) => prefix + l)
       if (!guesses.includes(wordGuess)) {
         guesses.push(wordGuess)
       }
@@ -127,11 +134,9 @@ function generateStartingSequences(): string[][] {
           const f = (h + i) % NUM_FRAMES
           const c = allColors[j][k++]
           if (isNaN(f) || isNaN(c)) continue
-          sequence.push(f + '_' + c)
+          sequence.push(getLetter({ frameIdx: f, colorIdx: c }))
           if (sequence.length === NUM_FRAMES) {
-            const wordGuess = sequence
-              .map((t) => turdleToLetter(t))
-              .reduce((prefix, l) => prefix + l)
+            const wordGuess = sequence.reduce((prefix, l) => prefix + l)
             if (!guesses.includes(wordGuess)) {
               guesses.push(wordGuess)
               sequences.push(sequence)

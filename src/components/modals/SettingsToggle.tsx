@@ -1,6 +1,7 @@
 import classnames from 'classnames'
 
 import { useGaContext } from '../../context/GaContext'
+import { Hint } from '../common/Hint'
 
 type Props = {
   settingName: string
@@ -53,6 +54,9 @@ export const SettingsToggle = ({
           {description && (
             <p className="mt-1 text-xs text-gray-500 dark:text-gray-300">
               {description}
+              {description.includes('Hint') && (
+                <Hint turdleId="3B" visible={true} inline={true} />
+              )}
             </p>
           )}
         </div>

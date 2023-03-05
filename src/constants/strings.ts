@@ -14,7 +14,7 @@ export const HARD_MODE_ALERT_MESSAGE =
 export const HARD_MODE_DESCRIPTION =
   'Any revealed hints must be used in subsequent guesses'
 export const HIGH_CONTRAST_MODE_DESCRIPTION = 'For improved color vision'
-export const EXTRA_VISION_MODE_DESCRIPTION = `Bubbles appear w/letters (e.g. '3W') on mouseover`
+export const EXTRA_VISION_MODE_DESCRIPTION = `Hint bubbles identify the frame, e.g. `
 export const MEME_MODE_DESCRIPTION = 'For the lolz'
 export const ESSENTIAL_GAMEPLAY_DESCRIPTION =
   'Win/loss state, guesses and stats'

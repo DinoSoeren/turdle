@@ -3,7 +3,10 @@ import { useState } from 'react'
 
 import { turtleFilter, turtleTransform } from '../../constants/filter'
 import { REVEAL_TIME_MS } from '../../constants/settings'
-import { letterToFrameIdx, turdleId } from '../../constants/validGuesses'
+import {
+  letterToFrameIdx,
+  letterToTurdleId,
+} from '../../constants/validGuesses'
 import { CharStatus } from '../../lib/statuses'
 import { Hint } from '../common/Hint'
 
@@ -83,7 +86,7 @@ export const Cell = ({
         src={'res/img/' + filePrefix + '_' + letterToFrameIdx(value) + '.png'}
         className={imgClasses}
         style={imgStyles}
-        alt={turdleId(value)}
+        alt={letterToTurdleId(value)}
       />
       <Hint value={value} visible={extraVision} hovered={isHovered} />
     </div>

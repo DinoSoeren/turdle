@@ -1,3 +1,4 @@
+import { Hint } from '../common/Hint'
 import { Cell } from '../grid/Cell'
 import { BaseModal } from './BaseModal'
 
@@ -67,11 +68,9 @@ export const InfoModal = ({
         />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        The <strong>Blue {object}</strong> (
-        <strong>
-          4<span className="text-blue-500">B</span>
-        </strong>
-        ) is in the sequence and in the correct spot.
+        The <strong>Blue {object}</strong>{' '}
+        <Hint turdleId="4B" visible={true} inline={true} /> is in the sequence
+        and in the correct spot.
       </p>
 
       <div className="mb-1 mt-4 flex justify-center">
@@ -108,11 +107,9 @@ export const InfoModal = ({
         />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        The <strong>Red {object}</strong> (
-        <strong>
-          5<span className="text-red-500">R</span>
-        </strong>
-        ) is in the sequence but in the wrong spot.
+        The <strong>Red {object}</strong>{' '}
+        <Hint turdleId="5R" visible={true} inline={true} /> is in the sequence
+        but in the wrong spot.
       </p>
 
       <div className="mb-1 mt-4 flex justify-center">
@@ -149,11 +146,9 @@ export const InfoModal = ({
         />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        The <strong>Purple {object}</strong> (
-        <strong>
-          3<span className="text-purple-500">P</span>
-        </strong>
-        ) is not in the sequence in any spot.
+        The <strong>Purple {object}</strong>{' '}
+        <Hint turdleId="3P" visible={true} inline={true} /> is not in the
+        sequence in any spot.
       </p>
 
       <p className="mt-6 text-sm italic text-gray-500 dark:text-gray-300">

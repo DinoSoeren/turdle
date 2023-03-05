@@ -4,37 +4,51 @@ import { useEffect, useState } from 'react'
 import {
   letterToColorCode,
   letterToFrameIdx,
+  turdleIdToLetter,
 } from '../../constants/validGuesses'
 
 type Props = {
   value?: string
+  turdleId?: string
   visible?: boolean
   hovered?: boolean
+  inline?: boolean
 }
 
-export const Hint = ({ value, visible = false, hovered = false }: Props) => {
+export const Hint = ({ value, turdleId, visible, hovered, inline }: Props) => {
   const [isInitialized, setInitialized] = useState(false)
+  if (!value && turdleId) {
+    value = turdleIdToLetter(turdleId)
+  }
 
   useEffect(() => {
     if (visible) {
       setInitialized(false)
-    } else {
-      if (!isInitialized) {
-        const timer = setTimeout(() => {
-          if (!isInitialized) setInitialized(true)
-        }, 3000)
-        return () => clearTimeout(timer)
-      }
+    }
+    if (!isInitialized) {
+      const timer = setTimeout(() => {
+        if (!isInitialized) setInitialized(true)
+      }, 3000)
+      return () => clearTimeout(timer)
     }
   }, [isInitialized, visible])
 
   const idClasses = classnames(
-    'absolute unshadowed text-black px-1 opacity-1 bottom-[-2px] right-[-2px] animation-none bg-white rounded-lg leading-none text-xs select-none transition-opacity delay-0',
+    'unshadowed text-black font-bold px-1 opacity-1 animation-none bg-white rounded-lg leading-none text-xs select-none transition-opacity delay-0',
     {
+      'inline-block': inline,
+      'block absolute bottom-[-2px] right-[-2px]': !inline,
       'hint-animation':
-        isInitialized && !hovered && !visible && !!value && value?.length === 1,
+        isInitialized &&
+        !inline &&
+        !hovered &&
+        !visible &&
+        !!value &&
+        value?.length === 1,
       'opacity-0':
-        (isInitialized && !hovered && !visible) || !value || value.length > 1,
+        (isInitialized && !inline && !hovered && !visible) ||
+        !value ||
+        value.length > 1,
     }
   )
 
@@ -47,9 +61,9 @@ export const Hint = ({ value, visible = false, hovered = false }: Props) => {
   })
 
   return (
-    <div className={idClasses}>
+    <span className={idClasses}>
       <span>{letterToFrameIdx(value)}</span>
       <span className={colorClasses}>{letterToColorCode(value)}</span>
-    </div>
+    </span>
   )
 }
